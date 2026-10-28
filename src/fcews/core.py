@@ -36,7 +36,7 @@ class Observation:
 
     def as_dict(self) -> dict[str, Any]:
         return {
-            "series": self.series, "date": self.date, "value": self.value,
+            "series": self.series, "date": self.date, "value": float(self.value),
             "source": self.source, "retrieved_utc": self.retrieved_utc,
             "available_at_utc": self.available_at_utc,
         }

@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .collect import collect_all
-from .core import Observation, decide, fresh, verified_event_ids
+from .core import Observation, decide, fresh, indicators
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -125,11 +125,15 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
 
     outcome = decide(merged, old_state, weekly, events, now.date())
     present = outcome["present_families"]
-    healthy = len(present) >= 3
+    # A recent cache supports continuity of risk analysis but CANNOT prove the
+    # current polling run is healthy if the official endpoints all failed.
+    live_present = sorted({v["family"] for v in indicators(fetched, now.date()).values()})
+    healthy = len(live_present) >= 3
     health_status = "healthy" if healthy and not errors else ("partial" if healthy else "degraded")
     health = {
         "status": health_status,
         "present_families": present,
+        "live_families": live_present,
         "source_error_types": {key: message.split(":", 1)[0] for key, message in sorted(errors.items())},
         "last_observation_dates": {key: ob.date for key, ob in sorted(merged.items())},
         "missing_required_families": sorted({"system", "credit", "volatility", "funding"} - set(present)),

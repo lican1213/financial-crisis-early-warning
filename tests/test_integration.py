@@ -132,6 +132,17 @@ class MonitorTests(unittest.TestCase):
         self.assertEqual(read_json(self.root / "data/state.json", {})["critical_families"],
                          ["credit", "volatility"])
 
+    def test_live_total_outage_cannot_be_hidden_by_cached_four_families(self):
+        rows = {"STLFSI4": ob("STLFSI4", -0.5), "VIXCLS": ob("VIXCLS", 16),
+                "BAMLH0A0HYM2": ob("BAMLH0A0HYM2", 3),
+                "SOFR": ob("SOFR", 3.9), "TGCR": ob("TGCR", 3.88)}
+        first = run(self.root, lambda: (rows, {}), self.now)
+        self.assertEqual(first["status"], "healthy")
+        second = run(self.root, lambda: ({}, {"FRED:*": "TimeoutError: offline"}), self.now)
+        self.assertEqual(second["status"], "degraded")
+        self.assertEqual(read_json(self.root / "data/health.json", {})["live_families"], [])
+        self.assertEqual(second["families"], ["credit", "funding", "system", "volatility"])
+
     def test_cache_stale_does_not_falsely_suggest_calm(self):
         rows = {
             "STLFSI4": ob("STLFSI4", -0.5, "2026-09-01"),
