@@ -4,6 +4,7 @@
   "last_recovery_date": "",
   "recovery_alerted": false,
   "recovery_count": 0,
+  "recovery_family_dates": {},
   "seen_events": [],
   "severity": "green"
 }
