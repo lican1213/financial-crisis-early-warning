@@ -31,3 +31,9 @@ summary: Series identifiers, units, lag and known failures for the implemented F
 **Current deployment verification:** unverified; check [Issue #1](https://github.com/lican1213/financial-crisis-early-warning/issues/1). The FRED service's historical licensing/access terms and rate limits have not yet been independently recorded.
 
 Related: [registry](registry.md), [PIT concept](../concepts/point-in-time.md).
+
+## Current source adapter additions, 2026-10-29
+- Official OFR FSI file: https://www.financialresearch.gov/financial-stress-index/data/fsi.csv (read-only, daily ~2-business-day observation lag). Same system stress family, not independent of NFCI.
+- NY Fed secured rate JSON: https://markets.newyorkfed.org/api/rates/secured/sofr/last/1.json and tgcr/bgcr analogues. See [official API documentation](https://markets.newyorkfed.org/static/docs/markets-api.html). Rates in percent, observation dates must match for meaningful SOFR-TGCR spread.
+- Real [source run 40788157364](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40788157364) succeeded and displayed one FRED TGCR HTTPError while the NY Fed TGCR API populated the required same-day observation. Health reports partial due redundant source error, not a missing stress family.
+- Provenance: [FRED](https://fred.stlouisfed.org/), [OFR](https://www.financialresearch.gov/financial-stress-index/), NY Fed as above. The vintage log records when FCEWS first observed a change; it is not proof of actual first public release.

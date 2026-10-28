@@ -34,3 +34,6 @@ Wiki pages use YAML frontmatter: title, kind, status, updated, summary. Use rela
 
 ## Completion contract
 A change is COMPLETE only if code/docs are committed, relevant checks pass, GitHub Issue updated, wiki/log.md appended, wiki/operations/HANDOFF.md refreshed, and the user gets the commit/Issue link and any deployment blocker. If run is unverified say exactly that. Keep explanations concise and factual.
+
+## Monitoring cadence and data lineage (2026-10-29)
+Always check [docs/operations/CADENCE.md](docs/operations/CADENCE.md) before editing workflow cron. Cross-check [data/health.json](data/health.json) and [wiki/datasets/registry.md](wiki/datasets/registry.md) before claiming a source works; a source fetched live is not the same as a verified first-publication vintage. Data-health issues are NOT financial-crisis notifications. Code or model changes require a falsifying regression, CI proof, change log, Issue update and source-dated handoff.

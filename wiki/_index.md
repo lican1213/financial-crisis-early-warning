@@ -62,5 +62,8 @@ summary: Entry point for the financial crisis early-warning knowledge base and o
 - **Canonical task tracker**: [repository Issues](https://github.com/lican1213/financial-crisis-early-warning/issues).
 - **Raw runtime snapshots**: [data directory](../data/), not an encyclopedic wiki.
 
+## Monitoring cycle and maintenance table
+- [Authoritative hourly / daily / weekly / monthly cadence](../docs/operations/CADENCE.md) — live workflows, silent alerts, release reconciliation and model audit.
+
 ## Source model
 Read provenance before answering: publication date vs observation date vs first available timestamp vs retrieval time. Never retroactively treat a revised series as what traders knew on that date.

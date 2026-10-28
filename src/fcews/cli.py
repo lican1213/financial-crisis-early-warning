@@ -173,7 +173,7 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
         "critical_families": outcome["critical_families"],
         "source_errors": health["source_error_types"],
         "observations": {
-            key: {"date": ob.date, "value": ob.value, "source": ob.source}
+            key: {"date": ob.date, "value": float(ob.value), "source": ob.source}
             for key, ob in sorted(merged.items()) if fresh(ob, now.date())
         },
     }

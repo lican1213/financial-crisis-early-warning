@@ -31,3 +31,10 @@ For project rationale read [engineering MOC](mocs/ENGINEERING.md).
 
 ## Completed MOC structure follow-up
 - [#10 Topic-level directory indexes and negative lint tests](https://github.com/lican1213/financial-crisis-early-warning/issues/10): 6 topic _index.md files, two adversarial fixtures, [passing CI #40719684672](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40719684672). Issue status is authoritative and must be checked from GitHub.
+
+## Progress checkpoint — 2026-10-29
+- [#1](https://github.com/lican1213/financial-crisis-early-warning/issues/1): live 11-source successful Actions [#40788157364](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40788157364). Another verification of unchanged-data quiet behavior and first new scheduled run is required before closing.
+- [#2](https://github.com/lican1213/financial-crisis-early-warning/issues/2): OFR FSI and NY Fed repo-reference rate adapters working; MOVE, VIX future curve, Treasury depth, and institution-level nonbank sources outstanding.
+- [#3](https://github.com/lican1213/financial-crisis-early-warning/issues/3): strict first-public-timestamp replay engine and anti-future-revision tests; full original-vintage event data and calibrated walk-forward accuracy pending.
+- [#7](https://github.com/lican1213/financial-crisis-early-warning/issues/7): source hash, reviewer identity and explicit approval are now required for a reviewed candidate, but code cannot authenticate a claimed document without fetching it.
+- [#8](https://github.com/lican1213/financial-crisis-early-warning/issues/8): GitHub candidate issues are retriable and deduped; no authenticated ChatGPT push bridge. [Monitoring cycle table](../docs/operations/CADENCE.md).

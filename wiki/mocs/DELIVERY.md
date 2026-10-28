@@ -19,3 +19,6 @@ summary: Routes runbooks, daily checks, notification semantics and next-agent co
 When a session resumes, confirm default branch HEAD, open Issues, CI state, last successful data timestamp and whether notifications were actually delivered; never infer from README claims.
 
 Related: [MOC engineering](ENGINEERING.md).
+
+## Cadence, 2026-10-29
+[Hourly/daily/weekly/monthly schedule](../../docs/operations/CADENCE.md) records exact UTC and Beijing times, Action owner, persistent run evidence, weekly risk-grade reconciliation, and monthly out-of-sample audit. GitHub candidate issues are separate from end-user ChatGPT notifications. [Recent source run](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40788157364).

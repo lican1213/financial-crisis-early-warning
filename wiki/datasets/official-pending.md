@@ -22,3 +22,6 @@ summary: Audited wishlist for key financial stress feeds that must not be repres
 **Implementation checklist:** verify real endpoint and permissions; store source document or URL + hash, first-public timestamp and time zone, observation period, unit, effective rule, revision policy, outage path. Add fixtures for numerical error and false alarm. A market-data website being listed here does not imply a free API.
 
 Current work: [Issue #2](https://github.com/lican1213/financial-crisis-early-warning/issues/2). Cross-market event standard: [events contract](events.md).
+
+## 2026-10-29 status change
+OFR FSI and NY Fed secured-rate API have moved into **operational** adapters, demonstrated by [real run 40788157364](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40788157364). The earlier table above is retained as a historical pre-implementation inventory, not an accurate live status list. Consult [current registry](registry.md). MOVE pricing and licensing, VIX full futures curve, Treasury order-book liquidity and bank/fund private-credit event feeds remain unresolved under [Issue #2](https://github.com/lican1213/financial-crisis-early-warning/issues/2).
