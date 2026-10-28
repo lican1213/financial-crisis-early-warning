@@ -1,5 +1,6 @@
 {
   "severity": "unknown",
   "as_of": "",
-  "notes": "Set ONLY from a sourced weekly report; do not map chat labels automatically."
+  "source_url": "",
+  "notes": "A human-verified weekly report is required to change severity. No default green baseline."
 }

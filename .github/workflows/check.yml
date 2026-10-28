@@ -1,7 +1,7 @@
-name: Hourly evidence check
+name: Hourly financial-risk evidence and delivery
 on:
   schedule:
-    - cron: '15 * * * *'
+    - cron: '13 * * * *'
   workflow_dispatch:
 permissions:
   contents: write
@@ -10,28 +10,44 @@ concurrency:
   group: fcews-hourly
   cancel-in-progress: false
 jobs:
-  check:
+  monitor:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Evaluate evidence and alert gate
-        id: gate
-        run: PYTHONPATH=src python -m fcews.cli
-      - name: Persist only changed evidence and state
+      - name: Poll and evaluate (fail on lost source coverage)
+        id: collect
+        continue-on-error: true
+        run: PYTHONPATH=src python -m fcews.cli --require-healthy
+      - name: Persist source observations, candidate outbox, and health diagnostics
+        if: always()
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A data
           if ! git diff --cached --quiet; then
-            git commit -m 'data: FCEWS evidence transition'
+            git commit -m 'data: source-dated FCEWS state or health transition'
             git push
           fi
-      - name: Open candidate issue only on new alert
-        if: steps.gate.outputs.alert == 'true'
+      - name: Idempotent candidate issue delivery and source health incident
+        if: always()
         env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh issue create --title "FCEWS candidate alert" --body-file data/ALERT.md
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          PYTHONPATH=src python -m fcews.delivery
+          git add -A data
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: acknowledge GitHub candidate issue receipt'
+            git push
+          fi
+      - name: Treat loss of monitor coverage as operational failure
+        if: steps.collect.outcome == 'failure'
+        run: |
+          echo "::error::Market data monitoring degraded. See data/health.json and the FCEWS DATA-HEALTH issue."
+          exit 2

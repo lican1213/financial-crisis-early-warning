@@ -24,7 +24,7 @@ class AuditTests(unittest.TestCase):
         self.assertFalse(fresh(obs("VIXCLS", 50, "2026-09-01"), DAY))
         self.assertFalse(fresh(obs("VIXCLS", 50, "2026-10-29"), DAY))
     def test_stale_signal_cannot_trigger(self):
-        r=decide({"VIXCLS":obs("VIXCLS",50,"2026-09-01")},BASE,{"severity":"green"},[],DAY)
+        r=decide({"VIXCLS":obs("VIXCLS",50,"2026-09-01")},BASE,{"severity":"green","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"},[],DAY)
         self.assertEqual(r["severity"],"unknown")
         self.assertFalse(r["alert"])
     def test_bootstrap_dual_family_alert(self):
@@ -34,11 +34,11 @@ class AuditTests(unittest.TestCase):
         r=decide({"STLFSI4":obs("STLFSI4",2),"NFCI":obs("NFCI",2)},BASE,{},[],DAY)
         self.assertNotIn("independent_stress_families",r["reasons"])
     def test_calm_silent(self):
-        self.assertFalse(decide(calm(),BASE,{"severity":"green"},[],DAY)["alert"])
+        self.assertFalse(decide(calm(),BASE,{"severity":"green","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"},[],DAY)["alert"])
     def test_single_family_cannot_trigger_weekly(self):
-        self.assertFalse(decide({"VIXCLS":obs("VIXCLS",40)},BASE,{"severity":"green"},[],DAY)["alert"])
+        self.assertFalse(decide({"VIXCLS":obs("VIXCLS",40)},BASE,{"severity":"green","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"},[],DAY)["alert"])
     def test_weekly_escalation(self):
-        r=decide({**calm(),"VIXCLS":obs("VIXCLS",40)},BASE,{"severity":"green"},[],DAY)
+        r=decide({**calm(),"VIXCLS":obs("VIXCLS",40)},BASE,{"severity":"green","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"},[],DAY)
         self.assertIn("above_weekly_baseline",r["reasons"])
     def test_unknown_weekly_cannot_fabricate_upgrade(self):
         self.assertFalse(decide({**calm(),"VIXCLS":obs("VIXCLS",40)},BASE,{},[],DAY)["alert"])
@@ -55,29 +55,38 @@ class AuditTests(unittest.TestCase):
     def test_rumor_not_accepted(self):
         ev=[{"id":"a","verified":False,"primary_source_url":"https://example.com","cross_market_mechanism":"contagion"}]
         self.assertFalse(decide({},BASE,{},ev,DAY)["alert"])
+    def test_unreviewed_event_true_flag_cannot_trigger(self):
+        ev=[{"id":"falsified","verified":True,"primary_source_url":"https://www.fdic.gov/",
+             "cross_market_mechanism":"funding contagion"}]
+        self.assertFalse(decide({},BASE,{},ev,DAY)["alert"])
+
+    def test_baseline_without_source_stays_unknown(self):
+        r=decide({**calm(),"VIXCLS":obs("VIXCLS",40)}, BASE, {"severity":"green"}, [], DAY)
+        self.assertNotIn("above_weekly_baseline",r["reasons"])
+
     def test_event_once(self):
-        ev=[{"id":"a","verified":True,"primary_source_url":"https://example.com/filing","cross_market_mechanism":"contagion"}]
+        ev=[{"id":"a","verified":True,"review_status":"approved","verified_by":"human-review", "published_at_utc":"2026-10-27T15:00:00Z", "source_sha256":"a"*64, "primary_source_url":"https://www.fdic.gov/official-statement","cross_market_mechanism":"funding contagion"}]
         r=decide({},BASE,{},ev,DAY)
         self.assertTrue(r["alert"])
         self.assertFalse(decide({},r["next_state"],{},ev,DAY)["alert"])
     def test_same_hourly_data_not_three_recoveries(self):
         state={}
         for i in range(6):
-            r=decide(calm(),state,{"severity":"orange"},[],DAY)
+            r=decide(calm(),state,{"severity":"orange","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"},[],DAY)
             state=r["next_state"]
         self.assertEqual(state["recovery_count"],1)
         self.assertFalse(r["alert"])
     def test_three_distinct_dates_recovery(self):
         state={}
         for day in ("2026-10-26","2026-10-27","2026-10-28"):
-            r=decide(calm(day),state,{"severity":"orange"},[],DAY)
+            r=decide(calm(day),state,{"severity":"orange","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"},[],DAY)
             state=r["next_state"]
         self.assertIn("sustained_recovery",r["reasons"])
-        self.assertFalse(decide(calm("2026-10-28"),state,{"severity":"orange"},[],DAY)["alert"])
+        self.assertFalse(decide(calm("2026-10-28"),state,{"severity":"orange","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"},[],DAY)["alert"])
     def test_recovery_reset_on_new_pressure(self):
-        r=decide(calm("2026-10-26"),{},{"severity":"orange"},[],DAY)
+        r=decide(calm("2026-10-26"),{},{"severity":"orange","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"},[],DAY)
         risk={**calm(),"VIXCLS":obs("VIXCLS",40),"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7)}
-        self.assertEqual(decide(risk,r["next_state"],{"severity":"orange"},[],DAY)["next_state"]["recovery_count"],0)
+        self.assertEqual(decide(risk,r["next_state"],{"severity":"orange","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"},[],DAY)["next_state"]["recovery_count"],0)
     def test_bad_weekly_label(self):
         with self.assertRaises(ValueError):
             decide(calm(),{},{"severity":"bad"},[],DAY)

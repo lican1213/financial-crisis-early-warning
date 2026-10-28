@@ -1,0 +1,22 @@
+name: Daily code, MOC, and cadence audit
+on:
+  schedule:
+    - cron: '25 0 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Decision, data and wiki regression gates
+        run: PYTHONPATH=src python -m unittest discover -s tests -v
+      - name: Structural knowledge lint
+        run: python scripts/wiki_lint.py
+      - name: Show latest source health record
+        run: |
+          if [ -f data/health.json ]; then cat data/health.json; else echo 'No live source-health record'; fi
