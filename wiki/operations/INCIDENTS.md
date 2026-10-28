@@ -34,3 +34,5 @@ Next: [handoff](HANDOFF.md), [taskboard](../tasks.md).
 
 ## FAIL-014 — 2026-10-28 topic-index fixture directory collision
 Observed [CI #40719452896](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40719452896): after adding a `sources/_index.md` fixture, the test attempted a second `mkdir` of `sources/` without `exist_ok=True`, raising `FileExistsError`. Reproduces consistently in the Python 3.12 GitHub runner. Corrective change: idempotent fixture directory creation; new CI readback required. Keeps original failing run for audit.
+
+**FAIL-014 resolution (2026-10-28):** [commit 9fb89fc](https://github.com/lican1213/financial-crisis-early-warning/commit/9fb89fcfc9e3211d35dc6bd1a84366b711da0dd9) corrected duplicate fixture directory creation. Subsequent [GitHub Actions 40719684672](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40719684672): 28/28 tests and 29-page structural lint PASS. The initial failure remains in the log as audit evidence.

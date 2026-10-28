@@ -17,7 +17,7 @@ This page is a **dated view** (2026-10-28), not a second source of status. Open 
 | P1 | [#2 Official OFR/MOVE/repo/Treasury sources](https://github.com/lican1213/financial-crisis-early-warning/issues/2) | Sources, adapter tests, normalized units, lags |
 | P1 | [#7 Event verification / contagion registry](https://github.com/lican1213/financial-crisis-early-warning/issues/7) | Primary evidence readback and adversarial rumor test |
 | P1 | [#8 Weekly baseline and delivery integration](https://github.com/lican1213/financial-crisis-early-warning/issues/8) | Reconciled baseline and deduplicated actual delivery |
-| P1 | [#9 Second brain MOC and lint](https://github.com/lican1213/financial-crisis-early-warning/issues/9) | Committed wiki, test results, link audit and Agent startup |
+| Done | [#9 Second brain MOC and lint](https://github.com/lican1213/financial-crisis-early-warning/issues/9) | Committed wiki, test results, link audit and Agent startup |
 
 **Deduplicated 2026-10-28:** #1 supersedes #4; #3 supersedes #5; #2 supersedes #6. Original acceptance criteria were merged into the earlier Issues; duplicates were closed with history preserved. [All Issues](https://github.com/lican1213/financial-crisis-early-warning/issues).
 
@@ -28,3 +28,6 @@ Pick an Issue → test/verify preconditions → implement → adversarial tests 
 P0 operational truth (#1) before claiming hourly protection; PIT backtesting (#3) before raising confidence in thresholds; source adapters (#2) and event provenance (#7) before extending coverage; notification integration (#8) after gate stability. Documentation and lint (#9) run alongside all changes.
 
 For project rationale read [engineering MOC](mocs/ENGINEERING.md).
+
+## Completed MOC structure follow-up
+- [#10 Topic-level directory indexes and negative lint tests](https://github.com/lican1213/financial-crisis-early-warning/issues/10): 6 topic _index.md files, two adversarial fixtures, [passing CI #40719684672](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40719684672). Issue status is authoritative and must be checked from GitHub.

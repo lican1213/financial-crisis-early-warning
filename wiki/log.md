@@ -31,3 +31,6 @@ Validated corrected [MOC CI #40718526292](https://github.com/lican1213/financial
 
 ## 2026-10-28 — adversarial test fixture regression and correction
 The new [run #40719452896](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40719452896) failed at the unit-test step: 27 tests passed, one errored because `test_missing_source_frontmatter_is_detected` called `mkdir` on a directory already created by the topic-index fixture. Production model logic was not implicated. Corrected the fixture with `exist_ok=True`; awaiting a successful CI readback before declaring completion.
+
+## 2026-10-28 — topic-index and adversarial CI verification
+[GitHub Actions 40719684672](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40719684672) completed SUCCESS after fixture repair [commit 9fb89fc](https://github.com/lican1213/financial-crisis-early-warning/commit/9fb89fcfc9e3211d35dc6bd1a84366b711da0dd9): 28 tests passed; structural lint passed on 29 knowledge pages. P2 documentation follow-up [#10](https://github.com/lican1213/financial-crisis-early-warning/issues/10) has completion evidence. Still open: live hourly monitor #1, PIT calibration #3, sources #2, event vetting #7, delivery #8.
