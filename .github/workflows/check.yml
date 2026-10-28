@@ -1,5 +1,9 @@
 name: Hourly financial-risk evidence and delivery
 on:
+  push:
+    paths:
+      - 'src/fcews/**'
+      - '.github/workflows/check.yml'
   schedule:
     - cron: '13 * * * *'
   workflow_dispatch:

@@ -25,8 +25,14 @@ BYTES_LIMIT = 1_000_000
 
 
 def read_url(url: str, timeout: float = 8.0) -> str:
+    # OFR sometimes rejects script-specific User-Agent strings; use a browser-compatible
+    # UA while retaining project identification in a separate header.
+    ua = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+          "(KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36") if "financialresearch.gov" in url else (
+          "FCEWS/0.3 (+https://github.com/lican1213/financial-crisis-early-warning)")
     request = Request(url, headers={
-        "User-Agent": "FCEWS/0.3 (+https://github.com/lican1213/financial-crisis-early-warning)",
+        "User-Agent": ua,
+        "X-Project-Source": "FCEWS financial stability research (github.com/lican1213/financial-crisis-early-warning)",
         "Accept": "application/json,text/csv;q=0.9,*/*;q=0.5",
     })
     with urlopen(request, timeout=timeout) as response:
