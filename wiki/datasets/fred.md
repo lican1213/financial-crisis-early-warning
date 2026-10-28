@@ -28,6 +28,6 @@ summary: Series identifiers, units, lag and known failures for the implemented F
 
 **Data QA:** reject non-numeric, out-of-range future date, stale observations and SOFR/TGCR mismatch. Test [core unit tests](../../tests/test_core.py). Missing data should be visible in diagnostics and excluded from independent-family count; if service fails, do not silently claim no financial risk.
 
-**Current deployment verification:** unverified; check [Issue #4](https://github.com/lican1213/financial-crisis-early-warning/issues/4). The FRED service's historical licensing/access terms and rate limits have not yet been independently recorded.
+**Current deployment verification:** unverified; check [Issue #1](https://github.com/lican1213/financial-crisis-early-warning/issues/1). The FRED service's historical licensing/access terms and rate limits have not yet been independently recorded.
 
 Related: [registry](registry.md), [PIT concept](../concepts/point-in-time.md).

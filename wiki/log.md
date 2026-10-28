@@ -22,3 +22,6 @@ Append new dated operations. Never silently rewrite older observations to make r
 
 ## 2026-10-28 — initial MOC CI falsification and repair
 GitHub [Actions run 40718335555](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40718335555) executed 26/26 unit/adversarial tests successfully, but the structural lint failed: `wiki/datasets/registry.md` lacked an explicit external source reference. Recorded the failure rather than ignoring it; added the FRED official source registry link, updated incident and handoff. Lint retest on the next commit is the completion gate.
+
+## 2026-10-28 — passing CI, canonical task consolidation
+[CI run 40718526292](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40718526292) completed successfully: 26/26 unit/adversarial tests and wiki lint passed. Audited existing issues: #1–#3 predated later #4–#6. Merged added acceptance requirements into #1–#3 and closed #4–#6 as duplicates, preserving history. Updated handoff and taskboard. Real hourly live run is still not verified.

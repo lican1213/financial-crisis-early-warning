@@ -16,4 +16,4 @@ Example: an NFCI value labeled Friday may become available on a subsequent Wedne
 
 The v0.2 collector records observation date and retrieval time only; it therefore cannot support audited crisis forecasting claims. For a next-generation adapter, store `available_at_utc`, `source_document_sha256`, `revision_sequence`, `unit`, `series_version` and release calendar.
 
-Related: [FRED adapter](../datasets/fred.md), [historical backtest protocol](../../docs/moc/BACKTEST.md), [Issue #5](https://github.com/lican1213/financial-crisis-early-warning/issues/5).
+Related: [FRED adapter](../datasets/fred.md), [historical backtest protocol](../../docs/moc/BACKTEST.md), [Issue #3](https://github.com/lican1213/financial-crisis-early-warning/issues/3).

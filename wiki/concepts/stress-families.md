@@ -21,4 +21,4 @@ DGS10 / DGS30 are currently context only; elevated yields without functioning-ma
 
 A proxy is not an identity: normal SOFR/TGCR spread **does not prove** banks or private funds are healthy. Use event evidence for emerging contagion and supplement funding gauges (SRF, repo fails, volatility, dealer balance sheet).
 
-The cutoffs currently encoded are provisional heuristics. Historical calibration is [Issue #5](https://github.com/lican1213/financial-crisis-early-warning/issues/5), not a completed validation. See [data registry](../datasets/registry.md) and [point-in-time availability](point-in-time.md).
+The cutoffs currently encoded are provisional heuristics. Historical calibration is [Issue #3](https://github.com/lican1213/financial-crisis-early-warning/issues/3), not a completed validation. See [data registry](../datasets/registry.md) and [point-in-time availability](point-in-time.md).
