@@ -1,0 +1,90 @@
+{
+  "ANFCI": {
+    "available_at_utc": null,
+    "date": "2026-10-23",
+    "retrieved_utc": "2026-10-28T23:33:20.174248+00:00",
+    "series": "ANFCI",
+    "source": "https://fred.stlouisfed.org/series/ANFCI",
+    "value": -0.501
+  },
+  "BAMLH0A0HYM2": {
+    "available_at_utc": null,
+    "date": "2026-10-27",
+    "retrieved_utc": "2026-10-28T23:33:20.174627+00:00",
+    "series": "BAMLH0A0HYM2",
+    "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
+    "value": 3.18
+  },
+  "BGCR": {
+    "available_at_utc": null,
+    "date": "2026-10-27",
+    "retrieved_utc": "2026-10-28T23:33:20.987764+00:00",
+    "series": "BGCR",
+    "source": "https://www.newyorkfed.org/markets/reference-rates/bgcr",
+    "value": 3.94
+  },
+  "DGS10": {
+    "available_at_utc": null,
+    "date": "2026-10-27",
+    "retrieved_utc": "2026-10-28T23:33:20.795884+00:00",
+    "series": "DGS10",
+    "source": "https://fred.stlouisfed.org/series/DGS10",
+    "value": 4.99
+  },
+  "DGS30": {
+    "available_at_utc": null,
+    "date": "2026-10-27",
+    "retrieved_utc": "2026-10-28T23:33:20.835068+00:00",
+    "series": "DGS30",
+    "source": "https://fred.stlouisfed.org/series/DGS30",
+    "value": 5.3
+  },
+  "NFCI": {
+    "available_at_utc": null,
+    "date": "2026-10-23",
+    "retrieved_utc": "2026-10-28T23:33:20.173567+00:00",
+    "series": "NFCI",
+    "source": "https://fred.stlouisfed.org/series/NFCI",
+    "value": -0.487
+  },
+  "OFR_FSI": {
+    "available_at_utc": null,
+    "date": "2026-10-26",
+    "retrieved_utc": "2026-10-28T23:33:21.252966+00:00",
+    "series": "OFR_FSI",
+    "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv",
+    "value": -1.569
+  },
+  "SOFR": {
+    "available_at_utc": null,
+    "date": "2026-10-27",
+    "retrieved_utc": "2026-10-28T23:33:20.901504+00:00",
+    "series": "SOFR",
+    "source": "https://www.newyorkfed.org/markets/reference-rates/sofr",
+    "value": 3.95
+  },
+  "STLFSI4": {
+    "available_at_utc": null,
+    "date": "2026-10-23",
+    "retrieved_utc": "2026-10-28T23:33:20.172813+00:00",
+    "series": "STLFSI4",
+    "source": "https://fred.stlouisfed.org/series/STLFSI4",
+    "value": -0.5837
+  },
+  "TGCR": {
+    "available_at_utc": null,
+    "date": "2026-10-27",
+    "retrieved_utc": "2026-10-28T23:33:20.939806+00:00",
+    "series": "TGCR",
+    "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr",
+    "value": 3.94
+  },
+  "VIXCLS": {
+    "available_at_utc": null,
+    "date": "2026-10-27",
+    "retrieved_utc": "2026-10-28T23:33:20.175591+00:00",
+    "series": "VIXCLS",
+    "source": "https://fred.stlouisfed.org/series/VIXCLS",
+    "value": 17.52
+  }
+}

@@ -1,22 +1,74 @@
 {
-  "alert": false,
-  "checked_date_utc": "2026-10-28",
-  "confidence": "limited",
+  "alert_candidate": false,
   "critical_families": [],
-  "evidence_sha256": "66b1de7c10ddd63a544478a9d91e428ff487ea18290e94f6d15a6943a7dd983d",
-  "present_families": [],
-  "reasons": [],
-  "severity": "unknown",
-  "source_errors": {
-    "ANFCI": "The read operation timed out",
-    "BAMLH0A0HYM2": "The read operation timed out",
-    "DGS10": "The read operation timed out",
-    "DGS30": "The read operation timed out",
-    "NFCI": "The read operation timed out",
-    "SOFR": "The read operation timed out",
-    "STLFSI4": "The read operation timed out",
-    "TGCR": "The read operation timed out",
-    "VIXCLS": "The read operation timed out"
+  "evidence_sha256": "971606878a0a29672d19e1dfe8857b588f5094b765dcad207bcbffaf008a4cfb",
+  "first_recorded_utc": "2026-10-28T23:33:20.172347+00:00",
+  "observations": {
+    "ANFCI": {
+      "date": "2026-10-23",
+      "source": "https://fred.stlouisfed.org/series/ANFCI",
+      "value": -0.501
+    },
+    "BAMLH0A0HYM2": {
+      "date": "2026-10-27",
+      "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
+      "value": 3.18
+    },
+    "BGCR": {
+      "date": "2026-10-27",
+      "source": "https://www.newyorkfed.org/markets/reference-rates/bgcr",
+      "value": 3.94
+    },
+    "DGS10": {
+      "date": "2026-10-27",
+      "source": "https://fred.stlouisfed.org/series/DGS10",
+      "value": 4.99
+    },
+    "DGS30": {
+      "date": "2026-10-27",
+      "source": "https://fred.stlouisfed.org/series/DGS30",
+      "value": 5.3
+    },
+    "NFCI": {
+      "date": "2026-10-23",
+      "source": "https://fred.stlouisfed.org/series/NFCI",
+      "value": -0.487
+    },
+    "OFR_FSI": {
+      "date": "2026-10-26",
+      "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv",
+      "value": -1.569
+    },
+    "SOFR": {
+      "date": "2026-10-27",
+      "source": "https://www.newyorkfed.org/markets/reference-rates/sofr",
+      "value": 3.95
+    },
+    "STLFSI4": {
+      "date": "2026-10-23",
+      "source": "https://fred.stlouisfed.org/series/STLFSI4",
+      "value": -0.5837
+    },
+    "TGCR": {
+      "date": "2026-10-27",
+      "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr",
+      "value": 3.94
+    },
+    "VIXCLS": {
+      "date": "2026-10-27",
+      "source": "https://fred.stlouisfed.org/series/VIXCLS",
+      "value": 17.52
+    }
   },
-  "sources": {}
+  "present_families": [
+    "credit",
+    "funding",
+    "system",
+    "volatility"
+  ],
+  "severity": "green",
+  "source_errors": {
+    "FRED:TGCR": "HTTPError"
+  },
+  "status": "partial"
 }
