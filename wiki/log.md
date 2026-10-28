@@ -28,3 +28,6 @@ GitHub [Actions run 40718335555](https://github.com/lican1213/financial-crisis-e
 
 ## 2026-10-28 — strengthen MOC folder navigation
 Validated corrected [MOC CI #40718526292](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40718526292) passed 26 tests and structural lint. Adversarial review identified missing topic _index.md files and a missing linter invariant. Added six topic indexes and new missing-index / unreachable-index tests; a new CI run is required before treating this patch as verified.
+
+## 2026-10-28 — adversarial test fixture regression and correction
+The new [run #40719452896](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40719452896) failed at the unit-test step: 27 tests passed, one errored because `test_missing_source_frontmatter_is_detected` called `mkdir` on a directory already created by the topic-index fixture. Production model logic was not implicated. Corrected the fixture with `exist_ok=True`; awaiting a successful CI readback before declaring completion.

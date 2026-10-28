@@ -31,3 +31,6 @@ A defect is only fixed after a reproducible test and a verified commit; a remain
 For each future failure record observed UTC time, actual vs expected behavior, minimal reproducer, test name, impacted files, source evidence, issue, fix commit and re-test outcome. Never silently erase a failed experiment.
 
 Next: [handoff](HANDOFF.md), [taskboard](../tasks.md).
+
+## FAIL-014 — 2026-10-28 topic-index fixture directory collision
+Observed [CI #40719452896](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40719452896): after adding a `sources/_index.md` fixture, the test attempted a second `mkdir` of `sources/` without `exist_ok=True`, raising `FileExistsError`. Reproduces consistently in the Python 3.12 GitHub runner. Corrective change: idempotent fixture directory creation; new CI readback required. Keeps original failing run for audit.

@@ -51,7 +51,7 @@ class WikiAuditTests(unittest.TestCase):
         make(self.root, "_index.md", "Index", "index", "[Sources](sources/_index.md)")
         make(self.root, "sources/_index.md", "Source Index", "index", "[Note](n.md)")
         note = self.root / "wiki" / "sources" / "n.md"
-        note.parent.mkdir(parents=True)
+        note.parent.mkdir(parents=True, exist_ok=True)
         note.write_text("# No frontmatter\nhttps://official.example/source\n", encoding="utf-8")
         self.assertTrue(any("missing title" in x for x in lint_wiki(self.root)))
 

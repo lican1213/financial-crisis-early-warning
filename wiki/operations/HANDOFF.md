@@ -36,3 +36,6 @@ No duplicate full reports on calm runs. Freshness is not first availability. A g
 
 ## Directory-index maintenance addition
 A MOC completeness audit after CI #40718526292 identified missing topic-level _index.md pages. Added them and strengthened lint / fixtures; verify the new GitHub CI run before closing the documentation task. Source of truth for current task status: [Issues](https://github.com/lican1213/financial-crisis-early-warning/issues).
+
+## Verification checkpoint for directory-index hardening
+Commit [0867151e](https://github.com/lican1213/financial-crisis-early-warning/commit/0867151e95f440cbe6b0a94f00bdcabbe4c5d008) added six indexes and two new falsification tests. Its [CI #40719452896](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40719452896) failed in a fixture because a folder was created twice (27 pass, 1 error); fix recorded in FAIL-014. The next run must pass unit tests and wiki lint before Issue #10 can close.
