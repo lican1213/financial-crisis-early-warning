@@ -1,0 +1,22 @@
+{
+  "alert": false,
+  "checked_date_utc": "2026-10-28",
+  "confidence": "limited",
+  "critical_families": [],
+  "evidence_sha256": "66b1de7c10ddd63a544478a9d91e428ff487ea18290e94f6d15a6943a7dd983d",
+  "present_families": [],
+  "reasons": [],
+  "severity": "unknown",
+  "source_errors": {
+    "ANFCI": "The read operation timed out",
+    "BAMLH0A0HYM2": "The read operation timed out",
+    "DGS10": "The read operation timed out",
+    "DGS30": "The read operation timed out",
+    "NFCI": "The read operation timed out",
+    "SOFR": "The read operation timed out",
+    "STLFSI4": "The read operation timed out",
+    "TGCR": "The read operation timed out",
+    "VIXCLS": "The read operation timed out"
+  },
+  "sources": {}
+}

@@ -1,1 +1,9 @@
-{}
+{
+  "critical_families": [],
+  "last_alert_severity": null,
+  "last_recovery_date": "",
+  "recovery_alerted": false,
+  "recovery_count": 0,
+  "seen_events": [],
+  "severity": "unknown"
+}
