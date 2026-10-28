@@ -99,6 +99,39 @@ class MonitorTests(unittest.TestCase):
         self.assertEqual(len(read_json(self.root / "data/outbox.json", {})["pending"]), 1)
         self.assertEqual(second["families"], ["credit", "volatility"])
 
+    def test_identical_hourly_poll_preserves_original_retrieval_and_vintage(self):
+        rows = {"STLFSI4": ob("STLFSI4", -0.5), "VIXCLS": ob("VIXCLS", 18),
+                "BAMLH0A0HYM2": ob("BAMLH0A0HYM2", 3)}
+        first = run(self.root, lambda: (rows, {}), self.now)
+        baseline = (self.root / "data/observations.json").read_bytes()
+        vintage = (self.root / "data/vintage_log.jsonl").read_bytes()
+        reretrieved = {code: Observation(code, v.date, v.value, v.source,
+                                        "2026-10-29T02:00:00Z") for code, v in rows.items()}
+        second = run(self.root, lambda: (reretrieved, {}), self.now)
+        self.assertFalse(second["alert_candidate"])
+        self.assertEqual(baseline, (self.root / "data/observations.json").read_bytes())
+        self.assertEqual(vintage, (self.root / "data/vintage_log.jsonl").read_bytes())
+        self.assertEqual(first["evidence_sha256"], second["evidence_sha256"])
+
+    def test_same_date_revision_is_logged(self):
+        original = {"STLFSI4": ob("STLFSI4", -0.5)}
+        run(self.root, lambda: (original, {}), self.now)
+        updated = {"STLFSI4": ob("STLFSI4", -0.3)}
+        run(self.root, lambda: (updated, {}), self.now)
+        log = (self.root / "data/vintage_log.jsonl").read_text()
+        self.assertIn('"previous_value": -0.5', log)
+        self.assertEqual(read_json(self.root / "data/observations.json", {})["STLFSI4"]["value"], -0.3)
+
+    def test_degraded_fetch_cannot_clear_previous_stress_regime(self):
+        rows = {"VIXCLS": ob("VIXCLS", 39), "BAMLH0A0HYM2": ob("BAMLH0A0HYM2", 7)}
+        run(self.root, lambda: (rows, {}), self.now)
+        # Simulate unavailable sources by starting next poll beyond both source TTLs.
+        late = datetime(2026, 11, 10, 1, 0, tzinfo=timezone.utc)
+        r = run(self.root, lambda: ({}, {"FRED:VIXCLS": "TimeoutError: offline"}), late)
+        self.assertEqual(r["status"], "degraded")
+        self.assertEqual(read_json(self.root / "data/state.json", {})["critical_families"],
+                         ["credit", "volatility"])
+
     def test_cache_stale_does_not_falsely_suggest_calm(self):
         rows = {
             "STLFSI4": ob("STLFSI4", -0.5, "2026-09-01"),

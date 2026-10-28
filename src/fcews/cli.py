@@ -91,11 +91,32 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
     cached = load_cache(root / "data/observations.json")
     # Newer observations take precedence; failed network fetch cannot erase verified cache.
     merged = dict(cached)
+    changed_observations = []
     for code, obs in fetched.items():
-        if isinstance(obs, Observation) and (
-            code not in merged or obs.date >= merged[code].date
-        ):
+        if not isinstance(obs, Observation):
+            continue
+        prior = merged.get(code)
+        # Identical observation date, value and source must not rewrite the repo
+        # merely because retrieval happened an hour later.
+        changed = prior is None or (
+            obs.date > prior.date or
+            (obs.date == prior.date and (obs.value != prior.value or obs.source != prior.source))
+        )
+        if changed:
+            if prior is not None and obs.date < prior.date:
+                continue
             merged[code] = obs
+            changed_observations.append({
+                "first_seen_utc": now.isoformat(), "series": code,
+                "observation_date": obs.date, "value": obs.value, "source": obs.source,
+                "previous_value": prior.value if prior and prior.date == obs.date else None,
+            })
+    if changed_observations:
+        trail = root / "data/vintage_log.jsonl"
+        trail.parent.mkdir(parents=True, exist_ok=True)
+        with trail.open("a", encoding="utf-8") as stream:
+            for entry in changed_observations:
+                stream.write(json.dumps(entry, sort_keys=True) + "\n")
     # Cache only actual source observations. Never manufacture synthetic zeros.
     write_if_changed(
         root / "data/observations.json",
@@ -137,7 +158,9 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
             })
         write_if_changed(root / "data/outbox.json", outbox)
     # Advance state only if there is usable evidence or a verified candidate event.
-    if present or outcome["events"]:
+    # A transient loss of families must not erase the previous stress regime
+    # and cause a repeated escalation issue when feeds recover.
+    if healthy or outcome["alert"] or outcome["events"]:
         write_if_changed(root / "data/state.json", outcome["next_state"])
 
     stable_snapshot = {

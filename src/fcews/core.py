@@ -124,19 +124,32 @@ def decide(
     if base != "unknown" and not (weekly.get("as_of") and weekly.get("source_url", "").startswith("https://")):
         base = "unknown"
 
-    evidence_day = max((v["date"] for v in metrics.values()), default="")
+    family_dates: dict[str, str] = {}
+    for metric in metrics.values():
+        family = metric["family"]
+        family_dates[family] = max(family_dates.get(family, ""), metric["date"])
+    evidence_day = max(family_dates.values(), default="")
     down = (
         base != "unknown" and severity != "unknown"
         and len(present) >= 3 and LEVELS[severity] < LEVELS[base]
     )
+    prior_families = previous.get("recovery_family_dates", {})
+    updated_families = [
+        fam for fam, observed in family_dates.items()
+        if observed > prior_families.get(fam, "")
+    ]
     previous_recovery_date = str(previous.get("last_recovery_date", ""))
-    if down and evidence_day > previous_recovery_date:
+    # Require at least two independently updated families for a new recovery day.
+    # A solitary daily VIX update cannot masquerade as broad recovery.
+    if down and evidence_day > previous_recovery_date and len(updated_families) >= 2:
         recovery_count = int(previous.get("recovery_count", 0)) + 1
         recovery_date = evidence_day
+        recovery_family_dates = family_dates
     elif down:
         recovery_count, recovery_date = int(previous.get("recovery_count", 0)), previous_recovery_date
+        recovery_family_dates = prior_families
     else:
-        recovery_count, recovery_date = 0, ""
+        recovery_count, recovery_date, recovery_family_dates = 0, "", {}
 
     reasons: list[str] = []
     if len(stressed) >= 2 and len(previous.get("critical_families", [])) < 2:
@@ -159,6 +172,7 @@ def decide(
         "seen_events": sorted(set(previous.get("seen_events", [])) | verified_event_ids(events)),
         "recovery_count": recovery_count,
         "last_recovery_date": recovery_date,
+        "recovery_family_dates": recovery_family_dates,
         "recovery_alerted": bool(previous.get("recovery_alerted", False) or "sustained_recovery" in reasons) if down else False,
         "last_alert_severity": severity if reasons else previous.get("last_alert_severity"),
     }

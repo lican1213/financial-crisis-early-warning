@@ -87,6 +87,17 @@ class AuditTests(unittest.TestCase):
         r=decide(calm("2026-10-26"),{},{"severity":"orange","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"},[],DAY)
         risk={**calm(),"VIXCLS":obs("VIXCLS",40),"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7)}
         self.assertEqual(decide(risk,r["next_state"],{"severity":"orange","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"},[],DAY)["next_state"]["recovery_count"],0)
+    def test_recovery_requires_two_new_family_observations(self):
+        weekly={"severity":"orange","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"}
+        rows=calm("2026-10-26")
+        one=decide(rows,{},weekly,[],DAY)
+        self.assertEqual(one["next_state"]["recovery_count"],1)
+        # Only VIXCLS advanced; system and credit dates are unchanged.
+        updated={**rows, "VIXCLS":obs("VIXCLS",17,"2026-10-27")}
+        two=decide(updated,one["next_state"],weekly,[],DAY)
+        self.assertEqual(two["next_state"]["recovery_count"],1)
+        self.assertFalse(two["alert"])
+
     def test_bad_weekly_label(self):
         with self.assertRaises(ValueError):
             decide(calm(),{},{"severity":"bad"},[],DAY)
