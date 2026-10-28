@@ -33,3 +33,6 @@ Issues #1, #2 and #3 are canonical; overlapping #4–#6 were closed as duplicate
 No duplicate full reports on calm runs. Freshness is not first availability. A green technical score is not proof of global financial stability. Current repo public status requires user-controlled GitHub Settings change if private desired.
 
 **Handoff checklist:** update commit SHA, latest successful test and Actions URLs, current open P0 Issues, interface IDs newly verified, known false positives, exact next action; append [project log](../log.md). If uncertain, say 'not verified'.
+
+## Directory-index maintenance addition
+A MOC completeness audit after CI #40718526292 identified missing topic-level _index.md pages. Added them and strengthened lint / fixtures; verify the new GitHub CI run before closing the documentation task. Source of truth for current task status: [Issues](https://github.com/lican1213/financial-crisis-early-warning/issues).

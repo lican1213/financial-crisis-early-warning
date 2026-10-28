@@ -70,6 +70,10 @@ def lint_wiki(root: Path) -> list[str]:
     if not start.exists():
         return ["missing wiki/_index.md"]
     pages = sorted(wiki.rglob("*.md"))
+    # LLM-Wiki navigability invariant: each populated topical directory has _index.md.
+    for folder in [wiki, *(d for d in wiki.rglob("*") if d.is_dir())]:
+        if any(folder.glob("*.md")) and not (folder / "_index.md").is_file():
+            errors.append(f"{folder.relative_to(root)}: missing _index.md")
     titles: dict[str, Path] = {}
     edges: dict[Path, set[Path]] = {}
     for page in pages:

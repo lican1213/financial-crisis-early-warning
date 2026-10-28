@@ -25,3 +25,6 @@ GitHub [Actions run 40718335555](https://github.com/lican1213/financial-crisis-e
 
 ## 2026-10-28 — passing CI, canonical task consolidation
 [CI run 40718526292](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40718526292) completed successfully: 26/26 unit/adversarial tests and wiki lint passed. Audited existing issues: #1–#3 predated later #4–#6. Merged added acceptance requirements into #1–#3 and closed #4–#6 as duplicates, preserving history. Updated handoff and taskboard. Real hourly live run is still not verified.
+
+## 2026-10-28 — strengthen MOC folder navigation
+Validated corrected [MOC CI #40718526292](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40718526292) passed 26 tests and structural lint. Adversarial review identified missing topic _index.md files and a missing linter invariant. Added six topic indexes and new missing-index / unreachable-index tests; a new CI run is required before treating this patch as verified.

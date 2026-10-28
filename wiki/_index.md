@@ -47,6 +47,14 @@ summary: Entry point for the financial crisis early-warning knowledge base and o
 - [Knowledge conventions](schema.md)
 - [Living system thesis](overview.md)
 
+## Directory navigation (topic-level indexes)
+- [MOC directory](mocs/_index.md)
+- [Concept directory](concepts/_index.md)
+- [Source interface directory](datasets/_index.md)
+- [External source directory](sources/_index.md)
+- [Architecture decision directory](decisions/_index.md)
+- [Operations directory](operations/_index.md)
+
 ## Release snapshot
 - **Code**: v0.2, FRED-backed rules engine with tests; initial rollout recorded 2026-10-28.
 - **Wiki**: v0.3 knowledge schema and MOCs; not equivalent to model forecasting upgrade.
