@@ -1,15 +1,18 @@
-name: Test risk decision gates
+name: Risk gates and MOC structural audit
 on:
   push:
   pull_request:
 permissions:
   contents: read
 jobs:
-  unit:
+  unittest:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: PYTHONPATH=src python -m unittest discover -s tests -v
+      - name: Core decision tests and MOC adversarial lint tests
+        run: PYTHONPATH=src python -m unittest discover -s tests -v
+      - name: Check wiki source, backlinks and MOC coverage
+        run: python scripts/wiki_lint.py

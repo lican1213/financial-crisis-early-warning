@@ -1,20 +1,24 @@
 # FCEWS — Financial Crisis Early Warning System
 
-Evidence-first, source-dated financial-crisis monitor. **No material change means no alert.**
+Evidence-first, source-dated financial-crisis monitor. **No material change means no alert.** The goal is reliable crisis escalation, not reporting every market move.
 
-## v0.2.0
-- Public FRED source readings: STLFSI4, NFCI, ANFCI, HY OAS, VIX, SOFR/TGCR, DGS10 and DGS30.
-- Gates: sourced weekly escalation, two independent stress families, newly verified contagion event, and recovery on three distinct observation dates.
-- Hourly checking and GitHub candidate issues are planned in the Actions workflow. ChatGPT push is a separate unintegrated channel.
-- OFR FSI, MOVE, Treasury real-time depth and full VIX curve are not yet integrated.
-- **Repository currently public:** do not store secrets, portfolio holdings or personal information.
+## Current deployment: model v0.2 / second brain v0.3
+- Python FRED collector: STLFSI4, NFCI, ANFCI, HY OAS, VIX, SOFR/TGCR, DGS10, DGS30.
+- Four candidate alert gates: above a sourced weekly baseline; two independent stress families; verified potentially contagious event; sustained recovery on distinct observation dates.
+- GitHub Actions workflow templates for hourly checks and candidate issue reporting. **Live execution has not yet been verified.** GitHub candidate Issues are **not** automatic ChatGPT notifications.
+- OFR FSI, MOVE, Treasury market depth, VIX futures curve and complete private-credit/bank feeds **are not connected**.
+- Thresholds are provisional; this is not an out-of-sample calibrated crisis prediction model.
+- Repository was observed **public** on 2026-10-28: no keys, personal portfolio allocations or secrets.
 
-## Commands
+## Agent-first second brain
+Read [wiki/_index.md](wiki/_index.md) → [current handoff](wiki/operations/HANDOFF.md) → [Issue taskboard](wiki/tasks.md) → relevant [MOC maps](wiki/mocs/ENGINEERING.md). The [AGENTS.md](AGENTS.md) contract tells any ChatGPT/Codex/Claude/OpenCode agent how to maintain source provenance, API manifests, historical decisions, failure cases and tests. GitHub Issues are canonical for task status; no fake completed milestones.
+
+## Run locally
 
     PYTHONPATH=src python -m unittest discover -s tests -v
+    python scripts/wiki_lint.py
     PYTHONPATH=src python -m fcews.cli
 
-## Method
-HY OAS is expressed in **percent** (6.0 = 600bp). SOFR/TGCR difference is also in percentage points (0.15 = 15bp). Related financial stress indexes count as **one family**. No crisis probabilities are claimed. Weekly baseline defaults to unknown until sourced.
+The engine stores observations with dates but not verified first-release timestamps yet. HY OAS is expressed in percent (6.0 = 600bp); SOFR/TGCR difference is percent points (0.15 = 15bp). Correlated conditions indexes count as one family. Unknown data must not imply green.
 
-Read docs/moc/INDEX.md and docs/moc/FAILURES.md before changes. Learn from macro-liquidity-pipeline (PIT), credit-spread-analyzer (out-of-sample testing) and CBSRM (audit trail). Project does not copy third-party code.
+For historic protocol see [point-in-time discipline](wiki/concepts/point-in-time.md) and [backtest](docs/moc/BACKTEST.md). For risks and gaps see [incident register](wiki/operations/INCIDENTS.md).
