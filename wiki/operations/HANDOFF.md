@@ -12,8 +12,9 @@ summary: Short restart checkpoint with precise version, outstanding validation, 
 **Owner:** linked GitHub account
 **Visibility as observed:** PUBLIC (2026-10-28); no personal financial data or secrets.
 **Repository version:** FCEWS model v0.2.0; second-brain wiki schema v0.3 (docs rollout).
-**GitHub last known code commit:** [b217c71](https://github.com/lican1213/financial-crisis-early-warning/commit/b217c71f17b4b29e84464e7ec7ff44abc06c9ff1); HEAD changes after wiki update must be verified and recorded.
-**Verification:** connector reads confirm code/doc files exist. A successful production GitHub Actions hourly run **has not been verified in this handoff**. Run the local unit suite and wiki lint after the wiki commit; record exact results. Do not claim backtest or notification integration completed.
+**Last verified wiki commit:** [f8dd8582](https://github.com/lican1213/financial-crisis-early-warning/commit/f8dd8582e572812d5b134f47ffe77eefa63cb609); this handoff is being updated to repair a subsequently detected documentation defect.
+**Code commit:** [b217c71](https://github.com/lican1213/financial-crisis-early-warning/commit/b217c71f17b4b29e84464e7ec7ff44abc06c9ff1).
+**Verification:** [MOC CI run 40718335555](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40718335555) passed all 26 model/wiki unit tests but failed wiki lint on one missing provenance link. A correction was prepared and the **post-fix run still needs checking**. A successful production GitHub Actions hourly run **has not been verified**. No backtest or ChatGPT delivery integration has been completed.
 
 ## Known working implementation
 FRED public CSV request and parser; pure decision gate; four indicator families; draft candidate alert GitHub issue; GitHub workflow YAML; state persistence. Some tests exist and assertions are not equivalent to live source validation.

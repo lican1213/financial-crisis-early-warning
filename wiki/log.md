@@ -19,3 +19,6 @@ Reviewed [nvk/llm-wiki AGENTS.md](sources/llm-wiki-methods.md) and [cobusgreylin
 
 ## Rule
 Append new dated operations. Never silently rewrite older observations to make results appear successful. Every significant change names tests, actual commit or run URL, and the still-open work. Unchanged hourly polling belongs in Actions logs; only changed material snapshots belong in version control.
+
+## 2026-10-28 — initial MOC CI falsification and repair
+GitHub [Actions run 40718335555](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40718335555) executed 26/26 unit/adversarial tests successfully, but the structural lint failed: `wiki/datasets/registry.md` lacked an explicit external source reference. Recorded the failure rather than ignoring it; added the FRED official source registry link, updated incident and handoff. Lint retest on the next commit is the completion gate.

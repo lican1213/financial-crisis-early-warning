@@ -8,7 +8,9 @@ summary: Single catalog of implemented, experimental and missing official-source
 
 # Interface registry
 
-Interfaces are technical contracts with separate observation, publication and ingestion timestamps. **Implemented** means code exists, not that the live scheduled job has been independently verified.
+Interfaces are technical contracts with separate observation, publication and ingestion timestamps.
+
+**Authoritative source directory:** [Federal Reserve Economic Data (FRED)](https://fred.stlouisfed.org/), with original publisher and observation-level provenance recorded in the [FRED adapter manifest](fred.md). **Implemented** means code exists, not that the live scheduled job has been independently verified.
 
 | ID | Source / family | Status 2026-10-28 | Owner / implementation |
 | --- | --- | --- | --- |

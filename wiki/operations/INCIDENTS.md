@@ -24,6 +24,7 @@ A defect is only fixed after a reproducible test and a verified commit; a remain
 | FAIL-010 | Repository public though initial recommendation was private | User account setting; no secrets committed. See [handoff](HANDOFF.md) |
 | FAIL-011 | Heuristic thresholds not calibrated to historical distributions | Open [#5](https://github.com/lican1213/financial-crisis-early-warning/issues/5) |
 | FAIL-012 | Multiple task logs cause agent drift across sessions | ADR and single canonical Issues; maintain wiki lint [#9](https://github.com/lican1213/financial-crisis-early-warning/issues/9) |
+| FAIL-013 | MOC registry lacked explicit official provenance | Detected by [CI 40718335555](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40718335555): 26 unit tests pass, one wiki lint fails. Added FRED official source to registry; subsequent lint run must validate correction [#9](https://github.com/lican1213/financial-crisis-early-warning/issues/9) |
 
 For each future failure record observed UTC time, actual vs expected behavior, minimal reproducer, test name, impacted files, source evidence, issue, fix commit and re-test outcome. Never silently erase a failed experiment.
 
