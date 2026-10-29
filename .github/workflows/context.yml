@@ -41,7 +41,9 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/stfm_context.json data/ecb_ciss_context.json data/fdic_review.json
+          for f in data/stfm_context.json data/ecb_ciss_context.json data/fdic_review.json; do
+            if [ -f "$f" ]; then git add "$f"; fi
+          done
           if ! git diff --cached --quiet; then
             git commit -m 'data: OFR repo funding context'
             git pull --rebase origin main

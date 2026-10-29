@@ -77,7 +77,7 @@ def refresh(root: Path=ROOT, now: datetime|None=None, fetcher=read_url, lookback
     except (OSError,ValueError,TypeError,KeyError) as error:
         # Failed fetch must not overwrite the known set.
         current=dict(old,status="error",checked_utc=now.isoformat(),
-                     "error_type":type(error).__name__,
+                     error_type=type(error).__name__,
                      new_review_queue=[])
     write_if_changed(root/"data/fdic_review.json",current)
     return current

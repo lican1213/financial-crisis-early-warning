@@ -77,7 +77,7 @@ class VolatilityTests(unittest.TestCase):
                 return cboe_csv("VIX9D",day="2026-10-27")
             if "History.csv" in url:
                 return cboe_csv("VIX")
-            return fred_csv(url.split("id=")[-1])
+            return fred_csv(url.split("id=")[-1].split("&")[0])
         result=collect_context(UTC,fetcher=fetch,include_futures=False)
         self.assertIsNone(result["context"]["equity_vol_index_term_structure"])
         self.assertIn("CBOE:TERM",result["errors"])
@@ -88,7 +88,7 @@ class VolatilityTests(unittest.TestCase):
             for code in v:
                 if "/"+code+"_History.csv" in url:
                     return cboe_csv(code,value=v[code])
-            return fred_csv(url.split("id=")[-1])
+            return fred_csv(url.split("id=")[-1].split("&")[0])
         result=collect_context(UTC,fetcher=fetch,include_futures=False)
         self.assertEqual(result["status"],"ok")
         self.assertTrue(result["context"]["equity_vol_index_term_structure"]["near_term_equity_implied_vol_higher"])
@@ -101,7 +101,7 @@ class VolatilityTests(unittest.TestCase):
         def fetch(url,timeout):
             if "History.csv" in url:
                 return cboe_csv("VIX",day="2026-10-10")
-            return fred_csv(url.split("id=")[-1])
+            return fred_csv(url.split("id=")[-1].split("&")[0])
         result=collect_context(UTC,fetcher=fetch,include_futures=False)
         self.assertEqual(result["status"],"degraded")
         self.assertTrue(any("stale" in error for error in result["errors"].values()))
@@ -110,7 +110,7 @@ class VolatilityTests(unittest.TestCase):
         def fetch(url,timeout):
             if "History.csv" in url:
                 return cboe_csv("VIX")
-            return fred_csv(url.split("id=")[-1])
+            return fred_csv(url.split("id=")[-1].split("&")[0])
         result=collect_context(UTC,fetcher=fetch,include_futures=False)
         self.assertEqual(result["context"]["move"]["status"],"license_required")
         self.assertIsNone(result["context"]["move"]["value"])
@@ -121,7 +121,7 @@ class VolatilityTests(unittest.TestCase):
                 raise TimeoutError("source down")
             if "History.csv" in url:
                 return cboe_csv("VIX")
-            return fred_csv(url.split("id=")[-1])
+            return fred_csv(url.split("id=")[-1].split("&")[0])
         result=collect_context(UTC,fetcher=fetch,include_futures=True)
         self.assertEqual(result["status"],"ok")
         self.assertNotIn("vx_futures",result["context"])

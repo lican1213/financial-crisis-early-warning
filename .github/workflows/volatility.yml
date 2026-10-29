@@ -35,7 +35,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/volatility_context.json
+          if [ -f data/volatility_context.json ]; then git add data/volatility_context.json; fi
           if ! git diff --cached --quiet; then
             git commit -m 'data: official Cboe volatility term context'
             git pull --rebase origin main
