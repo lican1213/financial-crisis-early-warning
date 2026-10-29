@@ -1,0 +1,81 @@
+{
+  "alert_role": "context_only_no_independent_family_or_notification_gate",
+  "as_of_date_utc": "2026-10-29",
+  "context": {
+    "equity_vol_index_term_structure": {
+      "equity_index_spread_vix9d_minus_vix3m": -3.62,
+      "equity_index_spread_vix_minus_vix3m": -2.31,
+      "instrument": "CBOE_EQUITY_IMPLIED_VOL_INDICES_NOT_VIX_FUTURES",
+      "near_term_equity_implied_vol_higher": false,
+      "observation_date": "2026-10-28"
+    },
+    "indexes": {
+      "VIX": {
+        "date": "2026-10-28",
+        "source_url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv",
+        "tenor_days": 30,
+        "value": 16.91
+      },
+      "VIX3M": {
+        "date": "2026-10-28",
+        "source_url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX3M_History.csv",
+        "tenor_days": 90,
+        "value": 19.22
+      },
+      "VIX6M": {
+        "date": "2026-10-28",
+        "source_url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX6M_History.csv",
+        "tenor_days": 180,
+        "value": 21.24
+      },
+      "VIX9D": {
+        "date": "2026-10-28",
+        "source_url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX9D_History.csv",
+        "tenor_days": 9,
+        "value": 15.6
+      }
+    },
+    "move": {
+      "origin": "https://developer.ice.com/fixed-income-data-services/catalog/ice-data-indices-move-index",
+      "reason": "ICE MOVE is proprietary; realized yield vol and VIX term are NOT MOVE",
+      "status": "license_required",
+      "unit": "MOVE_points",
+      "value": null
+    },
+    "treasury_realized_yield_volatility": {
+      "DGS10": {
+        "observation_date": "2026-10-27",
+        "std_daily_yield_change_bp_20d": 5.31012,
+        "window": 20
+      },
+      "DGS2": {
+        "observation_date": "2026-10-27",
+        "std_daily_yield_change_bp_20d": 5.16975,
+        "window": 20
+      },
+      "DGS30": {
+        "observation_date": "2026-10-27",
+        "std_daily_yield_change_bp_20d": 4.8569,
+        "window": 20
+      },
+      "DGS5": {
+        "observation_date": "2026-10-27",
+        "std_daily_yield_change_bp_20d": 5.28752,
+        "window": 20
+      }
+    }
+  },
+  "errors": {
+    "CFE:VX": "ValueError: CFE schema unknown: Product,Symbol,Expiration Date,Price"
+  },
+  "source_status": {
+    "cboe_index_count": 4,
+    "yield_maturities": [
+      "DGS10",
+      "DGS2",
+      "DGS30",
+      "DGS5"
+    ]
+  },
+  "status": "ok"
+}
