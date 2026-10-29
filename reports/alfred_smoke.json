@@ -1,68 +1,282 @@
 {
-  "created_at_utc": "2026-10-29T01:40:27.797991+00:00",
+  "created_at_utc": "2026-10-29T01:44:50.054030+00:00",
   "diagnostics": {
     "asof_csv_endpoint": "https://alfred.stlouisfed.org/graph/alfredgraph.csv",
     "asof_dates": 5,
-    "minimum_source_coverage": 0,
+    "minimum_source_coverage": 1,
     "price_licensing": "No bulk ICE/Cboe copyrighted raw observations committed to public GitHub",
     "source_diagnostics": "Official ALFRED graph CSV is undocumented; strict column and hash checks required.",
     "source_model": "ALFRED_public_asof_plus_one_UTC_day",
     "sources": {
       "BAMLH0A0HYM2": {
-        "csv_batch_hashes": [],
+        "csv_batch_hashes": [
+          "b69983efc25309347c6c494fb9a2d3781641a96c54bb3c2a1701177c68ff2e0a"
+        ],
         "errors": [
           {
             "error": "HTTPError: HTTP Error 404: Not Found",
             "from": "2008-09-12",
-            "to": "2026-10-23"
+            "to": "2008-09-12"
+          },
+          {
+            "error": "HTTPError: HTTP Error 404: Not Found",
+            "from": "2011-09-09",
+            "to": "2011-09-09"
+          },
+          {
+            "error": "HTTPError: HTTP Error 404: Not Found",
+            "from": "2020-03-13",
+            "to": "2020-03-13"
+          },
+          {
+            "error": "HTTPError: HTTP Error 404: Not Found",
+            "from": "2023-03-10",
+            "to": "2023-03-10"
           }
         ],
         "missing_vintages": [],
-        "snapshots_accepted": 0,
+        "snapshots_accepted": 1,
         "snapshots_requested": 5
       },
       "NFCI": {
-        "csv_batch_hashes": [],
+        "csv_batch_hashes": [
+          "ff98b64596eef1eacd6e7a25ec4d8393b2f5bbeaacf3e14cdad3a33b7e61577c",
+          "e46d039b491abfad9f65f60acb2ca6083abc4499459a48563a540531c80b393b",
+          "2a74b048e92e30d064870dd584c103d78d25e7e5e1d886335b332904468a8161",
+          "82268752ff34c8bdef6561cef99a4970534be4afb60af20863feb3279c81707d"
+        ],
         "errors": [
           {
             "error": "HTTPError: HTTP Error 404: Not Found",
             "from": "2008-09-12",
-            "to": "2026-10-23"
+            "to": "2008-09-12"
           }
         ],
         "missing_vintages": [],
-        "snapshots_accepted": 0,
+        "snapshots_accepted": 4,
         "snapshots_requested": 5
       },
       "STLFSI4": {
-        "csv_batch_hashes": [],
+        "csv_batch_hashes": [
+          "f28ad4f4b221af5f060d786065b8b70b9ec0187bd1f65dabd3c89b33f9753a9c",
+          "905460e7334ae90f01f617bbc9a6f844b2ec90f9b999dcfdc652a307c323ae44"
+        ],
         "errors": [
           {
             "error": "HTTPError: HTTP Error 404: Not Found",
             "from": "2008-09-12",
-            "to": "2026-10-23"
+            "to": "2008-09-12"
+          },
+          {
+            "error": "HTTPError: HTTP Error 404: Not Found",
+            "from": "2011-09-09",
+            "to": "2011-09-09"
+          },
+          {
+            "error": "HTTPError: HTTP Error 404: Not Found",
+            "from": "2020-03-13",
+            "to": "2020-03-13"
           }
         ],
         "missing_vintages": [],
-        "snapshots_accepted": 0,
+        "snapshots_accepted": 2,
         "snapshots_requested": 5
       },
       "VIXCLS": {
-        "csv_batch_hashes": [],
+        "csv_batch_hashes": [
+          "cbb0ddd55be1bc8aa8f891a9592a55ec74e948a60d83ecee9855609ec31c626d",
+          "4360e9a08d655c539fa9f2fb4dae2c4ac7831c1d168c14f05ef9e88ef2f6014c",
+          "b024648f3f838a94ac4c6e906cc6924848b1df9a2b2b843a28ff6edbd2e5df47",
+          "2ac72f9c22ca5b2990e1970e924f81108e8f8235db27ffd85fe23625518fcdea"
+        ],
         "errors": [
           {
             "error": "HTTPError: HTTP Error 404: Not Found",
             "from": "2008-09-12",
-            "to": "2026-10-23"
+            "to": "2008-09-12"
           }
         ],
         "missing_vintages": [],
-        "snapshots_accepted": 0,
+        "snapshots_accepted": 4,
         "snapshots_requested": 5
       }
     }
   },
-  "evaluation": {},
+  "evaluation": {
+    "full_period": {
+      "checkpoints": 5,
+      "covered_by_three_families_share": 0.2,
+      "crisis_event_count": 4,
+      "first_decision_utc": "2008-09-15T12:00:00+00:00",
+      "label": "SOURCE-DATED PIT: conservative release-time proxy; check source timestamps",
+      "last_decision_utc": "2026-10-26T12:00:00+00:00",
+      "mode": "pit",
+      "strategies": {
+        "fcews": {
+          "alerts": 0,
+          "false_alarms_per_100_checkpoints": 0.0,
+          "lead_days_by_event": {
+            "2008_Lehman": null,
+            "2011_ECB_dollar_liquidity": null,
+            "2020_coordinated_dollar_liquidity": null,
+            "2023_SVB_FDIC_resolution": null
+          },
+          "missed_events": [
+            "2008_Lehman",
+            "2011_ECB_dollar_liquidity",
+            "2020_coordinated_dollar_liquidity",
+            "2023_SVB_FDIC_resolution"
+          ],
+          "silent_share": 1.0,
+          "unmatched_alerts": 0
+        },
+        "never_alert": {
+          "alerts": 0,
+          "false_alarms_per_100_checkpoints": 0.0,
+          "lead_days_by_event": {
+            "2008_Lehman": null,
+            "2011_ECB_dollar_liquidity": null,
+            "2020_coordinated_dollar_liquidity": null,
+            "2023_SVB_FDIC_resolution": null
+          },
+          "missed_events": [
+            "2008_Lehman",
+            "2011_ECB_dollar_liquidity",
+            "2020_coordinated_dollar_liquidity",
+            "2023_SVB_FDIC_resolution"
+          ],
+          "silent_share": 1.0,
+          "unmatched_alerts": 0
+        },
+        "vix_only": {
+          "alerts": 1,
+          "false_alarms_per_100_checkpoints": 0.0,
+          "lead_days_by_event": {
+            "2008_Lehman": null,
+            "2011_ECB_dollar_liquidity": 3.0,
+            "2020_coordinated_dollar_liquidity": null,
+            "2023_SVB_FDIC_resolution": null
+          },
+          "missed_events": [
+            "2008_Lehman",
+            "2020_coordinated_dollar_liquidity",
+            "2023_SVB_FDIC_resolution"
+          ],
+          "silent_share": 0.8,
+          "unmatched_alerts": 0
+        }
+      }
+    },
+    "holdout_2017on": {
+      "checkpoints": 3,
+      "covered_by_three_families_share": 0.33333,
+      "crisis_event_count": 2,
+      "first_decision_utc": "2020-03-16T12:00:00+00:00",
+      "label": "SOURCE-DATED PIT: conservative release-time proxy; check source timestamps",
+      "last_decision_utc": "2026-10-26T12:00:00+00:00",
+      "mode": "pit",
+      "strategies": {
+        "fcews": {
+          "alerts": 0,
+          "false_alarms_per_100_checkpoints": 0.0,
+          "lead_days_by_event": {
+            "2020_coordinated_dollar_liquidity": null,
+            "2023_SVB_FDIC_resolution": null
+          },
+          "missed_events": [
+            "2020_coordinated_dollar_liquidity",
+            "2023_SVB_FDIC_resolution"
+          ],
+          "silent_share": 1.0,
+          "unmatched_alerts": 0
+        },
+        "never_alert": {
+          "alerts": 0,
+          "false_alarms_per_100_checkpoints": 0.0,
+          "lead_days_by_event": {
+            "2020_coordinated_dollar_liquidity": null,
+            "2023_SVB_FDIC_resolution": null
+          },
+          "missed_events": [
+            "2020_coordinated_dollar_liquidity",
+            "2023_SVB_FDIC_resolution"
+          ],
+          "silent_share": 1.0,
+          "unmatched_alerts": 0
+        },
+        "vix_only": {
+          "alerts": 1,
+          "false_alarms_per_100_checkpoints": 0.0,
+          "lead_days_by_event": {
+            "2020_coordinated_dollar_liquidity": -0.62,
+            "2023_SVB_FDIC_resolution": null
+          },
+          "missed_events": [
+            "2023_SVB_FDIC_resolution"
+          ],
+          "silent_share": 0.66667,
+          "unmatched_alerts": 0
+        }
+      }
+    },
+    "method": "ALFRED_PUBLIC_ASOF_SNAPSHOTS",
+    "parameters_tuned_on_training_period": false,
+    "point_in_time_rule": "as-of snapshot, next UTC day at 00:00 minimum; execute Monday 12:00 UTC",
+    "pre2017": {
+      "checkpoints": 2,
+      "covered_by_three_families_share": 0.0,
+      "crisis_event_count": 2,
+      "first_decision_utc": "2008-09-15T12:00:00+00:00",
+      "label": "SOURCE-DATED PIT: conservative release-time proxy; check source timestamps",
+      "last_decision_utc": "2011-09-12T12:00:00+00:00",
+      "mode": "pit",
+      "strategies": {
+        "fcews": {
+          "alerts": 0,
+          "false_alarms_per_100_checkpoints": 0.0,
+          "lead_days_by_event": {
+            "2008_Lehman": null,
+            "2011_ECB_dollar_liquidity": null
+          },
+          "missed_events": [
+            "2008_Lehman",
+            "2011_ECB_dollar_liquidity"
+          ],
+          "silent_share": 1.0,
+          "unmatched_alerts": 0
+        },
+        "never_alert": {
+          "alerts": 0,
+          "false_alarms_per_100_checkpoints": 0.0,
+          "lead_days_by_event": {
+            "2008_Lehman": null,
+            "2011_ECB_dollar_liquidity": null
+          },
+          "missed_events": [
+            "2008_Lehman",
+            "2011_ECB_dollar_liquidity"
+          ],
+          "silent_share": 1.0,
+          "unmatched_alerts": 0
+        },
+        "vix_only": {
+          "alerts": 1,
+          "false_alarms_per_100_checkpoints": 0.0,
+          "lead_days_by_event": {
+            "2008_Lehman": null,
+            "2011_ECB_dollar_liquidity": 3.0
+          },
+          "missed_events": [
+            "2008_Lehman"
+          ],
+          "silent_share": 0.5,
+          "unmatched_alerts": 0
+        }
+      }
+    },
+    "thresholds": "frozen v0.3 heuristic rules, no fitting",
+    "true_intraday_first_release_clocks": false
+  },
   "label": "HISTORICAL AS-OF ALFRED; CONSERVATIVE DAY-LEVEL PIT, NOT INTRADAY",
   "mode": "pit_conservative_alfred_public",
   "smoke": true,
