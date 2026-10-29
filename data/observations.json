@@ -25,19 +25,19 @@
   },
   "DGS10": {
     "available_at_utc": null,
-    "date": "2026-10-27",
-    "retrieved_utc": "2026-10-28T23:33:20.795884+00:00",
+    "date": "2026-10-28",
+    "retrieved_utc": "2026-10-29T23:18:58.480882+00:00",
     "series": "DGS10",
     "source": "https://fred.stlouisfed.org/series/DGS10",
-    "value": 4.99
+    "value": 5.05
   },
   "DGS30": {
     "available_at_utc": null,
-    "date": "2026-10-27",
-    "retrieved_utc": "2026-10-28T23:33:20.835068+00:00",
+    "date": "2026-10-28",
+    "retrieved_utc": "2026-10-29T23:18:58.505005+00:00",
     "series": "DGS30",
     "source": "https://fred.stlouisfed.org/series/DGS30",
-    "value": 5.3
+    "value": 5.37
   },
   "NFCI": {
     "available_at_utc": null,
