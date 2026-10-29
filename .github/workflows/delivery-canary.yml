@@ -1,0 +1,25 @@
+name: GitHub candidate-delivery integration canary
+on:
+  push:
+    paths:
+      - 'src/fcews/delivery.py'
+      - '.github/workflows/delivery-canary.yml'
+  workflow_dispatch:
+permissions:
+  issues: write
+  contents: read
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Create, read back, and close a labeled non-crisis GitHub issue
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: PYTHONPATH=src python -m fcews.delivery --canary

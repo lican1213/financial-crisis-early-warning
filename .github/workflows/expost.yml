@@ -1,0 +1,32 @@
+name: Audited ex-post historical diagnostic (not PIT accuracy)
+on:
+  push:
+    paths:
+      - 'src/fcews/expost.py'
+      - '.github/workflows/expost.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: fcews-hourly
+  cancel-in-progress: false
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch official FRED revised historical data; compare to naïve benchmarks
+        run: PYTHONPATH=src python -m fcews.expost --end 2026-10-28
+      - name: Publish labelled non-PIT report
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add reports/expost_latest.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'report: explicitly non-PIT revised-history diagnostic'
+            git push
+          fi

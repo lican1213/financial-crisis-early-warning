@@ -1,6 +1,22 @@
 {
   "severity": "unknown",
-  "as_of": "",
+  "as_of": "2026-10-25",
   "source_url": "",
-  "notes": "A human-verified weekly report is required to change severity. No default green baseline."
+  "model_comparability": "not_calibrated",
+  "weekly_report": {
+    "report_date": "2026-10-25",
+    "data_cutoff_date": "2026-10-23",
+    "global_risk_grade": "orange",
+    "composite_score": 66,
+    "scale": "subjective_6_module_0_to_100",
+    "grade_bands": {
+      "green": "0-39",
+      "yellow": "40-64",
+      "orange": "65-79",
+      "red": "80-100"
+    },
+    "provenance": "Latest Sunday ChatGPT weekly risk briefing summary; archived public primary document not yet generated",
+    "interpretation": "Heightened risk watch, NOT confirmation that a systemic crisis has occurred"
+  },
+  "notes": "Keep model severity unknown until a calibrated conversion is demonstrated. A low four-family micro-index reading must never automatically downgrade the broader six-module weekly grade."
 }

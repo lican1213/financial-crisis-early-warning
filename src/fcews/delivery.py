@@ -119,15 +119,42 @@ def run(root: Path, client: GitHubClient) -> dict:
     return {"candidate_issues_confirmed": delivered, "health_issue": health}
 
 
+def canary(client: GitHubClient, token: str) -> dict:
+    """Real GitHub Issues create/read/close test; never a crisis warning."""
+    key = "CANARY-" + token[:20].replace("/", "-")
+    marker = "FCEWS-FP:" + key
+    title = "FCEWS INTEGRATION-CANARY: delivery permissions test (not a crisis)"
+    body = ("This is a controlled delivery/API readback test, NOT a market risk alert.\n"
+            "<!-- " + marker + " -->\n")
+    issue = client.find_body_fingerprint(key)
+    if issue is None:
+        issue = client.create(title, body)
+    number = int(issue["number"])
+    readback = client.get(number)
+    if marker not in (readback.get("body") or ""):
+        raise RuntimeError("canary issue body did not survive GitHub readback")
+    if readback.get("state") != "closed":
+        client.patch(number, {"state": "closed", "state_reason": "completed"})
+    confirmed = client.get(number)
+    if confirmed.get("state") != "closed":
+        raise RuntimeError("canary issue did not close")
+    return {"status": "verified", "issue_url": confirmed["html_url"],
+            "issue_number": number, "crisis_notification": False}
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=ROOT)
+    parser.add_argument("--canary", action="store_true")
     options = parser.parse_args()
     client = GitHubClient(
         os.getenv("GITHUB_REPOSITORY", ""),
         os.getenv("GITHUB_TOKEN", ""),
     )
-    outcome = run(options.root, client)
+    if options.canary:
+        outcome = canary(client, os.getenv("GITHUB_SHA", "manual-verified-test"))
+    else:
+        outcome = run(options.root, client)
     print(json.dumps(outcome, sort_keys=True))
 
 
