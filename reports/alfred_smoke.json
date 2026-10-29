@@ -1,0 +1,73 @@
+{
+  "created_at_utc": "2026-10-29T01:40:27.797991+00:00",
+  "diagnostics": {
+    "asof_csv_endpoint": "https://alfred.stlouisfed.org/graph/alfredgraph.csv",
+    "asof_dates": 5,
+    "minimum_source_coverage": 0,
+    "price_licensing": "No bulk ICE/Cboe copyrighted raw observations committed to public GitHub",
+    "source_diagnostics": "Official ALFRED graph CSV is undocumented; strict column and hash checks required.",
+    "source_model": "ALFRED_public_asof_plus_one_UTC_day",
+    "sources": {
+      "BAMLH0A0HYM2": {
+        "csv_batch_hashes": [],
+        "errors": [
+          {
+            "error": "HTTPError: HTTP Error 404: Not Found",
+            "from": "2008-09-12",
+            "to": "2026-10-23"
+          }
+        ],
+        "missing_vintages": [],
+        "snapshots_accepted": 0,
+        "snapshots_requested": 5
+      },
+      "NFCI": {
+        "csv_batch_hashes": [],
+        "errors": [
+          {
+            "error": "HTTPError: HTTP Error 404: Not Found",
+            "from": "2008-09-12",
+            "to": "2026-10-23"
+          }
+        ],
+        "missing_vintages": [],
+        "snapshots_accepted": 0,
+        "snapshots_requested": 5
+      },
+      "STLFSI4": {
+        "csv_batch_hashes": [],
+        "errors": [
+          {
+            "error": "HTTPError: HTTP Error 404: Not Found",
+            "from": "2008-09-12",
+            "to": "2026-10-23"
+          }
+        ],
+        "missing_vintages": [],
+        "snapshots_accepted": 0,
+        "snapshots_requested": 5
+      },
+      "VIXCLS": {
+        "csv_batch_hashes": [],
+        "errors": [
+          {
+            "error": "HTTPError: HTTP Error 404: Not Found",
+            "from": "2008-09-12",
+            "to": "2026-10-23"
+          }
+        ],
+        "missing_vintages": [],
+        "snapshots_accepted": 0,
+        "snapshots_requested": 5
+      }
+    }
+  },
+  "evaluation": {},
+  "label": "HISTORICAL AS-OF ALFRED; CONSERVATIVE DAY-LEVEL PIT, NOT INTRADAY",
+  "mode": "pit_conservative_alfred_public",
+  "smoke": true,
+  "time_span": [
+    "2008-09-12",
+    "2026-10-23"
+  ]
+}
