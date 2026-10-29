@@ -9,22 +9,22 @@
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "6217a4799000b71fc3d52a203b153ca5099a5b06dd2dce5a053cbd5bc7b2d2e2",
+  "fingerprint_sha256": "a746420c228cbc2e39533f74c67209fb059175cd62f433431255712a0be8c08f",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-10-23",
-    "BAMLH0A0HYM2": "2026-10-27",
+    "BAMLH0A0HYM2": "2026-10-28",
     "BGCR": "2026-10-28",
     "DGS10": "2026-10-27",
     "DGS30": "2026-10-27",
     "NFCI": "2026-10-23",
-    "OFR_FSI": "2026-10-26",
+    "OFR_FSI": "2026-10-27",
     "SOFR": "2026-10-28",
     "STLFSI4": "2026-10-23",
     "TGCR": "2026-10-28",
-    "VIXCLS": "2026-10-27"
+    "VIXCLS": "2026-10-28"
   },
-  "latest_evidence_sha256": "a2dba84521342dc1b0e635976023f0dfdb081ef09b935316323324d79cac77f2",
+  "latest_evidence_sha256": "b86fb9407a48d0c84a5d31130c33ba2e626c6d82673904ab2a2113cf09c95e1a",
   "monitor_health": "partial",
   "notification_decision": "ChatGPT_independent_primary_source_and_four_gate_review_required",
   "schema": "fcews.chatgpt.readonly.v1",
