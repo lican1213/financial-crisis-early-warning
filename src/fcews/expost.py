@@ -16,12 +16,13 @@ from urllib.parse import urlencode
 from .benchmarks import evaluate
 from .collect import FRED_GRAPH, read_url
 
-CODES = ("VIXCLS", "BAMLH0A0HYM2", "NFCI", "STLFSI4")
+CODES = ("VIXCLS", "BAMLH0A0HYM2", "NFCI", "STLFSI4", "BAA10Y")
 SOURCE_INFO = {
     "VIXCLS": 1,
     "BAMLH0A0HYM2": 1,
     "NFCI": 5,
     "STLFSI4": 5,
+    "BAA10Y": 1,
 }
 # First-party accounts of four distinct systemic-stress windows.
 EVENTS = [
@@ -87,9 +88,40 @@ def checkpoints(start: str, end: str):
 
 def generate(root: Path, start="2007-01-01", end="2026-10-28",
              collector=collect_historical):
-    features,coverage=collector(start,end)
+    # Download pre-crisis credit history ONLY for fixed-threshold training.
+    # Do not use 2008+ crisis observations to choose the 2007+ cutoff.
+    features,coverage=collector("2000-01-01",end)
     checks=checkpoints(start,end)
     result=evaluate(features,checks,EVENTS,mode="expost")
+    training=sorted(float(f["value"]) for f in features
+                    if f["series"]=="BAA10Y"
+                    and "2000-01-01" <= f["observation_date"] < "2007-01-01")
+    if len(training)>=100:
+        position=(len(training)-1)*0.95
+        left=int(position)
+        cutoff=training[left]+(training[min(left+1,len(training)-1)]-training[left])*(position-left)
+        # Baa minus 10Y Treasury is investment-grade credit and NOT HY OAS.
+        # This is a separate model registry: no mutation of production thresholds.
+        proxy_registry={
+            "NFCI":("system",1.0),
+            "STLFSI4":("system",1.0),
+            "VIXCLS":("volatility",30.0),
+            "BAA10Y":("credit",round(cutoff,4)),
+        }
+        proxy=evaluate(features,checks,EVENTS,mode="expost",registry=proxy_registry)
+        result["baa_credit_proxy_sensitivity"]={
+            "indicator":"BAA10Y — Moody's Baa minus 10Y Treasury, NOT HY OAS",
+            "training_window":"2000-01-01 through 2006-12-31",
+            "train_observation_count":len(training),
+            "training_q95_percent":round(cutoff,4),
+            "model":"fixed pre-2007 cutoff, same system/VIX family definitions",
+            "comparison":proxy["strategies"],
+            "coverage_share":proxy["covered_by_three_families_share"],
+            "claim":"ex-post sensitivity only; no first-publication vintage",
+        }
+    else:
+        result["baa_credit_proxy_sensitivity"]={"status":"insufficient pre-2007 training sample",
+                                                 "training_observation_count":len(training)}
     result["data_coverage"]=coverage
     result["published_run_utc"]=datetime.now(timezone.utc).isoformat()
     result["experimental_controls"]={
@@ -98,6 +130,8 @@ def generate(root: Path, start="2007-01-01", end="2026-10-28",
         "event_labels":"selected four official-source dates, not comprehensive all-crisis taxonomy",
         "unmatched_alerts":"outside selected event windows; not proven false positive",
         "scope":"US monetary-financial proxies, not global private-credit or energy contagion",
+        "hy_history_limit":"ICE OAS FRED public series restricted to latest ~3 years from April 2026; pre-2023 crises lack HY evidence",
+        "baa_proxy":"Moody's Baa-Treasury spread is investment-grade proxy, not HY OAS and not a drop-in live signal",
     }
     dst=root/"reports"/"expost_latest.json"
     dst.parent.mkdir(parents=True,exist_ok=True)

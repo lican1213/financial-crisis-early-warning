@@ -17,7 +17,7 @@ PIT_CLASSES = {"publisher_timestamp_verified", "ALFRED_vintage_date_plus_one_UTC
 
 
 def evaluate(features: list[dict], checkpoints: list[dict], events: list[dict],
-             *, mode: str = "pit", window_days: int = 14) -> dict:
+             *, mode: str = "pit", window_days: int = 14, registry=None) -> dict:
     if mode not in ("pit", "expost"):
         raise ValueError("mode must be pit or expost")
     if mode == "pit" and any(row.get("availability_basis") not in PIT_CLASSES for row in features):
@@ -55,7 +55,7 @@ def evaluate(features: list[dict], checkpoints: list[dict], events: list[dict],
             if rank > current.get(code, (("", ""), None))[0]:
                 current[code] = (rank, candidate)
         rows = {code: item[1] for code, item in current.items()}
-        model = decide(rows, state, {}, [], instant.date())
+        model = decide(rows, state, {}, [], instant.date(), registry=registry)
         state = model["next_state"]
         coverage.append(len(model["present_families"]))
         if model["alert"]:

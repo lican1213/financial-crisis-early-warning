@@ -19,7 +19,7 @@ SERIES = {
 MAX_AGE_DAYS = {
     "STLFSI4": 15, "NFCI": 15, "ANFCI": 15, "OFR_FSI": 7,
     "BAMLH0A0HYM2": 7, "VIXCLS": 7, "SOFR": 7, "TGCR": 7,
-    "DGS10": 7, "DGS30": 7, "BGCR": 7,
+    "DGS10": 7, "DGS30": 7, "BGCR": 7, "BAA10Y": 7,
 }
 CONTEXT_CODES = {"DGS10", "DGS30", "BGCR"}
 MAX_FUTURE_SECONDS = 300
@@ -52,9 +52,9 @@ def fresh(o: Observation | None, now: date) -> bool:
         return False
 
 
-def indicators(rows: dict[str, Observation], now: date) -> dict[str, dict[str, Any]]:
+def indicators(rows: dict[str, Observation], now: date, registry=None) -> dict[str, dict[str, Any]]:
     output: dict[str, dict[str, Any]] = {}
-    for code, (family, threshold) in SERIES.items():
+    for code, (family, threshold) in (SERIES if registry is None else registry).items():
         if code == "SOFR_TGCR_SPREAD":
             a, b = rows.get("SOFR"), rows.get("TGCR")
             if not (fresh(a, now) and fresh(b, now) and a.date == b.date):
@@ -100,8 +100,9 @@ def verified_event_ids(events: list[dict[str, Any]]) -> set[str]:
 def decide(
     rows: dict[str, Observation], previous: dict[str, Any],
     weekly: dict[str, Any], events: list[dict[str, Any]], now: date,
+    registry=None,
 ) -> dict[str, Any]:
-    metrics = indicators(rows, now)
+    metrics = indicators(rows, now, registry=registry)
     present = sorted({v["family"] for v in metrics.values()})
     stressed = sorted({v["family"] for v in metrics.values() if v["critical"]})
     new_events = sorted(verified_event_ids(events) - set(previous.get("seen_events", [])))

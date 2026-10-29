@@ -13,6 +13,28 @@ class ExPostIntegrityTests(unittest.TestCase):
         self.assertEqual(len(result),2)
         self.assertIn("EXPOST",result[0]["availability_basis"])
 
+    def test_proxy_threshold_precrisis_only(self):
+        from datetime import date,timedelta
+        points=[]
+        for i in range(130):
+            dt=(date(2000,1,1)+timedelta(days=i)).isoformat()
+            points.append({"series":"BAA10Y","observation_date":dt,
+                           "first_available_at_utc":(date.fromisoformat(dt)+timedelta(days=1)).isoformat()+"T00:00:00Z",
+                           "value":str(1+i/1000),"source_url":"https://fred.stlouisfed.org/series/BAA10Y",
+                           "availability_basis":"EXPOST_latest_revised_proxy_lag"})
+        points.append({"series":"BAA10Y","observation_date":"2026-10-20",
+                       "first_available_at_utc":"2026-10-21T00:00:00Z","value":"99",
+                       "source_url":"https://fred.stlouisfed.org/series/BAA10Y",
+                       "availability_basis":"EXPOST_latest_revised_proxy_lag"})
+        def coll(start,end):
+            return points,{"BAA10Y":{"first":"2000-01-01","last":"2026-10-20","records":len(points)}}
+        with tempfile.TemporaryDirectory() as p:
+            result=generate(Path(p),"2026-10-20","2026-10-23",coll)
+            proxy=result["baa_credit_proxy_sensitivity"]
+            self.assertLess(proxy["training_q95_percent"],2)
+            self.assertGreater(proxy["train_observation_count"],100)
+            self.assertIn("NOT HY OAS",proxy["indicator"])
+
     def test_fake_html_is_not_data(self):
         with self.assertRaises(ValueError):
             parse_history("VIXCLS","<html>blocked</html>")
@@ -23,6 +45,7 @@ class ExPostIntegrityTests(unittest.TestCase):
             "BAMLH0A0HYM2":"DATE,BAMLH0A0HYM2\n2026-10-20,3.1\n",
             "NFCI":"DATE,NFCI\n2026-10-20,-0.5\n",
             "STLFSI4":"DATE,STLFSI4\n2026-10-20,-0.5\n",
+            "BAA10Y":"DATE,BAA10Y\n2026-10-20,1.5\n",
         }
         def fetch(url,timeout):
             import urllib.parse
