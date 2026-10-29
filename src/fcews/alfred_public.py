@@ -27,6 +27,7 @@ from urllib.request import Request, urlopen
 from .benchmarks import evaluate
 from .expost import EVENTS
 from .cli import ROOT, write_if_changed
+from .coverage import audit_event_coverage, classify_misses
 
 ALFRED_GRAPH = "https://alfred.stlouisfed.org/graph/alfredgraph.csv"
 SERIES = ("VIXCLS", "BAMLH0A0HYM2", "NFCI", "STLFSI4")
@@ -187,15 +188,26 @@ def evaluate_history(features: list[dict], dates: list[str]) -> dict:
     test = [r for r in checks if r["decision_at_utc"][:10] >= "2017-01-01"]
     events_before = [e for e in EVENTS if e["crisis_start_utc"][:10] < "2017-01-01"]
     events_after = [e for e in EVENTS if e["crisis_start_utc"][:10] >= "2017-01-01"]
+    def scored(points, event_labels):
+        if not points:
+            return {}
+        result = evaluate(features,points,event_labels,mode="pit")
+        coverage = audit_event_coverage(features,points,event_labels)
+        result["event_observability"] = coverage
+        result["miss_quality"] = classify_misses(
+            result["strategies"]["fcews"]["missed_events"], coverage)
+        return result
+
     output = {
         "method": "ALFRED_PUBLIC_ASOF_SNAPSHOTS",
         "true_intraday_first_release_clocks": False,
         "point_in_time_rule": "as-of snapshot, next UTC day at 00:00 minimum; execute Monday 12:00 UTC",
         "parameters_tuned_on_training_period": False,
         "thresholds": "frozen v0.3 heuristic rules, no fitting",
-        "full_period": evaluate(features,checks,EVENTS,mode="pit") if checks else {},
-        "pre2017": evaluate(features,train,events_before,mode="pit") if train else {},
-        "holdout_2017on": evaluate(features,test,events_after,mode="pit") if test else {},
+        "raw_missed_events_need_assessability_filter": True,
+        "full_period": scored(checks, EVENTS),
+        "pre2017": scored(train, events_before),
+        "holdout_2017on": scored(test, events_after),
     }
     return output
 
