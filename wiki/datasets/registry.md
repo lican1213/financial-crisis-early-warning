@@ -40,3 +40,11 @@ Open Issue → verify official endpoint/schema/units → fake fixture test → c
 - [NY Fed market API](https://markets.newyorkfed.org/static/docs/markets-api.html): SOFR, TGCR and BGCR returned current official reference-rate observations and overcame one redundant FRED TGCR HTTP error.
 - [FRED official](https://fred.stlouisfed.org/) CSV fallback succeeded for eight of nine requested series. FRED_API_KEY enables the official JSON observations endpoint if configured; no credentials are stored in GitHub.
 - Results are in [live health](../../data/health.json) and [source observations](../../data/observations.json). First-seen timestamps are not actual publisher release timestamps; for historical research use PIT archives and release calendars.
+
+## 2026-10-29 verified additional source-manifests
+- OFR short-term repo: [official specification](https://www.financialresearch.gov/short-term-funding-monitor/api-specs/api-data-single/); [snapshot](../../data/stfm_context.json) Oct27 2026 value 4.08% (context only).
+- ECB euro-area CISS: [official dataset](https://data.ecb.europa.eu/data/datasets/CISS); [snapshot](../../data/ecb_ciss_context.json) Oct27 2026 index 0.0186001 (system context; do not double count with OFR FSI).
+- FDIC failed banks: [official bank API](https://api.fdic.gov/banks/docs/); [review-only queue](../../data/fdic_review.json), zero recent candidate cases when last sampled. A bank failure record does not itself establish cross-market contagion.
+- Cboe VIX9D/VIX/VIX3M/VIX6M + actual monthly VX settlement: [official Cboe](https://www.cboe.com/); [snapshot](../../data/volatility_context.json) Oct28 F2-F1 +0.177 contango. Index-tenor curve and futures are separate, and neither equals licensed ICE MOVE.
+- Historical Moody's [BAA10Y](https://fred.stlouisfed.org/series/BAA10Y) minus Treasury = investment-grade Baa spread, NOT high-yield OAS. Only used as a separate historical sensitivity in [revised-data report](../../reports/expost_latest.json), not a promoted live trigger.
+- Public ALFRED historical as-of URL [manifest](../../reports/alfred_smoke.json): four 404 errors and no authenticated data as of last run. [Model source limitations](official-pending.md). No historical validation claims.

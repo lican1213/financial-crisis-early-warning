@@ -18,3 +18,8 @@ summary: Navigation map from risk claims to source, units, publication lag and a
 Never fill missing observations with reassuring zeroes or use the latest revised historical value as the original publication.
 
 Related: [MOC risk](RISK.md), [MOC engineering](ENGINEERING.md).
+
+## Current official feeds and historical evidence (2026-10-29)
+- [OFR repo](../../data/stfm_context.json), [ECB CISS](../../data/ecb_ciss_context.json), [FDIC failure review](../../data/fdic_review.json), and [Cboe implied-vol plus VX contracts](../../data/volatility_context.json).
+- [Actual revised-history analysis](../../reports/expost_latest.json) versus [ALFRED as-of 404 diagnostics](../../reports/alfred_smoke.json). Do not confuse ex-post with PIT.
+- [Monitoring cadence](../../docs/operations/CADENCE.md), [model-failure counterexamples](../operations/INCIDENTS.md) and [data interface registry](../datasets/registry.md).

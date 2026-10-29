@@ -25,3 +25,7 @@ Current work: [Issue #2](https://github.com/lican1213/financial-crisis-early-war
 
 ## 2026-10-29 status change
 OFR FSI and NY Fed secured-rate API have moved into **operational** adapters, demonstrated by [real run 40788157364](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40788157364). The earlier table above is retained as a historical pre-implementation inventory, not an accurate live status list. Consult [current registry](registry.md). MOVE pricing and licensing, VIX full futures curve, Treasury order-book liquidity and bank/fund private-credit event feeds remain unresolved under [Issue #2](https://github.com/lican1213/financial-crisis-early-warning/issues/2).
+
+## Source limitations updated 2026-10-29
+[ICE MOVE publisher](https://www.ice.com/market-data/indices): licensed, no authorized feed; Cboe VX and Treasury realized-rate volatility cannot substitute for it. [Cboe real futures](../../data/volatility_context.json), [ECB CISS](../../data/ecb_ciss_context.json), [FDIC failures](../../data/fdic_review.json) and [OFR repo](../../data/stfm_context.json) have genuine official API observations.
+[Public ALFRED as-of smoke](../../reports/alfred_smoke.json) failed HTTP 404 across all four series. The authenticated FRED API vintage exporter needs an authorized API key and source timing audit. Historical full-run automatic retries are disabled until the endpoint works. Private credit fund redemption, UST market depth, intraday MOVE and complete systemic institutional stress feeds remain out of automatic coverage.

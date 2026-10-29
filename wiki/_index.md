@@ -67,3 +67,9 @@ summary: Entry point for the financial crisis early-warning knowledge base and o
 
 ## Source model
 Read provenance before answering: publication date vs observation date vs first available timestamp vs retrieval time. Never retroactively treat a revised series as what traders knew on that date.
+
+## Latest 2026-10-29 MOC cross-links
+- [Refreshed hourly/daily/weekly/monthly cycle](../docs/operations/CADENCE.md).
+- [OFR repo](../data/stfm_context.json), [ECB CISS](../data/ecb_ciss_context.json), [FDIC official review](../data/fdic_review.json), [Cboe VIX/VX futures](../data/volatility_context.json).
+- [Revised-history actual data](../reports/expost_latest.json), [ALFRED as-of 404 manifest](../reports/alfred_smoke.json), [red-team failures](operations/INCIDENTS.md).
+- [Handoff and true test acceptance](operations/HANDOFF.md); [live GitHub Issues](tasks.md).

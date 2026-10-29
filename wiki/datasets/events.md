@@ -18,3 +18,6 @@ Accepted events need an explicit plausible chain from idiosyncratic distress int
 Verification workflow: record claim → fetch original regulatory/company/central bank document → check time and quantity → infer possible transmission → independent corroboration if necessary → human review → alert gate. Revisions/retractions preserve prior evidence rather than silently deleting event history.
 
 Open action: [Issue #7](https://github.com/lican1213/financial-crisis-early-warning/issues/7). Related: [risk alerts](../concepts/alert-contract.md), [failure register](../operations/INCIDENTS.md).
+
+## Official source verification and FDIC review intake
+[Event verifier](../../src/fcews/events.py) checks the original official HTTPS document URL, redirects, downloaded bytes SHA256, publication and review time, reviewer decision, event category and specific transmission mechanism. [FDIC source queue](../../data/fdic_review.json) records regulatory bank failures for **review only**; candidate feed records do not notify the user without reviewed cross-market evidence. [Adversarial event tests](../../tests/test_events.py) include forged domains, changed bytes and future publication. Reviewer strings are accountable labels, not cryptographically authenticated identities.

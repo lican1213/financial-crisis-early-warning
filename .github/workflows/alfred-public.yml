@@ -1,11 +1,6 @@
 name: Historical ALFRED as-of vintage verification
 on:
-  push:
-    paths:
-      - 'src/fcews/alfred_public.py'
-      - 'tests/test_alfred_public.py'
-      - '.github/workflows/alfred-public.yml'
-      - 'src/fcews/benchmarks.py'
+  # No auto-push historical job until source access is revalidated.
   workflow_dispatch:
     inputs:
       mode:
@@ -13,8 +8,8 @@ on:
         type: choice
         default: smoke
         options: [smoke, full]
-  schedule:
-    - cron: '10 2 2 * *'
+  # Disabled automatic full pulls until a verified ALFRED vintage endpoint exists.
+  # The documented public graph URL currently returns HTTP 404; manual dispatch only.
 permissions:
   contents: write
 concurrency:
@@ -33,8 +28,6 @@ jobs:
           python-version: '3.12'
       - name: Unit and falsification tests for ALFRED historical headers
         run: PYTHONPATH=src python -m unittest tests.test_alfred_public -v
-      - name: Probe official ALFRED public vintage endpoint and guard against silent fallback
-        run: PYTHONPATH=src python -m fcews.alfred_probe
       - name: Fetch historical as-of snapshots and benchmark without revised-value leakage
         id: vintage
         continue-on-error: true
@@ -42,7 +35,7 @@ jobs:
           MODE: ${{ inputs.mode }}
           EVENT_NAME: ${{ github.event_name }}
         run: |
-          if [ "$MODE" = "full" ] || [ "$EVENT_NAME" = "schedule" ] || [ "$EVENT_NAME" = "push" ]; then
+          if [ "$MODE" = "full" ]; then
             PYTHONPATH=src python -m fcews.alfred_public --start 2007-01-01 --end 2026-10-28
           else
             PYTHONPATH=src python -m fcews.alfred_public --smoke

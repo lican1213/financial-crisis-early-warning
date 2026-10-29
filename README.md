@@ -26,3 +26,8 @@ The FRED public CSV adapter needs no key; the official JSON API is used when FRE
 - [Historical validation protocol](docs/moc/BACKTEST.md).
 
 The repository remains public; store no secrets or private account and portfolio details. Technical four-family grades are NOT automatically identical to the user's broader weekly high-risk watch grade until a signed/source-dated weekly baseline exists.
+
+## V0.4 source audit — 2026-10-29
+[117 passing tests and 29-page MOC audit](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40801824139). Official source context now includes [OFR repo](data/stfm_context.json), [ECB CISS](data/ecb_ciss_context.json), [FDIC review queue](data/fdic_review.json) and [Cboe implied-vol tenors + actual monthly VX futures](data/volatility_context.json). All remain context unless independently calibrated. The licensed ICE MOVE index is not impersonated.
+[Non-crisis GitHub canary Issue #11](https://github.com/lican1213/financial-crisis-early-warning/issues/11) was created/read back/closed. ChatGPT's existing hourly and Sunday tasks were updated to pull source evidence; no GitHub-to-ChatGPT webhook is claimed.
+[Real ex-post historical diagnostic](reports/expost_latest.json) still misses selected 2011 and 2023 stress events, including the separate pre-2007 BAA10Y credit sensitivity. [Public ALFRED vintage test](reports/alfred_smoke.json) returned four HTTP 404s and no accepted historical vintages; consequently the system is not a validated point-in-time crisis forecaster. [Current cadence](docs/operations/CADENCE.md); [agent handoff](wiki/operations/HANDOFF.md).

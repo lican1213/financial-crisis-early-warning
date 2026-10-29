@@ -1,18 +1,20 @@
-# FCEWS monitoring and maintenance cadence (UTC / Beijing time)
+# FCEWS — Monitoring and audit cadence (2026-10-29)
 
-**Updated 2026-10-29.** GitHub Actions schedules are best-effort and may run late. The actual workflow execution is the timestamp of record. A successful job does not mean the underlying data sources worked; inspect `data/health.json` and source observation dates.
+All times below are **Beijing time (UTC+08:00)**. GitHub Actions cron runs in UTC and can be delayed. Its recorded run timestamp, not scheduled time, is controlling.
 
-| Cadence | UTC trigger / Beijing time (UTC+8) | Activity | Evidence and gate |
-| --- | --- | --- | --- |
-| **Hourly** | Minute **13 UTC** / minute **13 Beijing** | Pull FRED/OFR/NY Fed, evaluate four alert conditions, persist changed observations, deliver candidate GitHub issue once | `.github/workflows/check.yml`; confirmed source families; health issue if incomplete; no material event = silent |
-| **Daily** | 00:25 UTC / **08:25 Beijing** | Run 28+ unit/adversarial tests, MOC lint and source health check | `.github/workflows/daily-audit.yml`; failed step visible in GitHub Actions |
-| **Weekly: Sunday** | 02:00 UTC / **10:00 Beijing** | Existing independent ChatGPT financial-crisis weekly briefing; align source-dated weekly FCEWS baseline only after review | ChatGPT weekly brief; `data/weekly_baseline.json`; source and publication date required |
-| **Weekly: Monday** | 01:00 UTC / **09:00 Beijing** | Manual/agent audit of false alarms, source gaps, open Issues and MOC manifests | `wiki/tasks.md`, `wiki/log.md`; no duplicated Issues |
-| **Monthly** | First week, logged actual execution | PIT historical validation, threshold stability, contagion-model counterexamples, false-positive review | `docs/moc/BACKTEST.md`; only holdout evidence permits threshold promotion |
-| **Incident-driven** | Whenever original verified evidence emerges | Review bank, fund, sovereign, repo, energy or payments contagion, then check alert threshold | Reviewed `data/events.json`; GitHub candidate issue is not a ChatGPT push |
+| Cadence | Beijing time | Actual execution | Acceptance rule |
+|---|---|---|---|
+| Hourly | Minute 13 | [.github/workflows/check.yml](../../.github/workflows/check.yml) | FRED/NY Fed/OFR, four-family silent alert gate, durable issue outbox; degraded source != market calm |
+| Hourly | Existing independent ChatGPT schedule | Financial risk alert automation | Reads GitHub source state and verifies official evidence; only four user-defined conditions notify |
+| Daily | 08:25 | [.github/workflows/daily-audit.yml](../../.github/workflows/daily-audit.yml) | Model tests, adversarial edge cases and MOC lint |
+| Daily | 08:32 | [.github/workflows/context.yml](../../.github/workflows/context.yml) | OFR repo STFM, ECB eurozone CISS, FDIC bank-failure review queue (no automatic crisis announcement) |
+| Weekdays | 08:45 | [.github/workflows/volatility.yml](../../.github/workflows/volatility.yml) | Official Cboe VIX implied-vol tenors, real CFE monthly VX front futures, Treasury realized vol; MOVE remains licensed/absent |
+| Sunday | 10:00 | Original ChatGPT global financial crisis weekly brief | Six-module macro risk grade and sourced weekly-report record; not equivalent to technical 4-family grade |
+| Monday | 09:00 | Human/Agent maintenance review | GitHub Issues, failed data sources, false alerts, MOC handoff, last verified commit |
+| Monthly | First week, manually logged | Historical PIT validation | Original vintages, first-public timestamps and 2008/2011/2020/2023 missed-alert audit; no misleading revised-series predictive claims |
+| On demand | GitHub manual dispatch | [ALFRED vintage smoke](../../.github/workflows/alfred-public.yml), [revised-data ex-post](../../.github/workflows/expost.yml) | Public ALFRED graph returned 404; automatic full vintage retries suspended pending validated authorized access |
+| Incident-driven | When original evidence is reviewed | [Official event gate](../../src/fcews/events.py), [FDIC review](../../src/fcews/fdic.py) | Actual regulator document SHA-256, reviewer, time, plausible contagion; candidate Issue only |
 
-**Operational statuses:** healthy = at least three fresh independent stress families and no source errors; partial = at least three families with one or more source failures; degraded = fewer than three fresh families. A degraded run must fail visibly and open one deduplicated DATA-HEALTH issue; it never asserts that the financial system is calm.
+**Verification:** [117 passing tests and MOC structural audit](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40801824139). [Official volatility source run](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40801824156), [ECB/OFR/FDIC source run](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40801545198), [non-crisis Issue canary](https://github.com/lican1213/financial-crisis-early-warning/issues/11). [Ex-post historical limits](../../reports/expost_latest.json), [zero ALFRED vintages/404](../../reports/alfred_smoke.json).
 
-**Notification distinction:** The user's existing ChatGPT hourly alert and weekly briefing remain separate from GitHub candidate issues. This cadence documents them; it does not claim or make a delivery integration that has not been tested.
-
-**Known blockers:** FRED requires an API key for the official JSON endpoint; without one the public CSV is a fallback. MOVE, Treasury market depth, and institutional balance-sheet/redeemability data remain outside the fully automated source coverage. The PIT backtest engine accepts original-release timestamps but currently lacks a validated comprehensive historical vintage dataset.
+**Boundaries:** GitHub candidate Issues are not ChatGPT webhook notifications. Genuine licensed ICE MOVE and market-depth feeds are unavailable. Missed historical events remain visible. Identical data must not generate repeated hourly notifications.

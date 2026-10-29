@@ -38,3 +38,11 @@ For project rationale read [engineering MOC](mocs/ENGINEERING.md).
 - [#3](https://github.com/lican1213/financial-crisis-early-warning/issues/3): strict first-public-timestamp replay engine and anti-future-revision tests; full original-vintage event data and calibrated walk-forward accuracy pending.
 - [#7](https://github.com/lican1213/financial-crisis-early-warning/issues/7): source hash, reviewer identity and explicit approval are now required for a reviewed candidate, but code cannot authenticate a claimed document without fetching it.
 - [#8](https://github.com/lican1213/financial-crisis-early-warning/issues/8): GitHub candidate issues are retriable and deduped; no authenticated ChatGPT push bridge. [Monitoring cycle table](../docs/operations/CADENCE.md).
+
+## 2026-10-29 objective acceptance update
+- [#1 Hourly monitor](https://github.com/lican1213/financial-crisis-early-warning/issues/1): push-trigger real source runs and non-crisis GitHub canary verified, but a new-version hourly schedule-triggered execution remains unverified.
+- [#2 Additional sources](https://github.com/lican1213/financial-crisis-early-warning/issues/2): ECB CISS, OFR STFM, FDIC, Cboe index and monthly VX official feeds verified. ICE MOVE licensing and Treasury live depth remain unfulfilled.
+- [#3 Historical validation](https://github.com/lican1213/financial-crisis-early-warning/issues/3): genuine revised-FRED diagnostic plus pre-2007 BAA10Y historical proxy, 2011 and 2023 misses; ALFRED original as-of source 404, original point-in-time holdout blocked.
+- [#7 Primary event review](https://github.com/lican1213/financial-crisis-early-warning/issues/7): source SHA, official-host restriction, timestamps and reviewer plus FDIC review-only queue built; a real reviewed contagion case remains untested.
+- [#8 Delivery](https://github.com/lican1213/financial-crisis-early-warning/issues/8): GitHub Issue create/readback/close canary [#11](https://github.com/lican1213/financial-crisis-early-warning/issues/11) verified, existing ChatGPT automations pull GitHub. Signed push webhook and common calibrated severity scale remain absent.
+[117 passing tests](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40801824139); [updated cycle table](../docs/operations/CADENCE.md). Retain all unresolved acceptance criteria.
