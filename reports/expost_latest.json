@@ -1,0 +1,92 @@
+{
+  "checkpoints": 5173,
+  "covered_by_three_families_share": 0.15117,
+  "crisis_event_count": 4,
+  "data_coverage": {
+    "BAMLH0A0HYM2": {
+      "first": "2023-10-30",
+      "last": "2026-10-27",
+      "records": 785
+    },
+    "NFCI": {
+      "first": "2007-01-05",
+      "last": "2026-10-23",
+      "records": 1034
+    },
+    "STLFSI4": {
+      "first": "2007-01-05",
+      "last": "2026-10-23",
+      "records": 1034
+    },
+    "VIXCLS": {
+      "first": "2007-01-03",
+      "last": "2026-10-27",
+      "records": 5019
+    }
+  },
+  "experimental_controls": {
+    "event_labels": "selected four official-source dates, not comprehensive all-crisis taxonomy",
+    "leakage_risk": "latest revised FRED series, proxy release lag; not original ALFRED vintages",
+    "scope": "US monetary-financial proxies, not global private-credit or energy contagion",
+    "training_or_calibration": "none \u2014 thresholds frozen, not selected from training sample",
+    "unmatched_alerts": "outside selected event windows; not proven false positive"
+  },
+  "first_decision_utc": "2007-01-01T21:00:00+00:00",
+  "label": "EX-POST REVISED SERIES: NOT A POINT-IN-TIME PREDICTIVE TEST",
+  "last_decision_utc": "2026-10-28T21:00:00+00:00",
+  "mode": "expost",
+  "published_run_utc": "2026-10-29T01:24:53.333841+00:00",
+  "strategies": {
+    "fcews": {
+      "alerts": 16,
+      "false_alarms_per_100_checkpoints": 0.271,
+      "lead_days_by_event": {
+        "2008_Lehman": -1.38,
+        "2011_ECB_dollar_liquidity": null,
+        "2020_coordinated_dollar_liquidity": 4.0,
+        "2023_SVB_FDIC_resolution": null
+      },
+      "missed_events": [
+        "2011_ECB_dollar_liquidity",
+        "2023_SVB_FDIC_resolution"
+      ],
+      "silent_share": 0.99691,
+      "unmatched_alerts": 14
+    },
+    "never_alert": {
+      "alerts": 0,
+      "false_alarms_per_100_checkpoints": 0.0,
+      "lead_days_by_event": {
+        "2008_Lehman": null,
+        "2011_ECB_dollar_liquidity": null,
+        "2020_coordinated_dollar_liquidity": null,
+        "2023_SVB_FDIC_resolution": null
+      },
+      "missed_events": [
+        "2008_Lehman",
+        "2011_ECB_dollar_liquidity",
+        "2020_coordinated_dollar_liquidity",
+        "2023_SVB_FDIC_resolution"
+      ],
+      "silent_share": 1.0,
+      "unmatched_alerts": 0
+    },
+    "vix_only": {
+      "alerts": 53,
+      "false_alarms_per_100_checkpoints": 1.005,
+      "lead_days_by_event": {
+        "2008_Lehman": -1.38,
+        "2011_ECB_dollar_liquidity": null,
+        "2020_coordinated_dollar_liquidity": null,
+        "2023_SVB_FDIC_resolution": null
+      },
+      "missed_events": [
+        "2011_ECB_dollar_liquidity",
+        "2020_coordinated_dollar_liquidity",
+        "2023_SVB_FDIC_resolution"
+      ],
+      "silent_share": 0.98975,
+      "unmatched_alerts": 52
+    }
+  }
+}
