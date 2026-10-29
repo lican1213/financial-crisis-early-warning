@@ -1,0 +1,56 @@
+name: Authorized original-vintage ALFRED PIT benchmark (requires user FRED key)
+on:
+  workflow_dispatch:
+    inputs:
+      first_year:
+        description: First year of historical backtest
+        required: true
+        default: '2007'
+      last_year:
+        description: Last year of historical backtest
+        required: true
+        default: '2026'
+permissions:
+  contents: write
+concurrency:
+  group: fcews-authorized-pit
+  cancel-in-progress: false
+jobs:
+  pit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reject missing authorization and any guessed vintage
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: |
+          if [ -z "$FRED_API_KEY" ]; then
+            echo "::error::Set GitHub secret FRED_API_KEY from official St. Louis Fed before invoking authorized PIT"
+            exit 2
+          fi
+      - name: ALFRED original-vintage verified chronologic test
+        run: PYTHONPATH=src python -m unittest tests.test_historical tests.test_coverage -v
+      - name: Export licensed authorized vintage locally and publish aggregate holdout summary
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          FIRST: ${{ inputs.first_year }}
+          LAST: ${{ inputs.last_year }}
+        run: |
+          PYTHONPATH=src python -m fcews.pit_authorized \
+            --start "$FIRST-01-01" --end "$LAST-10-28"
+      - name: Commit historical results (never commit raw licensed history)
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add reports/alfred_authorized_pit.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'report: audited authorized original-vintage ALFRED holdout'
+            git pull --rebase origin main
+            git push
+          fi
