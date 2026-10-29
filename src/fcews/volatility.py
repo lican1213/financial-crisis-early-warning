@@ -106,7 +106,7 @@ def parse_cfe_vx_settlement(raw: str, settlement_date: str) -> dict:
     normalized = {re.sub(r"[^a-z0-9]", "", col.lower()): col for col in reader.fieldnames}
     symbol_col = next((normalized[k] for k in ("symbol", "contract", "symbolexpirationdate") if k in normalized), None)
     exp_col = next((normalized[k] for k in ("expirationdate", "expiration", "expiry", "expdate") if k in normalized), None)
-    price_col = next((normalized[k] for k in ("settlementprice", "settle", "settlement") if k in normalized), None)
+    price_col = next((normalized[k] for k in ("settlementprice", "settle", "settlement", "price") if k in normalized), None)
     if not symbol_col or not price_col or not exp_col:
         raise ValueError("CFE schema unknown: " + ",".join(reader.fieldnames))
     today = date.fromisoformat(settlement_date)

@@ -58,6 +58,16 @@ class VolatilityTests(unittest.TestCase):
         self.assertEqual(result["f2_minus_f1"],2)
         self.assertFalse(result["backwardation"])
 
+    def test_real_cboe_cfe_schema_product_symbol_expiration_price(self):
+        official = ("Product,Symbol,Expiration Date,Price\\n"
+                    "VX,VX/X6,2026-11-18,20.25\\n"
+                    "VX,VX/Z6,2026-12-16,21.10\\n"
+                    "VXM,VXM/X6,2026-11-18,19.5\\n")
+        result=parse_cfe_vx_settlement(official.replace("\\\\n","\\n"),"2026-10-28")
+        self.assertEqual(result["front"]["settlement"],20.25)
+        self.assertEqual(result["second"]["settlement"],21.10)
+        self.assertFalse(result["backwardation"])
+
     def test_cfe_one_monthly_contract_rejected(self):
         with self.assertRaisesRegex(ValueError,"fewer than two"):
             parse_cfe_vx_settlement(
