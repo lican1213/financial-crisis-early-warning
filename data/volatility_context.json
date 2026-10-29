@@ -63,11 +63,26 @@
         "std_daily_yield_change_bp_20d": 5.28752,
         "window": 20
       }
+    },
+    "vx_futures": {
+      "backwardation": false,
+      "contract_basis": "STANDARD_MONTHLY_VX_FUTURES",
+      "f2_minus_f1": 0.177,
+      "front": {
+        "expiration_date": "2026-11-18",
+        "settlement": 18.5982,
+        "symbol": "VX/X6"
+      },
+      "second": {
+        "expiration_date": "2026-12-16",
+        "settlement": 18.7752,
+        "symbol": "VX/Z6"
+      },
+      "settlement_date": "2026-10-28",
+      "source_url": "https://www.cboe.com/markets/us/futures/market-statistics/settlement/futures/daily"
     }
   },
-  "errors": {
-    "CFE:VX": "ValueError: CFE schema unknown: Product,Symbol,Expiration Date,Price"
-  },
+  "errors": {},
   "source_status": {
     "cboe_index_count": 4,
     "yield_maturities": [
