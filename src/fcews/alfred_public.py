@@ -153,7 +153,19 @@ def collect(days: list[str], codes=SERIES, fetch=fetch_batch,
                         result["missing_vintages"].extend(d for d in chunk if d not in present)
                     last_error = None
                     break
-                except (HTTPError, URLError, OSError, ValueError) as err:
+                except HTTPError as err:
+                    if err.code == 404:
+                        # No historical vintage for this interval. This can
+                        # legitimately predate a series' first publication.
+                        result["missing_vintages"].extend(chunk)
+                        last_error = None
+                        break
+                    last_error = "HTTPError: " + str(err)[:120]
+                    if attempt < 2 and err.code in (429,500,502,503,504):
+                        time.sleep(0.5*(2**attempt))
+                    else:
+                        break
+                except (URLError, OSError, ValueError) as err:
                     last_error = type(err).__name__ + ": " + str(err)[:120]
                     if attempt < 2:
                         time.sleep(0.5*(2**attempt))

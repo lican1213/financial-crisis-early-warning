@@ -42,7 +42,7 @@ jobs:
           MODE: ${{ inputs.mode }}
           EVENT_NAME: ${{ github.event_name }}
         run: |
-          if [ "$MODE" = "full" ] || [ "$EVENT_NAME" = "schedule" ]; then
+          if [ "$MODE" = "full" ] || [ "$EVENT_NAME" = "schedule" ] || [ "$EVENT_NAME" = "push" ]; then
             PYTHONPATH=src python -m fcews.alfred_public --start 2007-01-01 --end 2026-10-28
           else
             PYTHONPATH=src python -m fcews.alfred_public --smoke
