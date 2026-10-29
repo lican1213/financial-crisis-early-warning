@@ -1,0 +1,3 @@
+{"first_seen_utc": "2026-10-29T13:03:56.873815+00:00", "observation_date": "2026-10-28", "previous_value": null, "series": "SOFR", "source": "https://www.newyorkfed.org/markets/reference-rates/sofr", "value": 3.94}
+{"first_seen_utc": "2026-10-29T13:03:56.873815+00:00", "observation_date": "2026-10-28", "previous_value": null, "series": "TGCR", "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr", "value": 3.92}
+{"first_seen_utc": "2026-10-29T13:03:56.873815+00:00", "observation_date": "2026-10-28", "previous_value": null, "series": "BGCR", "source": "https://www.newyorkfed.org/markets/reference-rates/bgcr", "value": 3.92}
