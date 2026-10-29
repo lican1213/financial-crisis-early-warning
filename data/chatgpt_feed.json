@@ -1,0 +1,36 @@
+{
+  "candidate_count": 0,
+  "candidates": [],
+  "contract": {
+    "never_conflate_data_health_with_financial_crisis": true,
+    "no_change": "true_silence",
+    "no_exactly_once_chatgpt_receipt_without_chatgpt_writeback": true,
+    "notify_only_on_four_user_conditions": true,
+    "verified_candidate_issue_is_not_sufficient_evidence": true
+  },
+  "current_technical_severity": "green",
+  "fingerprint_sha256": "af56028dff653911310ea3481ee2773f763d5c0e4cc802c7541074325e8597de",
+  "health_not_financial_crisis": true,
+  "last_evidence_observation_dates": {
+    "ANFCI": "2026-10-23",
+    "BAMLH0A0HYM2": "2026-10-27",
+    "BGCR": "2026-10-27",
+    "DGS10": "2026-10-27",
+    "DGS30": "2026-10-27",
+    "NFCI": "2026-10-23",
+    "OFR_FSI": "2026-10-26",
+    "SOFR": "2026-10-27",
+    "STLFSI4": "2026-10-23",
+    "TGCR": "2026-10-27",
+    "VIXCLS": "2026-10-27"
+  },
+  "latest_evidence_sha256": "971606878a0a29672d19e1dfe8857b588f5094b765dcad207bcbffaf008a4cfb",
+  "monitor_health": "partial",
+  "notification_decision": "ChatGPT_independent_primary_source_and_four_gate_review_required",
+  "schema": "fcews.chatgpt.readonly.v1",
+  "should_send_user_notification": false,
+  "source_url": "https://github.com/lican1213/financial-crisis-early-warning",
+  "technical_model_comparable_to_weekly": false,
+  "transport": "ChatGPT_hourly_poll_not_GitHub_webhook",
+  "weekly_human_grade": "orange"
+}
