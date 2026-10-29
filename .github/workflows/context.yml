@@ -3,12 +3,15 @@ on:
   push:
     paths:
       - 'src/fcews/stfm.py'
+      - 'src/fcews/ecb.py'
+      - 'src/fcews/fdic.py'
       - '.github/workflows/context.yml'
   schedule:
     - cron: '32 0 * * *'
   workflow_dispatch:
 permissions:
   contents: write
+  issues: write
 concurrency:
   group: fcews-context
   cancel-in-progress: false
@@ -25,17 +28,38 @@ jobs:
         id: fetch
         continue-on-error: true
         run: PYTHONPATH=src python -m fcews.stfm
+      - name: Read official ECB euro-area CISS (non-alarm context)
+        id: ecb
+        continue-on-error: true
+        run: PYTHONPATH=src python -m fcews.ecb
+      - name: Fetch official FDIC bank-failure records for review only
+        id: fdic
+        continue-on-error: true
+        run: PYTHONPATH=src python -m fcews.fdic
       - name: Record first-seen source metadata
         if: always()
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/stfm_context.json
+          git add data/stfm_context.json data/ecb_ciss_context.json data/fdic_review.json
           if ! git diff --cached --quiet; then
             git commit -m 'data: OFR repo funding context'
             git pull --rebase origin main
             git push
           fi
+      - name: Create only new FDIC source-review issues, never financial alerts
+        if: steps.fdic.outcome == 'success'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          PYTHONPATH=src python -m fcews.fdic --post-review
+          git add data/fdic_review.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: acknowledge FDIC review issue'
+            git pull --rebase origin main
+            git push
+          fi
       - name: Mark failed official source fetch clearly
-        if: steps.fetch.outcome == 'failure'
+        if: steps.fetch.outcome == 'failure' || steps.ecb.outcome == 'failure' || steps.fdic.outcome == 'failure'
         run: exit 2
