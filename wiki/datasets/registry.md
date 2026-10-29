@@ -48,3 +48,8 @@ Open Issue → verify official endpoint/schema/units → fake fixture test → c
 - Cboe VIX9D/VIX/VIX3M/VIX6M + actual monthly VX settlement: [official Cboe](https://www.cboe.com/); [snapshot](../../data/volatility_context.json) Oct28 F2-F1 +0.177 contango. Index-tenor curve and futures are separate, and neither equals licensed ICE MOVE.
 - Historical Moody's [BAA10Y](https://fred.stlouisfed.org/series/BAA10Y) minus Treasury = investment-grade Baa spread, NOT high-yield OAS. Only used as a separate historical sensitivity in [revised-data report](../../reports/expost_latest.json), not a promoted live trigger.
 - Public ALFRED as-of URL [manifest](../../reports/alfred_smoke.json): initial batched queries HTTP 404; corrected individual dates accepted 11/20 cells, missing 2008 and historic HY vintages; still insufficient for full PIT reliability. [Model source limitations](official-pending.md). No historical validation claims.
+
+## 2026-10-29 latest interfaces
+- Official [Cboe term context](../../data/volatility_context.json): daily VIX9D, VIX, VIX3M, VIX6M and actual monthly VX F1/F2 futures; UST 2/5/10/30Y 20-day realized yield-vol; same market-volatility family context, no new independent trigger. Genuine ICE MOVE value remains `null` pending authorized ICE data access.
+- [ALFRED public-as-of vintage](../../reports/alfred_smoke.json) validated some historical snapshots, but source coverage varies by original release year and licensing; strict column/header validation and event-source observability audit. Not equivalent to FRED latest revised history.
+- [ChatGPT feed](../../data/chatgpt_feed.json): hourly read-only snapshot for existing ChatGPT condition-watch, not a direct server-to-server notification push.

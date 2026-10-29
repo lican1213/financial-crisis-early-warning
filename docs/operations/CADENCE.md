@@ -1,22 +1,26 @@
-# FCEWS — Monitoring and audit cadence (2026-10-29)
+# FCEWS — Monitoring and audit cadence
 
-All times below are **Beijing time (UTC+08:00)**. GitHub Actions cron runs in UTC and can be delayed. Its recorded run timestamp, not scheduled time, is controlling.
+Updated 2026-10-29. Unless otherwise specified, times are **Beijing (UTC+8)**. GitHub Actions cron is best-effort; execution records and official observation dates, not scheduled time, determine actual data freshness.
 
-| Cadence | Beijing time | Actual execution | Acceptance rule |
-|---|---|---|---|
-| Hourly | Minute 13 | [.github/workflows/check.yml](../../.github/workflows/check.yml) | FRED/NY Fed/OFR, four-family silent alert gate, durable issue outbox; degraded source != market calm |
-| Hourly | Existing independent ChatGPT schedule | Financial risk alert automation | Reads GitHub source state and verifies official evidence; only four user-defined conditions notify |
-| Daily | 08:25 | [.github/workflows/daily-audit.yml](../../.github/workflows/daily-audit.yml) | Model tests, adversarial edge cases and MOC lint |
-| Daily | 08:32 | [.github/workflows/context.yml](../../.github/workflows/context.yml) | OFR repo STFM, ECB eurozone CISS, FDIC bank-failure review queue (no automatic crisis announcement) |
-| Weekdays | 08:45 | [.github/workflows/volatility.yml](../../.github/workflows/volatility.yml) | Official Cboe VIX implied-vol tenors, real CFE monthly VX front futures, Treasury realized vol; MOVE remains licensed/absent |
-| Sunday | 10:00 | Original ChatGPT global financial crisis weekly brief | Six-module macro risk grade and sourced weekly-report record; not equivalent to technical 4-family grade |
-| Monday | 09:00 | Human/Agent maintenance review | GitHub Issues, failed data sources, false alerts, MOC handoff, last verified commit |
-| Monthly | First week, manually logged | Historical PIT validation | Original vintages, first-public timestamps and 2008/2011/2020/2023 missed-alert audit; no misleading revised-series predictive claims |
-| On demand | GitHub manual dispatch | [ALFRED vintage smoke](../../.github/workflows/alfred-public.yml), [revised-data ex-post](../../.github/workflows/expost.yml) | Initial ALFRED batch returned 404; a corrected single-vintage method retrieved 11/20 smoke cells, but source coverage is incomplete; full automatic retries suspended until verified stability |
-| Incident-driven | When original evidence is reviewed | [Official event gate](../../src/fcews/events.py), [FDIC review](../../src/fcews/fdic.py) | Actual regulator document SHA-256, reviewer, time, plausible contagion; candidate Issue only |
+| Frequency | Beijing time | Executor / code | Output / acceptance test |
+| --- | --- | --- | --- |
+| Hourly | Minute **13** | [GitHub official-source check](../../.github/workflows/check.yml) | Official OFR/FRED/NY Fed four-family decision, source-health and deduped GitHub candidate Issue; regenerated [read-only ChatGPT feed](../../data/chatgpt_feed.json). No new qualifying stress = no user notification |
+| Hourly | Independent existing ChatGPT `金融风险预警` condition-watch schedule | ChatGPT automation | Reads the GitHub feed and independently verifies primary regulatory evidence. Sends a user-visible warning **only** for the user’s four trigger conditions; no material change = truly silent. **Not a GitHub push webhook.** |
+| Daily | **08:25** | [Test and MOC audit](../../.github/workflows/daily-audit.yml) | Code/adversarial regressions, MOC broken-link and provenance audit |
+| Daily | **08:32** | [Funding and institutional context](../../.github/workflows/context.yml) | Official OFR repo/STFM, ECB CISS and FDIC review-only registry; avoid auto-promoting context to independent trigger |
+| Weekdays | **08:45** | [Cboe volatility / Treasury context](../../.github/workflows/volatility.yml) | Official VIX9D/VIX/VIX3M/VIX6M, CFE real monthly VX front/second, 20-day Treasury yield realized vol. ICE MOVE remains an unlicensed **separate** series, not an alias |
+| Sunday | **10:00** | Existing ChatGPT `金融危机周报` | Six-module macro watch grade, original sources, 3/6/12-month scenarios; sync verified weekly report metadata to [weekly baseline](../../data/weekly_baseline.json). No false conversion of six-module orange to four-family green |
+| Monday | **09:00** | Manual/Agent maintenance per [AGENTS](../../AGENTS.md) | Inspect last source success, incident/failure issue queue, test receipts, MOC handoff and missed-event evidence. **This row is not an automated task.** |
+| Monthly | Day **2, 10:10** | [ALFRED historical vintage check](../../.github/workflows/alfred-public.yml) | Public ALFRED as-of snapshots, exact requested vintage header, strict no-future data; coverage and missing epochs separate from model false-negative. A full run is **under validation**; failures must not be labelled zero alerts or forecasting success |
+| Manual, when authorized | Explicit dispatch | [ALFRED key-based exporter](../../src/fcews/pit_export.py) | Requires authorized `FRED_API_KEY` in environment/Actions Secret; never commit credentials. Date-level vintages cannot certify original intraday publisher timestamp |
+| Monthly/quarterly analysis | After historical data passes completeness | [PIT benchmarking](../../src/fcews/benchmarks.py) and [coverage audit](../../src/fcews/coverage.py) | Freeze thresholds pre-holdout; report event evaluability, lead time, misses, false alarms per 100 checks and adverse quiet-market controls. Without adequate historical coverage, keep issue open |
+| Event driven | On official validated bank/fund/sovereign/repo/payment crisis | [Event validator](../../src/fcews/events.py) / GitHub outbox | Human-reviewed official document checksum and cross-market contagion mechanism; new candidate not automatically a ChatGPT user warning |
 
-**Verification:** [117 passing tests and MOC structural audit](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40801824139). [Official volatility source run](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40801824156), [ECB/OFR/FDIC source run](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40801545198), [non-crisis Issue canary](https://github.com/lican1213/financial-crisis-early-warning/issues/11). [Ex-post historical limits](../../reports/expost_latest.json), [zero ALFRED vintages/404](../../reports/alfred_smoke.json).
+## Delivery boundary
+The [ChatGPT feed](../../data/chatgpt_feed.json) is **poll-only**, not a push event or confirmed end-user receipt. [GitHub Issue canary #11](https://github.com/lican1213/financial-crisis-early-warning/issues/11) verifies GitHub create/read/close only; ChatGPT cannot emit an exact-once acknowledgement to the repository. The hourly ChatGPT task remains enabled. We deliberately keep user-visible responses silent without one of the four qualifying systemic changes.
 
-**Boundaries:** GitHub candidate Issues are not ChatGPT webhook notifications. Genuine licensed ICE MOVE and market-depth feeds are unavailable. Missed historical events remain visible. Identical data must not generate repeated hourly notifications.
+## Data quality gates
+A GitHub Action run marked success is not sufficient evidence of market source coverage; inspect `data/health.json`. **degraded** means fewer than three fresh live independent risk families, an operational incident, not calm markets. Context-only Cboe/MOVE substitutes do not independently increase family counts until calibration. No private holdings, credentials or user-specific assets are committed to the currently public GitHub repository.
 
-Latest evidence: [partial ALFRED public as-of smoke](https://github.com/lican1213/financial-crisis-early-warning/blob/main/reports/alfred_smoke.json) accepted VIXCLS 4/5, NFCI 4/5, STLFSI4 2/5, HY OAS 1/5 across five dates; 20% three-family coverage. This is **not** a complete historical PIT backtest.
+## Historical limitations
+The [ex-post diagnostic](../../reports/expost_latest.json) reports revised-value performance with look-ahead risk, not real-time historical predictive accuracy. [ALFRED smoke](../../reports/alfred_smoke.json) has authenticated some historical as-of snapshots but earlier credit and 2008 dates are missing in the public access path; classify historical **unassessability** separately from true model misses. Full 2007–2026 weekly as-of collection is being tested [here](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40802656579); its completion must be verified before publishing forecasting accuracy. ICE MOVE direct quote and Treasury order-book depth require appropriately licensed access.
