@@ -8,7 +8,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: fcews-hourly
+  group: fcews-expost
   cancel-in-progress: false
 jobs:
   diagnostic:
@@ -28,5 +28,6 @@ jobs:
           git add reports/expost_latest.json
           if ! git diff --cached --quiet; then
             git commit -m 'report: explicitly non-PIT revised-history diagnostic'
+            git pull --rebase origin main
             git push
           fi
