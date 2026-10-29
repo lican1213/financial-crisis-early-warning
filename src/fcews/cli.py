@@ -11,6 +11,7 @@ from pathlib import Path
 
 from .collect import collect_all
 from .core import Observation, decide, fresh, indicators
+from .events import verify_events
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -85,7 +86,10 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
     old_state = read_json(root / "data/state.json", {})
     weekly = read_json(root / "data/weekly_baseline.json", {})
     events = read_json(root / "data/events.json", [])
+    checked_events, event_errors = verify_events(events, now)
     fetched, errors = collector()
+    errors = dict(errors)
+    errors.update({"EVENT:" + name: message for name, message in event_errors.items()})
     if not isinstance(fetched, dict) or not isinstance(errors, dict):
         raise ValueError("collector must return (observations, errors)")
     cached = load_cache(root / "data/observations.json")
@@ -123,7 +127,7 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
         {key: item.as_dict() for key, item in sorted(merged.items())},
     )
 
-    outcome = decide(merged, old_state, weekly, events, now.date())
+    outcome = decide(merged, old_state, weekly, checked_events, now.date())
     present = outcome["present_families"]
     # A recent cache supports continuity of risk analysis but CANNOT prove the
     # current polling run is healthy if the official endpoints all failed.
@@ -138,6 +142,8 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
         "last_observation_dates": {key: ob.date for key, ob in sorted(merged.items())},
         "missing_required_families": sorted({"system", "credit", "volatility", "funding"} - set(present)),
         "last_successful_data": bool(healthy),
+        "reviewed_event_count": len(checked_events),
+        "event_validation_errors": event_errors,
     }
     write_if_changed(root / "data/health.json", health)
 
