@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
@@ -82,6 +83,7 @@ def deliver_candidates(root: Path, client: GitHubClient) -> int:
         outbox.setdefault("delivered", []).append({
             "id": key, "issue_number": int(confirmed["number"]),
             "issue_url": confirmed["html_url"],
+            "delivered_at_utc": datetime.now(timezone.utc).isoformat(),
         })
         outbox["pending"] = [p for p in outbox["pending"] if p["id"] != key]
         write_if_changed(outbox_path, outbox)
