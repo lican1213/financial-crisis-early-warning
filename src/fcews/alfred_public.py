@@ -138,8 +138,9 @@ def collect(days: list[str], codes=SERIES, fetch=fetch_batch,
     for code in codes:
         result = {"snapshots_requested": len(days), "snapshots_accepted": 0,
                   "csv_batch_hashes": [], "errors": [], "missing_vintages": []}
-        for i in range(0, len(days), 8):
-            chunk = days[i:i+8]
+        batch = 1 if len(days) <= 10 and (date.fromisoformat(days[-1]) - date.fromisoformat(days[0])).days > 365 else 8
+        for i in range(0, len(days), batch):
+            chunk = days[i:i+batch]
             last_error = None
             for attempt in range(3):
                 try:
