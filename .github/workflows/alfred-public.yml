@@ -1,0 +1,73 @@
+name: Historical ALFRED as-of vintage verification
+on:
+  push:
+    paths:
+      - 'src/fcews/alfred_public.py'
+      - 'tests/test_alfred_public.py'
+      - '.github/workflows/alfred-public.yml'
+      - 'src/fcews/benchmarks.py'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Historical span to run
+        type: choice
+        default: smoke
+        options: [smoke, full]
+  schedule:
+    - cron: '10 2 2 * *'
+permissions:
+  contents: write
+concurrency:
+  group: fcews-historical-vintages
+  cancel-in-progress: false
+jobs:
+  vintage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit and falsification tests for ALFRED historical headers
+        run: PYTHONPATH=src python -m unittest tests.test_alfred_public -v
+      - name: Fetch historical as-of snapshots and benchmark without revised-value leakage
+        id: vintage
+        continue-on-error: true
+        env:
+          MODE: ${{ inputs.mode }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [ "$MODE" = "full" ] || [ "$EVENT_NAME" = "schedule" ]; then
+            PYTHONPATH=src python -m fcews.alfred_public --start 2007-01-01 --end 2026-10-28
+          else
+            PYTHONPATH=src python -m fcews.alfred_public --smoke
+          fi
+      - name: Persist hashes, coverage, missing windows and benchmark report
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for p in reports/alfred_smoke.json reports/alfred_pit_latest.json; do
+            if [ -f "$p" ]; then git add "$p"; fi
+          done
+          if ! git diff --cached --quiet; then
+            git commit -m 'report: audited ALFRED as-of historical coverage and diagnostics'
+            git pull --rebase origin main
+            git push
+          fi
+      - name: Upload source manifest (not raw copyrighted price history)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fcews-alfred-report
+          path: reports/alfred_*.json
+          if-no-files-found: ignore
+          retention-days: 90
+      - name: Explicit failure when vintage source is unavailable
+        if: steps.vintage.outcome == 'failure'
+        run: |
+          echo "::error::Historical ALFRED as-of source failed; no valid PIT results can be claimed"
+          exit 2

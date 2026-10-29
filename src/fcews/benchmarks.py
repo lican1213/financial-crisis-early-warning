@@ -13,7 +13,7 @@ from pathlib import Path
 from .backtest import load_csv, utc
 from .core import Observation, decide
 
-PIT_CLASSES = {"publisher_timestamp_verified", "ALFRED_vintage_date_plus_one_UTC_day"}
+PIT_CLASSES = {"publisher_timestamp_verified", "ALFRED_vintage_date_plus_one_UTC_day", "ALFRED_public_asof_plus_one_UTC_day"}
 
 
 def evaluate(features: list[dict], checkpoints: list[dict], events: list[dict],
