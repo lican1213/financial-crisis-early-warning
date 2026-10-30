@@ -6,3 +6,6 @@
 {"first_seen_utc": "2026-10-29T18:57:52.979570+00:00", "observation_date": "2026-10-27", "previous_value": null, "series": "OFR_FSI", "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv", "value": -1.913}
 {"first_seen_utc": "2026-10-29T23:18:58.137074+00:00", "observation_date": "2026-10-28", "previous_value": null, "series": "DGS10", "source": "https://fred.stlouisfed.org/series/DGS10", "value": 5.05}
 {"first_seen_utc": "2026-10-29T23:18:58.137074+00:00", "observation_date": "2026-10-28", "previous_value": null, "series": "DGS30", "source": "https://fred.stlouisfed.org/series/DGS30", "value": 5.37}
+{"first_seen_utc": "2026-10-30T12:57:56.728791+00:00", "observation_date": "2026-10-29", "previous_value": null, "series": "SOFR", "source": "https://www.newyorkfed.org/markets/reference-rates/sofr", "value": 3.94}
+{"first_seen_utc": "2026-10-30T12:57:56.728791+00:00", "observation_date": "2026-10-29", "previous_value": null, "series": "TGCR", "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr", "value": 3.92}
+{"first_seen_utc": "2026-10-30T12:57:56.728791+00:00", "observation_date": "2026-10-29", "previous_value": null, "series": "BGCR", "source": "https://www.newyorkfed.org/markets/reference-rates/bgcr", "value": 3.92}
