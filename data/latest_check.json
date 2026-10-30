@@ -1,8 +1,8 @@
 {
   "alert_candidate": false,
   "critical_families": [],
-  "evidence_sha256": "2f161d6e697c6209442065214fe648894030aaf474347007fc1f0f07d23ad50d",
-  "first_recorded_utc": "2026-10-30T12:57:56.728791+00:00",
+  "evidence_sha256": "411942891c5b4df8221d20908f5c5ad77022fc1cfdbc2371750012b8726cf149",
+  "first_recorded_utc": "2026-10-30T18:38:16.512360+00:00",
   "observations": {
     "ANFCI": {
       "date": "2026-10-23",
@@ -10,9 +10,9 @@
       "value": -0.501
     },
     "BAMLH0A0HYM2": {
-      "date": "2026-10-28",
+      "date": "2026-10-29",
       "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
-      "value": 3.14
+      "value": 3.26
     },
     "BGCR": {
       "date": "2026-10-29",
@@ -35,9 +35,9 @@
       "value": -0.487
     },
     "OFR_FSI": {
-      "date": "2026-10-27",
+      "date": "2026-10-28",
       "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv",
-      "value": -1.913
+      "value": -1.829
     },
     "SOFR": {
       "date": "2026-10-29",
@@ -55,9 +55,9 @@
       "value": 3.92
     },
     "VIXCLS": {
-      "date": "2026-10-28",
+      "date": "2026-10-29",
       "source": "https://fred.stlouisfed.org/series/VIXCLS",
-      "value": 16.91
+      "value": 17.2
     }
   },
   "present_families": [
