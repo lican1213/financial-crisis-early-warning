@@ -4,10 +4,10 @@
   "source_url": "",
   "model_comparability": "not_calibrated",
   "weekly_report": {
-    "report_date": "2026-10-25",
-    "data_cutoff_date": "2026-10-23",
+    "report_date": "2026-11-01",
+    "data_cutoff_date": "2026-10-31",
     "global_risk_grade": "orange",
-    "composite_score": 66,
+    "composite_score": 68,
     "scale": "subjective_6_module_0_to_100",
     "grade_bands": {
       "green": "0-39",
@@ -15,8 +15,23 @@
       "orange": "65-79",
       "red": "80-100"
     },
-    "provenance": "Latest Sunday ChatGPT weekly risk briefing summary; archived public primary document not yet generated",
-    "interpretation": "Heightened risk watch, NOT confirmation that a systemic crisis has occurred"
+    "provenance": "2026-11-01 weekly briefing: verified dated primary US Federal Reserve/BEA/FRED-ALFRED/Cboe and Chinese NBS/PBOC publications; six-module judgment is not a calibrated crisis forecast.",
+    "interpretation": "Orange = elevated watch, not evidence of a systemic financial crisis; independent technical model severity remains unknown and not calibrated.",
+    "market_cutoff_date": "2026-10-30",
+    "primary_sources": [
+      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
+      "https://www.bea.gov/index.php/news/2026/gdp-advance-estimate-3rd-quarter-2026",
+      "https://alfred.stlouisfed.org/series?seid=STLFSI4",
+      "https://alfred.stlouisfed.org/series?seid=NFCI",
+      "https://alfred.stlouisfed.org/series?seid=ANFCI",
+      "https://alfred.stlouisfed.org/series?seid=BAMLH0A0HYM2",
+      "https://alfred.stlouisfed.org/series?seid=BAMLC0A0CM",
+      "https://alfred.stlouisfed.org/series?seid=SOFR",
+      "https://www.cboe.com/tradable-products/vix/",
+      "https://www.stats.gov.cn/sj/zxfbhjd/202610/t20261031_1965718.html",
+      "https://www.stats.gov.cn/zwfwck/sjfb/202610/t20261027_1965697.html",
+      "https://jrj.sh.gov.cn/SCDT197/20261029/ef0635afddcd4b73a684a2c1e10ec846.html"
+    ]
   },
   "notes": "Keep model severity unknown until a calibrated conversion is demonstrated. A low four-family micro-index reading must never automatically downgrade the broader six-module weekly grade."
 }
