@@ -2,16 +2,16 @@
   "event_validation_errors": {},
   "last_observation_dates": {
     "ANFCI": "2026-10-23",
-    "BAMLH0A0HYM2": "2026-10-30",
-    "BGCR": "2026-10-30",
+    "BAMLH0A0HYM2": "2026-11-02",
+    "BGCR": "2026-11-02",
     "DGS10": "2026-10-30",
     "DGS30": "2026-10-30",
     "NFCI": "2026-10-23",
-    "OFR_FSI": "2026-10-29",
-    "SOFR": "2026-10-30",
+    "OFR_FSI": "2026-10-30",
+    "SOFR": "2026-11-02",
     "STLFSI4": "2026-10-23",
-    "TGCR": "2026-10-30",
-    "VIXCLS": "2026-10-30"
+    "TGCR": "2026-11-02",
+    "VIXCLS": "2026-11-02"
   },
   "last_successful_data": true,
   "live_families": [

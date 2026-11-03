@@ -1,8 +1,8 @@
 {
   "alert_candidate": false,
   "critical_families": [],
-  "evidence_sha256": "a4cd9cf14a3a378dcba8273649c04a83895f3375a1266d034a836ce52f73162c",
-  "first_recorded_utc": "2026-11-03T02:55:54.729136+00:00",
+  "evidence_sha256": "92cba47835abbfb25ef75bb7d9ef7d674dd0e4bbcccdbfb185f32b8794b508e1",
+  "first_recorded_utc": "2026-11-03T18:27:31.166734+00:00",
   "observations": {
     "ANFCI": {
       "date": "2026-10-23",
@@ -10,14 +10,14 @@
       "value": -0.501
     },
     "BAMLH0A0HYM2": {
-      "date": "2026-10-30",
+      "date": "2026-11-02",
       "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
-      "value": 3.44
+      "value": 3.43
     },
     "BGCR": {
-      "date": "2026-10-30",
+      "date": "2026-11-02",
       "source": "https://www.newyorkfed.org/markets/reference-rates/bgcr",
-      "value": 3.93
+      "value": 3.92
     },
     "DGS10": {
       "date": "2026-10-30",
@@ -35,12 +35,12 @@
       "value": -0.487
     },
     "OFR_FSI": {
-      "date": "2026-10-29",
+      "date": "2026-10-30",
       "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv",
-      "value": -2.117
+      "value": -1.392
     },
     "SOFR": {
-      "date": "2026-10-30",
+      "date": "2026-11-02",
       "source": "https://www.newyorkfed.org/markets/reference-rates/sofr",
       "value": 3.95
     },
@@ -50,14 +50,14 @@
       "value": -0.5837
     },
     "TGCR": {
-      "date": "2026-10-30",
+      "date": "2026-11-02",
       "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr",
-      "value": 3.93
+      "value": 3.92
     },
     "VIXCLS": {
-      "date": "2026-10-30",
+      "date": "2026-11-02",
       "source": "https://fred.stlouisfed.org/series/VIXCLS",
-      "value": 19.42
+      "value": 21.15
     }
   },
   "present_families": [
