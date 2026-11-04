@@ -1,23 +1,23 @@
 {
   "alert_candidate": false,
   "critical_families": [],
-  "evidence_sha256": "59093cefacf7f92f0d302554d6e3d4828daddcee35d7e8291f4e680a077f8c57",
-  "first_recorded_utc": "2026-11-03T23:59:24.237479+00:00",
+  "evidence_sha256": "56750ee6fb3fcf7a213c140ec1d2a1c33cfc2b8b26059c7890590178a221a27d",
+  "first_recorded_utc": "2026-11-04T15:27:07.048644+00:00",
   "observations": {
     "ANFCI": {
-      "date": "2026-10-23",
+      "date": "2026-10-30",
       "source": "https://fred.stlouisfed.org/series/ANFCI",
-      "value": -0.501
+      "value": -0.435
     },
     "BAMLH0A0HYM2": {
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
-      "value": 3.43
+      "value": 3.4
     },
     "BGCR": {
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "source": "https://www.newyorkfed.org/markets/reference-rates/bgcr",
-      "value": 3.92
+      "value": 3.95
     },
     "DGS10": {
       "date": "2026-11-02",
@@ -30,19 +30,19 @@
       "value": 5.28
     },
     "NFCI": {
-      "date": "2026-10-23",
+      "date": "2026-10-30",
       "source": "https://fred.stlouisfed.org/series/NFCI",
-      "value": -0.487
+      "value": -0.459
     },
     "OFR_FSI": {
-      "date": "2026-10-30",
+      "date": "2026-11-02",
       "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv",
-      "value": -1.392
+      "value": -1.472
     },
     "SOFR": {
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "source": "https://www.newyorkfed.org/markets/reference-rates/sofr",
-      "value": 3.95
+      "value": 3.97
     },
     "STLFSI4": {
       "date": "2026-10-23",
@@ -50,14 +50,14 @@
       "value": -0.5837
     },
     "TGCR": {
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr",
-      "value": 3.92
+      "value": 3.95
     },
     "VIXCLS": {
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "source": "https://fred.stlouisfed.org/series/VIXCLS",
-      "value": 21.15
+      "value": 20.83
     }
   },
   "present_families": [
