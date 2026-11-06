@@ -2,7 +2,7 @@
 title: FCEWS Task Dashboard
 kind: taskboard
 status: active
-updated: 2026-10-28
+updated: 2026-11-06
 summary: Navigational work queue; live GitHub Issues are authoritative for status and acceptance.
 ---
 
@@ -56,3 +56,10 @@ For project rationale read [engineering MOC](mocs/ENGINEERING.md).
 ## Authorized historical PIT run gate — 2026-10-29
 - [#3 historical predictive validation](https://github.com/lican1213/financial-crisis-early-warning/issues/3): [authorized ALFRED workflow](../.github/workflows/alfred-authorized.yml) is deployed, [135-test CI PASS](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40803626615). Real original-vintage export remains unexecuted until `FRED_API_KEY` is configured in GitHub Actions Secrets and owner invokes the workflow. Confirm source release-day, family coverage and holdout results; don't close on code alone.
 - [#8 ChatGPT polling bridge](https://github.com/lican1213/financial-crisis-early-warning/issues/8): [live feed](../data/chatgpt_feed.json) and original hourly task read instructions verified; no signed push webhook or exact-once end-user acknowledgement. User four-gate true silence preserved.
+
+## 2026-11-06 reliability work — local tests passed; GitHub acceptance tracked in handoff
+
+- [#1 Cron execution](https://github.com/lican1213/financial-crisis-early-warning/issues/1): actual hourly scheduled runs had gaps up to 9.64 hours over the November 1–6 audit window. Added daily 24-hour schedule-run audit with 90-minute grace and separate operational warnings; **does not repair GitHub's best-effort scheduler**. Do not close #1 until a real independent heartbeat or external scheduler meets the agreed cadence.
+- [#2 Data feeds](https://github.com/lican1213/financial-crisis-early-warning/issues/2): fallback SOFR/TGCR errors separated into recovered/unresolved, four-family live-health requirement and weekday source-age diagnostics. Licensed ICE MOVE, Treasury depth and full private-credit sources remain open.
+- [#7 Verified events](https://github.com/lican1213/financial-crisis-early-warning/issues/7): accept known official regulator hosts in Brazil, Paraguay and Serbia (and other named authorities) under the existing document-hash/reviewer gate; forged domains and malformed URLs tested. **No newly authenticated real cross-market event has been promoted**.
+- [#8 Weekly baseline](https://github.com/lican1213/financial-crisis-early-warning/issues/8): baseline test no longer hardcodes historic 66/100 once the 2026-11-01 six-module baseline became orange 68/100. Technical green remains incomparable and no ChatGPT notification receipt is claimed.

@@ -2,7 +2,7 @@
 title: FCEWS Wiki Master Index
 kind: index
 status: active
-updated: 2026-10-28
+updated: 2026-11-06
 summary: Entry point for the financial crisis early-warning knowledge base and operational memory.
 ---
 
@@ -56,9 +56,9 @@ summary: Entry point for the financial crisis early-warning knowledge base and o
 - [Operations directory](operations/_index.md)
 
 ## Release snapshot
-- **Code**: v0.2, FRED-backed rules engine with tests; initial rollout recorded 2026-10-28.
-- **Wiki**: v0.3 knowledge schema and MOCs; not equivalent to model forecasting upgrade.
-- **Current blockers**: unverified Actions execution, uncali­brated PIT thresholds, external OFR/MOVE interfaces, ChatGPT delivery.
+- **Code**: `pyproject.toml` v0.4.0; official OFR, FRED and NY Fed four-family monitoring with candidate GitHub outbox; the 2026-11-06 branch adds source-health and cadence audits (verify remote CI/merge in the latest handoff).
+- **Wiki**: MOC structure, failure register and append-only history; **not** an improvement in forecast calibration.
+- **Current blockers**: GitHub best-effort hourly scheduling with verified long gaps, original-release PIT coverage and threshold calibration, licensed ICE MOVE/Treasury market depth, authenticated end-user delivery receipt.
 - **Canonical task tracker**: [repository Issues](https://github.com/lican1213/financial-crisis-early-warning/issues).
 - **Raw runtime snapshots**: [data directory](../data/), not an encyclopedic wiki.
 
@@ -73,3 +73,7 @@ Read provenance before answering: publication date vs observation date vs first 
 - [OFR repo](../data/stfm_context.json), [ECB CISS](../data/ecb_ciss_context.json), [FDIC official review](../data/fdic_review.json), [Cboe VIX/VX futures](../data/volatility_context.json).
 - [Revised-history actual data](../reports/expost_latest.json), [ALFRED as-of 404 manifest](../reports/alfred_smoke.json), [red-team failures](operations/INCIDENTS.md).
 - [Handoff and true test acceptance](operations/HANDOFF.md); [live GitHub Issues](tasks.md).
+
+## Latest 2026-11-06 reliability cross-links
+- [Operational schedule/freshness specification](../docs/operations/CADENCE.md), [FAIL-033–037](operations/INCIDENTS.md) and [verified project comparables](sources/reference-projects.md).
+- [Engineering tests](../tests/test_integration.py), [run-gap tests](../tests/test_schedule_health.py), [weekdays-age tests](../tests/test_quality.py), and [latest deployment handoff](operations/HANDOFF.md).

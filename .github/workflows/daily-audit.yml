@@ -8,6 +8,9 @@ permissions:
 jobs:
   audit:
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -20,3 +23,9 @@ jobs:
       - name: Show latest source health record
         run: |
           if [ -f data/health.json ]; then cat data/health.json; else echo 'No live source-health record'; fi
+      - name: Audit actual hourly schedule delivery (not a market alert)
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: PYTHONPATH=src python -m fcews.schedule_health

@@ -29,11 +29,16 @@ class EventProvenanceAdversarialTests(unittest.TestCase):
     def test_known_primary_sources_only(self):
         self.assertTrue(trusted_url("https://www.fdic.gov/news/"))
         self.assertTrue(trusted_url("https://financialresearch.gov/financial-stress-index/"))
+        self.assertTrue(trusted_url("https://www.bcb.gov.br/en/financialstability"))
+        self.assertTrue(trusted_url("https://www.bcp.gov.py/"))
+        self.assertTrue(trusted_url("https://www.nbs.rs/en/"))
         for url in [
             "http://www.fdic.gov/news", "https://www.fdic.gov.evil.test/a",
             "https://fdic.gov@evil.test/a", "https://localhost/a",
             "https://127.0.0.1/a", "https://www.fdic.gov:8080/a",
             "https://www.fdic.gov/a#hidden",
+            "https://www.bcp.gov.py.attacker.test/a",
+            "https://www.bcb.gov.br@evil.test/notice",
         ]:
             with self.subTest(url=url):
                 self.assertFalse(trusted_url(url))

@@ -8,12 +8,38 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from .collect import collect_all
 from .core import Observation, decide, fresh, indicators
 from .events import verify_events
+from .quality import late_source_dates
 
 ROOT = Path(__file__).resolve().parents[2]
+REQUIRED_FAMILIES = frozenset({"system", "credit", "volatility", "funding"})
+
+
+def split_source_errors(errors: dict[str, str], fetched: dict[str, Observation]):
+    """Separate failed primary requests from successful official fallback coverage.
+
+    FRED and NY Fed expose SOFR/TGCR independently. A failed redundant read
+    remains auditable but must not imply the rate itself is unavailable.
+    """
+    unresolved, recovered = {}, {}
+    for name, message in errors.items():
+        provider, sep, code = name.partition(":")
+        source = fetched.get(code)
+        try:
+            source_host = (urlsplit(source.source).hostname or "").lower() if source else ""
+        except ValueError:
+            source_host = ""
+        other_official_available = (
+            sep and code in {"SOFR", "TGCR"} and source is not None
+            and ((provider == "FRED" and source_host in {"newyorkfed.org", "www.newyorkfed.org"})
+                 or (provider == "NYFED" and source_host == "fred.stlouisfed.org"))
+        )
+        (recovered if other_official_available else unresolved)[name] = message
+    return unresolved, recovered
 
 
 def read_json(path: Path, default):
@@ -88,10 +114,11 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
     events = read_json(root / "data/events.json", [])
     checked_events, event_errors = verify_events(events, now)
     fetched, errors = collector()
-    errors = dict(errors)
-    errors.update({"EVENT:" + name: message for name, message in event_errors.items()})
     if not isinstance(fetched, dict) or not isinstance(errors, dict):
         raise ValueError("collector must return (observations, errors)")
+    errors = dict(errors)
+    errors.update({"EVENT:" + name: message for name, message in event_errors.items()})
+    unresolved_errors, recovered_errors = split_source_errors(errors, fetched)
     cached = load_cache(root / "data/observations.json")
     # Newer observations take precedence; failed network fetch cannot erase verified cache.
     merged = dict(cached)
@@ -132,16 +159,23 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
     # A recent cache supports continuity of risk analysis but CANNOT prove the
     # current polling run is healthy if the official endpoints all failed.
     live_present = sorted({v["family"] for v in indicators(fetched, now.date()).values()})
-    healthy = len(live_present) >= 3
-    health_status = "healthy" if healthy and not errors else ("partial" if healthy else "degraded")
+    lagging_sources = late_source_dates(fetched, now.date())
+    usable = len(live_present) >= 3
+    fully_covered = REQUIRED_FAMILIES.issubset(live_present)
+    health_status = ("healthy" if fully_covered and not unresolved_errors and not lagging_sources
+                     else "partial" if usable else "degraded")
     health = {
         "status": health_status,
         "present_families": present,
         "live_families": live_present,
         "source_error_types": {key: message.split(":", 1)[0] for key, message in sorted(errors.items())},
+        "unresolved_source_errors": sorted(unresolved_errors),
+        "recovered_source_errors": sorted(recovered_errors),
+        "lagging_live_observations_business_days": lagging_sources,
+        "freshness_basis": "business-day grace heuristic; no holiday or publisher release-time attestation",
         "last_observation_dates": {key: ob.date for key, ob in sorted(merged.items())},
-        "missing_required_families": sorted({"system", "credit", "volatility", "funding"} - set(present)),
-        "last_successful_data": bool(healthy),
+        "missing_required_families": sorted(REQUIRED_FAMILIES - set(live_present)),
+        "last_successful_data": bool(usable),
         "reviewed_event_count": len(checked_events),
         "event_validation_errors": event_errors,
     }
@@ -170,7 +204,7 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
     # Advance state only if there is usable evidence or a verified candidate event.
     # A transient loss of families must not erase the previous stress regime
     # and cause a repeated escalation issue when feeds recover.
-    if healthy or outcome["alert"] or outcome["events"]:
+    if usable or outcome["alert"] or outcome["events"]:
         write_if_changed(root / "data/state.json", outcome["next_state"])
 
     stable_snapshot = {
@@ -201,7 +235,7 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
     }
     if os.getenv("GITHUB_OUTPUT"):
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output_file:
-            output_file.write(f"healthy={'true' if healthy else 'false'}\n")
+            output_file.write(f"healthy={'true' if usable else 'false'}\n")
             output_file.write(f"alert={'true' if outcome['alert'] else 'false'}\n")
             output_file.write(f"status={health_status}\n")
     print(json.dumps(output, sort_keys=True))
