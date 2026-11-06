@@ -2,7 +2,7 @@
 title: MOC — Delivery and Continuity
 kind: moc
 status: active
-updated: 2026-10-28
+updated: 2026-11-06
 summary: Routes runbooks, daily checks, notification semantics and next-agent context.
 ---
 
@@ -27,3 +27,7 @@ Related: [MOC engineering](ENGINEERING.md).
 - [GitHub integration canary #11](https://github.com/lican1213/financial-crisis-early-warning/issues/11) created/read/closed as a non-crisis test.
 - Existing ChatGPT hourly/weekly task prompts read GitHub source snapshots; no GitHub webhook can directly deliver ChatGPT responses in this deployment.
 - [Hour/day/week/month cycle](../../docs/operations/CADENCE.md) and [operational handoff](../operations/HANDOFF.md). All unverified data-health or regulator-review failures remain separate from crisis notifications.
+
+## 2026-11-06 scheduled-delivery evidence
+
+The repository's hourly `check.yml` has experienced multi-hour gaps although individual market-source runs succeeded. The [new schedule audit](../../src/fcews/schedule_health.py), invoked by [daily audit](../../.github/workflows/daily-audit.yml), counts only successfully completed schedule-triggered checks over a sliding 24-hour window and warns on gaps longer than 90 minutes. A warning is **operations-only** and never a market alert. An independent external scheduler/heartbeat would be needed to promise genuinely hourly execution. Separate ChatGPT condition-watch still polls the read-only feed and must stay silent outside the four user's alert gates. [Failure evidence](../operations/INCIDENTS.md).

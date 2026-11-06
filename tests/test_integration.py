@@ -152,12 +152,83 @@ class MonitorTests(unittest.TestCase):
         self.assertEqual(output["status"], "degraded")
         self.assertEqual(output["families"], [])
 
-    def test_three_fresh_independent_families_healthy(self):
+    def test_three_fresh_independent_families_partial_when_funding_missing(self):
         rows = {"STLFSI4": ob("STLFSI4", -0.5), "VIXCLS": ob("VIXCLS", 18),
                 "BAMLH0A0HYM2": ob("BAMLH0A0HYM2", 3)}
         r = run(self.root, lambda: (rows, {}), self.now)
-        self.assertEqual(r["status"], "healthy")
+        self.assertEqual(r["status"], "partial")
         self.assertEqual(r["severity"], "green")
+        self.assertEqual(read_json(self.root / "data/health.json", {})["missing_required_families"],
+                         ["funding"])
+
+    def test_fred_tgcr_failure_recovered_by_nyfed_does_not_degrade_all_sources(self):
+        rows = {"STLFSI4": ob("STLFSI4", -0.5), "VIXCLS": ob("VIXCLS", 18),
+                "BAMLH0A0HYM2": ob("BAMLH0A0HYM2", 3),
+                "SOFR": ob("SOFR", 3.93),
+                "TGCR": Observation("TGCR", "2026-10-28", 3.92,
+                                    "https://www.newyorkfed.org/markets/reference-rates/tgcr",
+                                    "2026-10-29T01:00:00Z")}
+        result = run(self.root, lambda: (rows, {"FRED:TGCR": "HTTPError: 404"}), self.now)
+        self.assertEqual(result["status"], "healthy")
+        health = read_json(self.root / "data/health.json", {})
+        self.assertEqual(health["recovered_source_errors"], ["FRED:TGCR"])
+        self.assertEqual(health["unresolved_source_errors"], [])
+
+    def test_nyfed_sofr_failure_recovered_by_official_fred(self):
+        rows = {"STLFSI4": ob("STLFSI4", -0.5), "VIXCLS": ob("VIXCLS", 18),
+                "BAMLH0A0HYM2": ob("BAMLH0A0HYM2", 3),
+                "SOFR": Observation("SOFR", "2026-10-28", 3.93,
+                                    "https://fred.stlouisfed.org/series/SOFR",
+                                    "2026-10-29T01:00:00Z"),
+                "TGCR": ob("TGCR", 3.92)}
+        result = run(self.root, lambda: (rows, {"NYFED:SOFR": "TimeoutError: offline"}), self.now)
+        self.assertEqual(result["status"], "healthy")
+        self.assertEqual(read_json(self.root / "data/health.json", {})["recovered_source_errors"],
+                         ["NYFED:SOFR"])
+
+    def test_broken_vix_with_no_fallback_is_not_marked_recovered(self):
+        rows = {"STLFSI4": ob("STLFSI4", -0.5), "BAMLH0A0HYM2": ob("BAMLH0A0HYM2", 3),
+                "SOFR": ob("SOFR", 3.93), "TGCR": ob("TGCR", 3.92)}
+        result = run(self.root, lambda: (rows, {"FRED:VIXCLS": "HTTPError: 503"}), self.now)
+        self.assertEqual(result["status"], "partial")
+        self.assertEqual(read_json(self.root / "data/health.json", {})["unresolved_source_errors"],
+                         ["FRED:VIXCLS"])
+
+    def test_fake_url_cannot_masquerade_as_nyfed_fallback(self):
+        rows = {"STLFSI4": ob("STLFSI4", -0.5), "VIXCLS": ob("VIXCLS", 18),
+                "BAMLH0A0HYM2": ob("BAMLH0A0HYM2", 3),
+                "SOFR": ob("SOFR", 3.93),
+                "TGCR": Observation("TGCR", "2026-10-28", 3.92,
+                                    "https://attacker.test/newyorkfed.org/tgcr", "2026-10-29T01:00:00Z")}
+        result = run(self.root, lambda: (rows, {"FRED:TGCR": "HTTPError: 404"}), self.now)
+        self.assertEqual(result["status"], "partial")
+        self.assertEqual(read_json(self.root / "data/health.json", {})["unresolved_source_errors"],
+                         ["FRED:TGCR"])
+
+    def test_malformed_fallback_url_keeps_primary_error_unresolved(self):
+        rows = {"STLFSI4": ob("STLFSI4", -0.5), "VIXCLS": ob("VIXCLS", 18),
+                "BAMLH0A0HYM2": ob("BAMLH0A0HYM2", 3),
+                "SOFR": ob("SOFR", 3.93),
+                "TGCR": Observation("TGCR", "2026-10-28", 3.92,
+                                    "https://[invalid", "2026-10-29T01:00:00Z")}
+        result = run(self.root, lambda: (rows, {"FRED:TGCR": "HTTPError: 404"}), self.now)
+        self.assertEqual(result["status"], "partial")
+        self.assertEqual(read_json(self.root / "data/health.json", {})["unresolved_source_errors"],
+                         ["FRED:TGCR"])
+
+    def test_old_daily_rates_cannot_certify_fully_healthy_monitor(self):
+        now = datetime(2026, 11, 5, 1, 0, tzinfo=timezone.utc)
+        rows = {"STLFSI4": ob("STLFSI4", -0.5, "2026-11-04"),
+                "VIXCLS": ob("VIXCLS", 18, "2026-11-04"),
+                "BAMLH0A0HYM2": ob("BAMLH0A0HYM2", 3, "2026-11-04"),
+                "SOFR": ob("SOFR", 3.93, "2026-10-30"),
+                "TGCR": ob("TGCR", 3.92, "2026-10-30")}
+        result = run(self.root, lambda: (rows, {}), now)
+        self.assertEqual(result["status"], "partial")
+        self.assertEqual(result["severity"], "green")
+        health = read_json(self.root / "data/health.json", {})
+        self.assertEqual(health["lagging_live_observations_business_days"],
+                         {"SOFR": 4, "TGCR": 4})
 
 
 class FakeClient:

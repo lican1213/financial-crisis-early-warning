@@ -2,7 +2,7 @@
 title: FCEWS Project Operation Log
 kind: log
 status: active
-updated: 2026-10-28
+updated: 2026-11-06
 summary: Append-only developer and agent actions; runtime checkpoints are stored separately.
 ---
 
@@ -56,3 +56,14 @@ Public ALFRED's multi-era request returned HTTP404. Retesting date-scoped querie
 
 ## 2026-10-29 — authorized ALFRED PIT entry point and 135-test CI
 Committed [authorized original-vintage runner](../src/fcews/pit_authorized.py), [GitHub Actions workflow](../.github/workflows/alfred-authorized.yml), and adversarial empty/missing-key tests. [CI #40803626615](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40803626615) passed 135/135 unit/falsification tests and 29-page MOC lint. The user must add `FRED_API_KEY` via Actions secrets and manually invoke the workflow; neither public historic sample nor the installed code proves complete 2008/2011/2020/2023 accuracy yet. Existing ChatGPT hourly condition-watch prompt was updated to prioritize the [stable feed](../data/chatgpt_feed.json), but live end-user notification receipt remains outside GitHub's control.
+
+## 2026-11-06 — baseline CI, fallback data health and schedule-gap red team
+
+- Read the current main branch, latest weekly baseline, 135-test suite, Actions logs and real scheduled-run history before editing. Reproduced one failing test: old hardcoded 66/100 after the 2026-11-01 six-module orange 68/100 human baseline. The test now reads the configured band and checks no unsupported downgrade.
+- Built adversarial fixtures for NY Fed official TGCR fallback (versus VIX outage and a forged/invalid URL), four independent live families, daily and weekly source-age grace, missing/failed hourly runs, and trusted national regulator hosts. The FCEWS market-risk decision rule and user four notification gates were left unchanged.
+- Followed [Healthchecks heartbeat grace](sources/reference-projects.md), [Great Expectations freshness](sources/reference-projects.md), and [OpenBB data-provider](sources/reference-projects.md) patterns at the engineering-concept level without importing any of their packages. Actual GitHub check.yml cron gaps reached 9.64 hours; the new daily audit warns on a >90-minute successful-schedule gap, while the unresolved GitHub scheduling reliability remains Issue #1.
+- Local acceptance: full `unittest` regression and 29-page wiki lint; remote commit, Actions run, issue update and final status are to be recorded as separate evidence after GitHub execution. A data-health fault never constitutes a market crisis. Missing FRED_API_KEY original PIT coverage, proprietary MOVE/Treasury depth and webhook receipt remain explicitly open.
+
+## 2026-11-06 — remote PR fault injection exposed branch data pollution
+
+While staging [PR #13](https://github.com/lican1213/financial-crisis-early-warning/pull/13), the existing `check.yml` `push` trigger ran source collection on the feature branch and committed three live runtime files there. This is an observed defect, not a hypothetical precaution. Patched the workflow to permit the production polling job only on `main` and added a branch-safety regression; cleanup commit restores the three runtime files to their main-branch contents so the PR stays code + documentation only. Record actual follow-up Actions outcome in handoff after verification.

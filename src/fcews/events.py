@@ -17,6 +17,10 @@ TRUSTED_DOMAINS = frozenset({
     "bankofengland.co.uk", "bis.org", "imf.org", "fsb.org",
     "federalreservebank.org", "federalreservebanks.org",
     "eia.gov", "energy.gov", "esma.europa.eu", "eba.europa.eu",
+    # Primary regulators outside the US/EU. Scope is evidence verification,
+    # NOT automatic admission of a bank failure as cross-market contagion.
+    "bcb.gov.br", "bcp.gov.py", "nbs.rs", "pbc.gov.cn",
+    "bankofcanada.ca", "rba.gov.au", "mas.gov.sg", "boj.or.jp",
 })
 CATEGORIES = {"bank", "fund", "sovereign", "repo", "payment", "energy", "private_credit"}
 MAX_DOCUMENT_BYTES = 2_000_000

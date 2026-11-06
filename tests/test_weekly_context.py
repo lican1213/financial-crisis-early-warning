@@ -10,8 +10,14 @@ class WeeklyGradeTests(unittest.TestCase):
     def test_broader_weekly_orange_is_not_a_technical_green(self):
         path=Path(__file__).resolve().parents[1]/"data/weekly_baseline.json"
         weekly=json.loads(path.read_text(encoding="utf-8"))
-        self.assertEqual(weekly["weekly_report"]["global_risk_grade"],"orange")
-        self.assertEqual(weekly["weekly_report"]["composite_score"],66)
+        report=weekly["weekly_report"]
+        self.assertEqual(report["global_risk_grade"],"orange")
+        # A weekly score changes with each report; test the declared grade band,
+        # not the score from a particular Sunday.
+        floor,ceiling=(int(value) for value in report["grade_bands"]["orange"].split("-"))
+        self.assertLessEqual(floor,report["composite_score"])
+        self.assertLessEqual(report["composite_score"],ceiling)
+        self.assertGreaterEqual(report["report_date"],weekly["as_of"])
         self.assertEqual(weekly["severity"],"unknown")
         self.assertEqual(weekly["model_comparability"],"not_calibrated")
         now=date(2026,10,29)

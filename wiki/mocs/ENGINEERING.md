@@ -2,7 +2,7 @@
 title: MOC — Engineering and Validation
 kind: moc
 status: active
-updated: 2026-10-28
+updated: 2026-11-06
 summary: Guides development, tests, failures and evidence-backed completion.
 ---
 
@@ -21,3 +21,7 @@ summary: Guides development, tests, failures and evidence-backed completion.
 Any threshold, family or event-verification change needs at least one test intended to **disprove** the new rule. Record negative outcomes rather than overengineering hypothetical exceptions.
 
 Related: [MOC data](DATA.md), [MOC delivery](DELIVERY.md).
+
+## 2026-11-06 reliability patch
+
+The active code gates are [source/fallback health](../../src/fcews/cli.py), [source age](../../src/fcews/quality.py), and [GitHub scheduled-run audit](../../src/fcews/schedule_health.py). Regression evidence: [integration](../../tests/test_integration.py), [quality](../../tests/test_quality.py), [schedule health](../../tests/test_schedule_health.py), and [baseline](../../tests/test_weekly_context.py). The schedule audit checks **actual successful cron runs**, not only configured YAML. Review [FAIL-033–037](../operations/INCIDENTS.md) for falsification and unresolved platform constraints. No financial risk threshold or independent-family membership was changed.

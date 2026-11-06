@@ -2,7 +2,7 @@
 title: FCEWS Agent Handoff — Current Verified State
 kind: operations
 status: active
-updated: 2026-10-28
+updated: 2026-11-06
 summary: Short restart checkpoint with precise version, outstanding validation, risks and next tasks.
 ---
 
@@ -68,3 +68,11 @@ Latest evidence: [partial ALFRED public as-of smoke](https://github.com/lican121
 
 ## Authorized original vintage pipeline — 2026-10-29
 [Official ALFRED API authorization workflow](../../.github/workflows/alfred-authorized.yml) and [PIT analysis runner](../../src/fcews/pit_authorized.py) deployed and [CI 40803626615](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40803626615) verified 135/135 tests plus MOC structural lint. **Requires repository Actions Secret `FRED_API_KEY` set by the user**, and then manual workflow run; without it, no actual full original ALFRED vintage export has occurred. Public source date-scoped smoke is partially working; historical 2008 and pre-2023 credit original revisions still missing. [Full public weekly ALFRED historical run 40802656579](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/40802656579) was ongoing at checkpoint; query actual status before citing results. Current ChatGPT alert automation already reads [validated GitHub feed](../../data/chatgpt_feed.json) hourly, does not guarantee a push webhook or event user receipt. [Current cycle table](../../docs/operations/CADENCE.md).
+
+## 2026-11-06 latest reliability audit — resume here
+
+- Repository baseline: main `b1b105e` at checkout; 2026-11-01 six-module **orange 68/100** weekly baseline. Four-family technical green remains **not calibrated** to this human grade. The historical test's literal 66 failed in [daily run 41985002934](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/41985002934).
+- Repairs in this development cycle: dynamic weekly grade-band regression; official FRED↔NY Fed SOFR/TGCR recovered-versus-unresolved errors; `healthy` now requires **four** truly live families plus fresh enough observation dates; weekday release-lag heuristics; national regulator URL restrictions and spoof tests; retrospective actual GitHub cron gap audit in [daily-audit workflow](../../.github/workflows/daily-audit.yml). Remote branch test exposed **FAIL-038**: old `check.yml` accepted pushes from non-main branches and committed live `data/` artifacts into the PR. Restrict production workflow to `main` and revert those three branch-only runtime artifacts.
+- Direct live GitHub Actions readback on 2026-11-06: only three successful scheduled checks in the prior 24 hours, maximum gap **468.8 minutes**. Across November 1–6 the longest observed gap was **9.64 hours**. Auditing gaps does **not** itself make GitHub cron reliable; no claim of strict hourly SLA or webhook real-time delivery. All operational warnings remain separate from the financial user alert gate.
+- Local acceptance: full 151-test regression plus MOC lint after new counterexamples. Confirm the **actual pushed commit and green GitHub Actions run** on the canonical Issues before describing this as deployed. Unresolved: #1 independent cadence, #2 licensed MOVE/Treasury depth/private credit, #3 authorized complete PIT data (`FRED_API_KEY` absent), #7 real authenticated institution events, #8 ChatGPT end-user delivery acknowledgement.
+- Next agent: inspect live Actions and source health after merge, log successful cron with unchanged observations and no user notification, arrange an independent hourly scheduler if actually required, and close no issue on the strength of synthetic tests alone.
