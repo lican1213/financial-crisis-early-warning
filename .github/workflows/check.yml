@@ -1,6 +1,8 @@
 name: Hourly financial-risk evidence and delivery
 on:
   push:
+    branches:
+      - main
     paths:
       - 'src/fcews/**'
       - '.github/workflows/check.yml'
@@ -15,6 +17,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   monitor:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
