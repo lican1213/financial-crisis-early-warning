@@ -1,5 +1,7 @@
 {
   "event_validation_errors": {},
+  "freshness_basis": "business-day grace heuristic; no holiday or publisher release-time attestation",
+  "lagging_live_observations_business_days": {},
   "last_observation_dates": {
     "ANFCI": "2026-10-30",
     "BAMLH0A0HYM2": "2026-11-04",
@@ -27,9 +29,13 @@
     "system",
     "volatility"
   ],
+  "recovered_source_errors": [
+    "FRED:TGCR"
+  ],
   "reviewed_event_count": 0,
   "source_error_types": {
     "FRED:TGCR": "HTTPError"
   },
-  "status": "partial"
+  "status": "healthy",
+  "unresolved_source_errors": []
 }
