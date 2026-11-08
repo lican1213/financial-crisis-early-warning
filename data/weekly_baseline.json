@@ -4,10 +4,10 @@
   "source_url": "",
   "model_comparability": "not_calibrated",
   "weekly_report": {
-    "report_date": "2026-11-01",
-    "data_cutoff_date": "2026-10-31",
+    "report_date": "2026-11-08",
+    "data_cutoff_date": "2026-11-07",
     "global_risk_grade": "orange",
-    "composite_score": 68,
+    "composite_score": 70,
     "scale": "subjective_6_module_0_to_100",
     "grade_bands": {
       "green": "0-39",
@@ -15,22 +15,15 @@
       "orange": "65-79",
       "red": "80-100"
     },
-    "provenance": "2026-11-01 weekly briefing: verified dated primary US Federal Reserve/BEA/FRED-ALFRED/Cboe and Chinese NBS/PBOC publications; six-module judgment is not a calibrated crisis forecast.",
-    "interpretation": "Orange = elevated watch, not evidence of a systemic financial crisis; independent technical model severity remains unknown and not calibrated.",
-    "market_cutoff_date": "2026-10-30",
+    "provenance": "2026-11-08 weekly briefing: BLS October payroll release Nov 6 (+165k, unemployment 4.1%, temporary help +18.6k); Chicago Fed NFCI/ANFCI week ending Oct 30; ICE HY OAS Nov 4; NBS October PMI published Oct 31. Subjective uncalibrated six-module score; incomplete live cross-market coverage.",
+    "interpretation": "Orange watch: severe equity volatility and rate/energy risks; latest official labor rebound and below-average NFCI oppose confirmed systemic crisis.",
+    "market_cutoff_date": "2026-11-06",
     "primary_sources": [
-      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
-      "https://www.bea.gov/index.php/news/2026/gdp-advance-estimate-3rd-quarter-2026",
-      "https://alfred.stlouisfed.org/series?seid=STLFSI4",
-      "https://alfred.stlouisfed.org/series?seid=NFCI",
-      "https://alfred.stlouisfed.org/series?seid=ANFCI",
-      "https://alfred.stlouisfed.org/series?seid=BAMLH0A0HYM2",
-      "https://alfred.stlouisfed.org/series?seid=BAMLC0A0CM",
-      "https://alfred.stlouisfed.org/series?seid=SOFR",
-      "https://www.cboe.com/tradable-products/vix/",
-      "https://www.stats.gov.cn/sj/zxfbhjd/202610/t20261031_1965718.html",
-      "https://www.stats.gov.cn/zwfwck/sjfb/202610/t20261027_1965697.html",
-      "https://jrj.sh.gov.cn/SCDT197/20261029/ef0635afddcd4b73a684a2c1e10ec846.html"
+      "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+      "https://fred.stlouisfed.org/series/NFCI",
+      "https://fred.stlouisfed.org/series/ANFCI",
+      "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
+      "https://www.stats.gov.cn/sj/zxfbhjd/202610/t20261031_1965718.html"
     ]
   },
   "notes": "Keep model severity unknown until a calibrated conversion is demonstrated. A low four-family micro-index reading must never automatically downgrade the broader six-module weekly grade."
