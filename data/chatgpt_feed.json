@@ -10,7 +10,7 @@
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "b14b20d12a2821bdc18b851591ce5972fd0844efa8c77670e303f6045e450346",
+  "fingerprint_sha256": "4dc80afa2ffb3dbda049b7bf97036b7c8ef8b8729a005d0bc99d2b9e3a1f75f4",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-10-30",
@@ -77,6 +77,19 @@
     "used_city_rising_count": 9
   },
   "notification_decision": "ChatGPT_independent_primary_source_and_four_gate_review_required",
+  "pboc_credit_research": {
+    "china_recovery_breadth_score": null,
+    "government_bond_share_tsf_pct": null,
+    "household_mlt_ytd_flow_100m_cny": null,
+    "housing_turning_point_confirmed": false,
+    "mortgage_balance_yoy_pct": null,
+    "mortgage_ytd_net_change_trillion_cny": null,
+    "original_first_published_at": null,
+    "report_period": null,
+    "risk_alert_authorized": false,
+    "source_urls": {},
+    "status": "missing_or_stale"
+  },
   "schema": "fcews.chatgpt.readonly.v1",
   "should_send_user_notification": false,
   "source_url": "https://github.com/lican1213/financial-crisis-early-warning",
