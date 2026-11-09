@@ -212,6 +212,49 @@ def pboc_credit_summary(context: dict, now: datetime) -> dict:
         return empty
 
 
+def staffing_last_verified_summary(context: dict, now: datetime) -> dict:
+    """Historical validated issuer-quarter evidence; NOT a successful current poll."""
+    from .staffing_ir import RELEASES
+    absent={
+        "status":"not_available_or_outdated",
+        "last_full_snapshot_date":None,
+        "positive_fee_direction_breadth_pct":None,
+        "issuer_count":0,
+        "is_current_run_evidence":False,
+        "authorizes_notification":False,
+        "staffing_global_score":None,
+    }
+    try:
+        if context.get("schema")!="fcews.staffing_official_ir.v1" or context.get("status")!="complete":
+            return absent
+        issued=datetime.fromisoformat(context["as_of_date_utc"]).date()
+        if issued>now.date():
+            return absent
+        rows=context["issuer_reports"]
+        if set(rows)!=set(RELEASES):
+            return absent
+        for name,row in rows.items():
+            release=RELEASES[name]
+            report_date=datetime.fromisoformat(row["published_date"]).date()
+            if (row["source_status"]!="issuer_document_parsed"
+                or row["source_url"]!=release["url"]
+                or row["demand_measure"]!=release["basis"]
+                or not 0<=(now.date()-report_date).days<=120):
+                return absent
+        breadth=100*sum(float(row["value_pct"])>0 for row in rows.values())/5
+        if context.get("positive_fee_revenue_direction_breadth_pct")!=breadth:
+            return absent
+        return {
+            "status":"five_primary_issuer_quarterly_reports_verified_before_not_current_poll",
+            "last_full_snapshot_date":issued.isoformat(),
+            "positive_fee_direction_breadth_pct":breadth,
+            "issuer_count":5,"is_current_run_evidence":False,
+            "authorizes_notification":False, "staffing_global_score":None,
+        }
+    except (TypeError,ValueError,KeyError,OverflowError):
+        return absent
+
+
 def build_feed(root: Path, now: datetime | None = None) -> dict:
     now = now or datetime.now(timezone.utc)
     if now.tzinfo is None:
@@ -225,6 +268,7 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
     nbs_pmi = read_json(root/"data/nbs_pmi_context.json", {})
     nbs_property = read_json(root/"data/nbs_property_context.json", {})
     staffing_ir = read_json(root/"data/staffing_ir_context.json", {})
+    staffing_history = read_json(root/"data/staffing_last_verified.json", {})
     pboc_credit = read_json(root/"data/pboc_credit_context.json", {})
     outbox = read_json(root/"data/outbox.json", {"pending":[],"delivered":[]})
     candidates = []
@@ -282,6 +326,7 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
         "nbs_pmi_research": nbs_pmi_summary(nbs_pmi, now),
         "nbs_property_research": property_summary(nbs_property, now),
         "staffing_issuer_research": staffing_summary(staffing_ir, now),
+        "staffing_last_verified": staffing_last_verified_summary(staffing_history, now),
         "pboc_credit_research": pboc_credit_summary(pboc_credit, now),
         "last_evidence_observation_dates": {k:v["date"] for k,v in source_summary.items() if v.get("date")},
         "source_url": "https://github.com/"+PROJECT,
