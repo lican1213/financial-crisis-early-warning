@@ -73,6 +73,9 @@ jobs:
           if [ -f data/pboc_credit_context.json ]; then
             git add data/pboc_credit_context.json
           fi
+          if [ -f data/staffing_last_verified.json ]; then
+            git add data/staffing_last_verified.json
+          fi
           if ! git diff --cached --quiet; then
             git commit -m 'data: source-dated leading research context'
             git pull --rebase origin main
