@@ -14,6 +14,7 @@ import re
 from datetime import date, datetime, timezone
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit
+from urllib.request import Request, urlopen
 
 from .cli import ROOT, write_if_changed
 from .collect import read_url
@@ -50,6 +51,33 @@ def official_page(url: str) -> bool:
                 and bool(re.fullmatch(r"/sj/(?:zxfb|zxfbhjd)/20\d{4}/t20\d{6}_\d+\.html", p.path)))
     except (ValueError, TypeError):
         return False
+
+
+def read_large_nbs_page(url: str, timeout: float=12.0) -> str:
+    """NBS full 70-city reports exceed generic FRED 1MB fetch cap.
+
+    Dedicated 12MB bound; do NOT raise the system-wide fetch limit. Refuse
+    cross-host redirects and only accept the explicitly allowlisted NBS index
+    or original statistical release URLs.
+    """
+    if url != INDEX and not official_page(url):
+        raise ValueError("untrusted NBS large article URL")
+    req = Request(url, headers={
+        "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/123.0.0.0 Safari/537.36",
+        "Accept":"text/html,*/*;q=0.6",
+        "X-Project-Source":"FCEWS official government statistics research",
+    })
+    limit=12_000_000
+    with urlopen(req, timeout=timeout) as response:
+        final=response.geturl()
+        if final != INDEX and not official_page(final):
+            raise ValueError("NBS redirected outside permitted original source")
+        if (url == INDEX) != (final == INDEX):
+            raise ValueError("NBS redirected between index and article")
+        data=response.read(limit+1)
+    if len(data)>limit:
+        raise ValueError("NBS property source exceeds dedicated 12MB cap")
+    return data.decode("utf-8-sig")
 
 
 def compact_html(raw: str) -> str:
@@ -237,7 +265,8 @@ def fetch_pair(kind: str,index_html: str,now:date,fetcher) -> list[dict]:
     return results[:2]
 
 
-def collect(now:datetime|None=None,fetcher=read_url)->dict:
+def collect(now:datetime|None=None,fetcher=None)->dict:
+    fetcher = fetcher or read_large_nbs_page
     now=now or datetime.now(timezone.utc)
     if now.tzinfo is None:
         raise ValueError("timezone-aware evaluation required")
