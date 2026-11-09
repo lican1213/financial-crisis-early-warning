@@ -6,6 +6,7 @@ on:
       - 'src/fcews/research.py'
       - 'src/fcews/nbs.py'
       - 'src/fcews/nbs_property.py'
+      - 'src/fcews/staffing_ir.py'
       - '.github/workflows/research.yml'
       - 'data/research_evidence.json'
   schedule:
@@ -37,6 +38,10 @@ jobs:
         id: property
         continue-on-error: true
         run: PYTHONPATH=src python -m fcews.nbs_property
+      - name: Extract demand metrics from five original recruiting issuer filings
+        id: staffing
+        continue-on-error: true
+        run: PYTHONPATH=src python -m fcews.staffing_ir
       - name: Collect US primary-source leading indicators and validate official release ledger
         id: research
         continue-on-error: true
@@ -55,13 +60,16 @@ jobs:
           if [ -f data/nbs_property_context.json ]; then
             git add data/nbs_property_context.json
           fi
+          if [ -f data/staffing_ir_context.json ]; then
+            git add data/staffing_ir_context.json
+          fi
           if ! git diff --cached --quiet; then
             git commit -m 'data: source-dated leading research context'
             git pull --rebase origin main
             git push
           fi
       - name: Refresh ChatGPT read-only feed AFTER successful research persistence
-        if: steps.research.outcome == 'success' && steps.nbs.outcome == 'success' && steps.property.outcome == 'success'
+        if: always()
         run: |
           # Re-read the current main state after the research data commit. This
           # feed is evidence only, never a user alert or crisis authorization.
@@ -74,7 +82,7 @@ jobs:
             git push
           fi
       - name: Do not mistake source failure for calm or crisis
-        if: steps.research.outcome == 'failure' || steps.nbs.outcome == 'failure' || steps.property.outcome == 'failure'
+        if: steps.research.outcome == 'failure' || steps.nbs.outcome == 'failure' || steps.property.outcome == 'failure' || steps.staffing.outcome == 'failure'
         run: |
           echo "::error::Research sources failed or a release failed validation; no systemic alert generated."
           exit 2
