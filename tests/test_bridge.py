@@ -269,6 +269,45 @@ class ChatGPTBridgeTests(unittest.TestCase):
         self.assertEqual(x["pboc_credit_research"]["status"],"missing_or_stale")
         self.assertFalse(x["should_send_user_notification"])
 
+    def test_last_fully_verified_staffing_is_separate_from_failed_current_poll(self):
+        from fcews.staffing_ir import RELEASES
+        latest={
+            "schema":"fcews.staffing_official_ir.v1","status":"complete",
+            "as_of_date_utc":"2026-10-29","positive_fee_revenue_direction_breadth_pct":80,
+            "issuer_reports":{
+                k:{"source_url":v["url"],"source_status":"issuer_document_parsed",
+                   "demand_measure":v["basis"],"published_date":v["published"],
+                   "value_pct":(-3 if k=="HAYS" else 3)}
+                for k,v in RELEASES.items()}
+        }
+        current={**latest,"status":"partial",
+                 "issuer_reports":{k:v for k,v in latest["issuer_reports"].items() if k!="MANPOWERGROUP"}}
+        (self.root/"data/staffing_ir_context.json").write_text(json.dumps(current))
+        (self.root/"data/staffing_last_verified.json").write_text(json.dumps(latest))
+        feed=build_feed(self.root,NOW)
+        self.assertEqual(feed["staffing_issuer_research"]["status"],"partial")
+        self.assertEqual(feed["staffing_last_verified"]["issuer_count"],5)
+        self.assertEqual(feed["staffing_last_verified"]["positive_fee_direction_breadth_pct"],80)
+        self.assertFalse(feed["staffing_last_verified"]["is_current_run_evidence"])
+        self.assertFalse(feed["staffing_last_verified"]["authorizes_notification"])
+        self.assertFalse(feed["should_send_user_notification"])
+
+    def test_forged_old_staffing_archive_never_passes(self):
+        from fcews.staffing_ir import RELEASES
+        last={
+            "schema":"fcews.staffing_official_ir.v1","status":"complete",
+            "as_of_date_utc":"2026-10-29","positive_fee_revenue_direction_breadth_pct":80,
+            "issuer_reports":{
+                k:{"source_url":v["url"],"source_status":"issuer_document_parsed",
+                   "demand_measure":v["basis"],"published_date":v["published"],
+                   "value_pct":(-3 if k=="HAYS" else 3)}
+                for k,v in RELEASES.items()}
+        }
+        last["issuer_reports"]["MANPOWERGROUP"]["source_url"]="https://manpowergroup.com.evil.test/fake"
+        (self.root/"data/staffing_last_verified.json").write_text(json.dumps(last))
+        self.assertEqual(build_feed(self.root,NOW)["staffing_last_verified"]["status"],
+                         "not_available_or_outdated")
+
     def test_no_webhook_claim_in_contract(self):
         feed=build_feed(self.root,NOW)
         self.assertEqual(feed["transport"],"ChatGPT_hourly_poll_not_GitHub_webhook")
