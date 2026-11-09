@@ -78,6 +78,45 @@ class ChatGPTBridgeTests(unittest.TestCase):
         self.assertFalse(second["changed"])
         self.assertEqual(first["fingerprint_sha256"],second["fingerprint_sha256"])
 
+
+    def test_fresh_research_supplements_feed_but_cannot_authorize_alert(self):
+        research={
+            "as_of_date_utc":"2026-10-29",
+            "us_labor_rates_credit":{"status":"complete","observations":{
+                "TEMPHELPS":{"observation_date":"2026-10-01"}}},
+            "official_release_research":{"china_recovery_breadth_score":100,
+                                         "staffing_global_score":100},
+            "notification_authorized":True,
+        }
+        (self.root/"data/research_context.json").write_text(json.dumps(research))
+        feed=build_feed(self.root,NOW)
+        self.assertEqual(feed["leading_research"]["status"],"fresh")
+        self.assertEqual(feed["leading_research"]["us_observation_dates"]["TEMPHELPS"],"2026-10-01")
+        self.assertIsNone(feed["leading_research"]["china_recovery_breadth_score"])
+        self.assertIsNone(feed["leading_research"]["staffing_global_score"])
+        self.assertFalse(feed["leading_research"]["authorizes_notification"])
+        self.assertFalse(feed["should_send_user_notification"])
+        self.assertEqual(feed["weekly_human_grade"],"orange")
+        self.assertTrue(feed["weekly_human_grade_is_historical_paused"])
+        self.assertFalse(feed["technical_model_comparable_to_weekly"])
+
+    def test_stale_research_cannot_be_presented_as_current(self):
+        (self.root/"data/research_context.json").write_text(json.dumps({
+            "as_of_date_utc":"2026-10-23",
+            "us_labor_rates_credit":{"status":"complete",
+                                     "observations":{"JTSJOL":{"observation_date":"2026-08-01"}}}
+        }))
+        feed=build_feed(self.root,NOW)
+        self.assertEqual(feed["leading_research"]["status"],"stale")
+        self.assertEqual(feed["leading_research"]["us_observation_dates"],{})
+        self.assertFalse(feed["leading_research"]["authorizes_notification"])
+
+    def test_future_research_date_does_not_override_risk_gate(self):
+        (self.root/"data/research_context.json").write_text(
+            '{"as_of_date_utc":"2027-01-01"}')
+        self.assertEqual(build_feed(self.root,NOW)["leading_research"]["status"],"stale")
+        self.assertEqual(build_feed(self.root,NOW)["candidate_count"],0)
+
     def test_no_webhook_claim_in_contract(self):
         feed=build_feed(self.root,NOW)
         self.assertEqual(feed["transport"],"ChatGPT_hourly_poll_not_GitHub_webhook")

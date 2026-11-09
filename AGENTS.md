@@ -37,3 +37,10 @@ A change is COMPLETE only if code/docs are committed, relevant checks pass, GitH
 
 ## Monitoring cadence and data lineage (2026-10-29)
 Always check [docs/operations/CADENCE.md](docs/operations/CADENCE.md) before editing workflow cron. Cross-check [data/health.json](data/health.json) and [wiki/datasets/registry.md](wiki/datasets/registry.md) before claiming a source works; a source fetched live is not the same as a verified first-publication vintage. Data-health issues are NOT financial-crisis notifications. Code or model changes require a falsifying regression, CI proof, change log, Issue update and source-dated handoff.
+
+
+## 2026-11-09 research layer contract
+- The former weekly macro report automation is **disabled**. Do not restart it merely because the dated `data/weekly_baseline.json` contains human orange/70. Preserve `severity=unknown` and `model_comparability=not_calibrated` for cross-model conversion.
+- Inspect [source-dated leading research](wiki/datasets/leading-research.md), [official research context](src/fcews/research.py) and `data/research_context.json` when discussing employment, yields, China housing or private credit. The ChatGPT feed reports **freshness and source dates**, never uncalibrated scores as alerts.
+- A valid official hostname is not verification of a reported statistic; the China/company release ledger must be independently source-read before publishing numeric research results. Empty sources are null, not green/zero.
+- A second GitHub cron is not an independent heartbeat and cannot guarantee hourly service. Check actual schedule gaps and retain [Issue #1](https://github.com/lican1213/financial-crisis-early-warning/issues/1).

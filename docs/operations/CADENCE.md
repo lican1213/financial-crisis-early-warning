@@ -18,6 +18,8 @@ Updated 2026-11-09. Unless otherwise specified, times are **Beijing (UTC+8)**. G
 | Event driven | On official validated bank/fund/sovereign/repo/payment crisis | [Event validator](../../src/fcews/events.py) / GitHub outbox | Human-reviewed official document checksum and cross-market contagion mechanism; new candidate not automatically a ChatGPT user warning |
 
 ## Delivery boundary
+The [read-only ChatGPT bridge](../../src/fcews/bridge.py) exposes only research snapshot freshness, source observation dates, and null China/company scores. Even a fabricated `notification_authorized=true` field in a research file cannot authorize an alert; [bridge regression tests](../../tests/test_bridge.py) prove the separation.
+
 The research workflow is context-only and never increases independent systemic stress families or sends ChatGPT notifications. Official-host acceptance of a manually entered China/company release is not proof of the numeric statistic; verify underlying tables before claims. See [leading research gate](../../wiki/datasets/leading-research.md).
 
 The [ChatGPT feed](../../data/chatgpt_feed.json) is **poll-only**, not a push event or confirmed end-user receipt. [GitHub Issue canary #11](https://github.com/lican1213/financial-crisis-early-warning/issues/11) verifies GitHub create/read/close only; ChatGPT cannot emit an exact-once acknowledgement to the repository. The hourly ChatGPT task remains enabled. We deliberately keep user-visible responses silent without one of the four qualifying systemic changes.
