@@ -122,6 +122,51 @@ def property_summary(context: dict, now: datetime) -> dict:
         return unknown
 
 
+
+def staffing_summary(context: dict, now: datetime) -> dict:
+    """Only source-validated demand directions, never profits or uncalibrated scores."""
+    empty = {
+        "status":"missing_or_stale", "available_issuers":[], "missing_issuers":[],
+        "demand_directions":{}, "positive_fee_breadth_pct":None,
+        "staffing_global_score":None, "risk_alert_authorized":False,
+    }
+    if not isinstance(context,dict) or context.get("schema")!="fcews.staffing_official_ir.v1":
+        return empty
+    try:
+        asof=datetime.fromisoformat(context["as_of_date_utc"]).date()
+        if not 0<=(now.date()-asof).days<=3:
+            return empty
+        reports=context["issuer_reports"]
+        if not isinstance(reports,dict):
+            return empty
+        allowed={"RANDSTAD","MANPOWERGROUP","KORN_FERRY","HAYS","PAGEGROUP"}
+        verified={}
+        for company,row in reports.items():
+            if company not in allowed or not isinstance(row,dict) or row.get("source_status")!="issuer_document_parsed":
+                continue
+            reported=datetime.fromisoformat(row["published_date"]).date()
+            if not 0<=(now.date()-reported).days<=120:
+                continue
+            val=float(row["value_pct"])
+            if val!=val or not -100<=val<=100:
+                continue
+            verified[company]={"basis":row["demand_measure"],
+                               "direction":"positive" if val>0 else "negative" if val<0 else "flat",
+                               "period_end":row["period_end"],"source_url":row["source_url"]}
+        breadth=round(100*sum(v["direction"]=="positive" for v in verified.values())/5,2) if len(verified)==5 else None
+        return {
+            "status":"complete" if len(verified)==5 else "partial",
+            "available_issuers":sorted(verified),
+            "missing_issuers":sorted(allowed-set(verified)),
+            "demand_directions":verified,
+            "positive_fee_breadth_pct":breadth,
+            "staffing_global_score":None,
+            "risk_alert_authorized":False,
+        }
+    except (KeyError,TypeError,ValueError,OverflowError):
+        return empty
+
+
 def build_feed(root: Path, now: datetime | None = None) -> dict:
     now = now or datetime.now(timezone.utc)
     if now.tzinfo is None:
@@ -134,6 +179,7 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
     research = read_json(root/"data/research_context.json", {})
     nbs_pmi = read_json(root/"data/nbs_pmi_context.json", {})
     nbs_property = read_json(root/"data/nbs_property_context.json", {})
+    staffing_ir = read_json(root/"data/staffing_ir_context.json", {})
     outbox = read_json(root/"data/outbox.json", {"pending":[],"delivered":[]})
     candidates = []
     seen = set()
@@ -189,6 +235,7 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
         "leading_research": research_summary(research, now),
         "nbs_pmi_research": nbs_pmi_summary(nbs_pmi, now),
         "nbs_property_research": property_summary(nbs_property, now),
+        "staffing_issuer_research": staffing_summary(staffing_ir, now),
         "last_evidence_observation_dates": {k:v["date"] for k,v in source_summary.items() if v.get("date")},
         "source_url": "https://github.com/"+PROJECT,
         "contract": {
