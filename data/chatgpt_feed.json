@@ -10,7 +10,7 @@
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "ffd352092c5083402721bf84230930763d1732eb872d65aa682da077f98345dc",
+  "fingerprint_sha256": "75ef52ab452e1d145973ac7ccb0ed6ad65edb7c97a3607f034c14f9d66b987a3",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-10-30",
@@ -73,13 +73,39 @@
   "should_send_user_notification": false,
   "source_url": "https://github.com/lican1213/financial-crisis-early-warning",
   "staffing_issuer_research": {
-    "available_issuers": [],
-    "demand_directions": {},
-    "missing_issuers": [],
+    "available_issuers": [
+      "HAYS",
+      "KORN_FERRY",
+      "RANDSTAD"
+    ],
+    "demand_directions": {
+      "HAYS": {
+        "basis": "like_for_like_net_fees_yoy_pct",
+        "direction": "negative",
+        "period_end": "2026-09-30",
+        "source_url": "https://www.haysplc.com/investors/results-centre"
+      },
+      "KORN_FERRY": {
+        "basis": "constant_currency_fee_revenue_yoy_pct",
+        "direction": "positive",
+        "period_end": "2026-07-31",
+        "source_url": "https://ir.kornferry.com/news-events/press-releases/detail/733/korn-ferry-announces-first-quarter-fiscal-2027-results-of-operations"
+      },
+      "RANDSTAD": {
+        "basis": "organic_revenue_yoy_pct",
+        "direction": "positive",
+        "period_end": "2026-09-30",
+        "source_url": "https://www.randstad.com/press/2026/q3-2026-continued-top-line-momentum-drives-double-digit-profit-growth/"
+      }
+    },
+    "missing_issuers": [
+      "MANPOWERGROUP",
+      "PAGEGROUP"
+    ],
     "positive_fee_breadth_pct": null,
     "risk_alert_authorized": false,
     "staffing_global_score": null,
-    "status": "missing_or_stale"
+    "status": "partial"
   },
   "technical_model_comparable_to_weekly": false,
   "transport": "ChatGPT_hourly_poll_not_GitHub_webhook",
