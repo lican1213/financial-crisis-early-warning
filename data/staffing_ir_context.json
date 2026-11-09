@@ -2,8 +2,7 @@
   "as_of_date_utc": "2026-11-09",
   "breadth_definition": "simple 5-issuer positive comparable direction share, NOT demand-volume weighting or forecast-calibrated",
   "errors": {
-    "MANPOWERGROUP": "HTTPError: HTTP Error 403: Forbidden",
-    "PAGEGROUP": "ValueError: missing/invalid employer demand growth rate"
+    "PAGEGROUP": "ValueError: missing PAGEGROUP official gross-fee metric, excerpt: [no gross profit heading]"
   },
   "issuer_reports": {
     "HAYS": {
@@ -46,6 +45,26 @@
       "source_url": "https://ir.kornferry.com/news-events/press-releases/detail/733/korn-ferry-announces-first-quarter-fiscal-2027-results-of-operations",
       "value_pct": 7.0
     },
+    "MANPOWERGROUP": {
+      "company": "MANPOWERGROUP",
+      "demand_measure": "organic_constant_currency_revenue_yoy_pct",
+      "effects_to_review": {
+        "cost_reductions": true,
+        "currency": true,
+        "m_and_a": true
+      },
+      "historical_vintage_status": "current_issuer_snapshot_not_original_asof_archive",
+      "measurement_label": "organic constant currency revenue",
+      "notification_authorized": false,
+      "origin": "issuer_IR_or_primary_exchange_RNS",
+      "other_reported_demand_measures": "not_extracted_unverified",
+      "period_end": "2026-09-30",
+      "publication_date_in_document": true,
+      "published_date": "2026-10-15",
+      "source_status": "issuer_document_parsed",
+      "source_url": "https://www.manpowergroup.com/en/news-releases/news/manpowergroup-reports-3rd-quarter-2026-results",
+      "value_pct": 6.0
+    },
     "RANDSTAD": {
       "company": "RANDSTAD",
       "demand_measure": "organic_revenue_yoy_pct",
@@ -68,7 +87,6 @@
     }
   },
   "missing": [
-    "MANPOWERGROUP",
     "PAGEGROUP"
   ],
   "notification_authorized": false,

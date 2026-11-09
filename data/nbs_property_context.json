@@ -1,0 +1,1538 @@
+{
+  "as_of_date_utc": "2026-11-09",
+  "china_recovery_breadth_score": null,
+  "directional_signals": {
+    "developer_mortgage_receipts_yoy_pp_change": 0.3,
+    "new_price_rising_city_count_change": 2,
+    "residential_sales_cumulative_yoy_pp_change": -0.8,
+    "unsold_area_yoy_pp_change": -0.4,
+    "used_price_rising_city_count_change": 6
+  },
+  "housing_turning_point_confirmed": false,
+  "housing_turning_point_reason": "PBOC household mortgage new lending/balance cross-check absent; developer-received mortgage funds do not substitute.",
+  "latest_market": {
+    "credit_warning": "Developer mortgage receipts are NOT PBOC household mortgage balances; prepayment and operating-loan flows unobserved.",
+    "developer_funding": {
+      "developer_deposits_advance": {
+        "amount_100m_cny": 17982,
+        "cumulative_yoy_pct": -14.8,
+        "statistical_entity": "developer_received_funds_not_household_credit"
+      },
+      "developer_domestic_loans": {
+        "amount_100m_cny": 7624,
+        "cumulative_yoy_pct": -33.1,
+        "statistical_entity": "developer_received_funds_not_household_credit"
+      },
+      "developer_received_mortgages": {
+        "amount_100m_cny": 7678,
+        "cumulative_yoy_pct": -22.1,
+        "statistical_entity": "developer_received_funds_not_household_credit"
+      },
+      "developer_self_financing": {
+        "amount_100m_cny": 20572,
+        "cumulative_yoy_pct": -21.4,
+        "statistical_entity": "developer_received_funds_not_household_credit"
+      }
+    },
+    "new_homes_unsold_area_yoy_pct": -1.5,
+    "origin": "NBS",
+    "period_end": "2026-09-30",
+    "period_type": "year_to_date_cumulative",
+    "published_date": "2026-10-19",
+    "residential_sales_area_yoy_pct": -13.8,
+    "residential_sales_value_yoy_pct": -13.7,
+    "source_url": "https://www.stats.gov.cn/sj/zxfb/202610/t20261019_1965615.html",
+    "status": "complete"
+  },
+  "latest_prices": {
+    "month": "2026-09",
+    "new": {
+      "cities": {
+        "三亚": {
+          "mom_index": 99.9,
+          "yoy_index": 98.1,
+          "ytd_avg_index": 98.5
+        },
+        "上海": {
+          "mom_index": 100.2,
+          "yoy_index": 102.8,
+          "ytd_avg_index": 103.4
+        },
+        "丹东": {
+          "mom_index": 99.9,
+          "yoy_index": 97.7,
+          "ytd_avg_index": 97.6
+        },
+        "乌鲁木齐": {
+          "mom_index": 100.1,
+          "yoy_index": 99.3,
+          "ytd_avg_index": 99.7
+        },
+        "九江": {
+          "mom_index": 99.6,
+          "yoy_index": 95.0,
+          "ytd_avg_index": 95.4
+        },
+        "兰州": {
+          "mom_index": 99.7,
+          "yoy_index": 96.6,
+          "ytd_avg_index": 95.9
+        },
+        "包头": {
+          "mom_index": 99.8,
+          "yoy_index": 93.9,
+          "ytd_avg_index": 92.8
+        },
+        "北京": {
+          "mom_index": 99.8,
+          "yoy_index": 97.3,
+          "ytd_avg_index": 97.7
+        },
+        "北海": {
+          "mom_index": 99.3,
+          "yoy_index": 93.8,
+          "ytd_avg_index": 93.9
+        },
+        "南京": {
+          "mom_index": 100.2,
+          "yoy_index": 99.5,
+          "ytd_avg_index": 97.3
+        },
+        "南充": {
+          "mom_index": 99.9,
+          "yoy_index": 96.6,
+          "ytd_avg_index": 96.5
+        },
+        "南宁": {
+          "mom_index": 100.3,
+          "yoy_index": 97.2,
+          "ytd_avg_index": 96.9
+        },
+        "南昌": {
+          "mom_index": 99.8,
+          "yoy_index": 96.5,
+          "ytd_avg_index": 95.4
+        },
+        "厦门": {
+          "mom_index": 99.7,
+          "yoy_index": 99.1,
+          "ytd_avg_index": 97.5
+        },
+        "合肥": {
+          "mom_index": 100.2,
+          "yoy_index": 100.4,
+          "ytd_avg_index": 100.8
+        },
+        "吉林": {
+          "mom_index": 99.9,
+          "yoy_index": 98.8,
+          "ytd_avg_index": 98.2
+        },
+        "呼和浩特": {
+          "mom_index": 99.8,
+          "yoy_index": 96.4,
+          "ytd_avg_index": 96.1
+        },
+        "哈尔滨": {
+          "mom_index": 99.8,
+          "yoy_index": 97.4,
+          "ytd_avg_index": 97.4
+        },
+        "唐山": {
+          "mom_index": 99.7,
+          "yoy_index": 94.3,
+          "ytd_avg_index": 93.9
+        },
+        "大理": {
+          "mom_index": 99.7,
+          "yoy_index": 97.8,
+          "ytd_avg_index": 96.7
+        },
+        "大连": {
+          "mom_index": 100.2,
+          "yoy_index": 100.8,
+          "ytd_avg_index": 99.7
+        },
+        "天津": {
+          "mom_index": 99.9,
+          "yoy_index": 96.4,
+          "ytd_avg_index": 95.6
+        },
+        "太原": {
+          "mom_index": 100.1,
+          "yoy_index": 98.4,
+          "ytd_avg_index": 98.2
+        },
+        "宁波": {
+          "mom_index": 100.0,
+          "yoy_index": 100.0,
+          "ytd_avg_index": 98.5
+        },
+        "安庆": {
+          "mom_index": 99.6,
+          "yoy_index": 95.4,
+          "ytd_avg_index": 96.1
+        },
+        "宜昌": {
+          "mom_index": 100.2,
+          "yoy_index": 99.2,
+          "ytd_avg_index": 99.6
+        },
+        "岳阳": {
+          "mom_index": 99.8,
+          "yoy_index": 95.3,
+          "ytd_avg_index": 95.2
+        },
+        "常德": {
+          "mom_index": 99.8,
+          "yoy_index": 94.6,
+          "ytd_avg_index": 94.8
+        },
+        "平顶山": {
+          "mom_index": 99.5,
+          "yoy_index": 96.5,
+          "ytd_avg_index": 97.5
+        },
+        "广州": {
+          "mom_index": 100.2,
+          "yoy_index": 98.9,
+          "ytd_avg_index": 96.6
+        },
+        "徐州": {
+          "mom_index": 100.4,
+          "yoy_index": 97.7,
+          "ytd_avg_index": 95.8
+        },
+        "惠州": {
+          "mom_index": 99.7,
+          "yoy_index": 95.7,
+          "ytd_avg_index": 95.4
+        },
+        "成都": {
+          "mom_index": 99.7,
+          "yoy_index": 95.2,
+          "ytd_avg_index": 95.4
+        },
+        "扬州": {
+          "mom_index": 99.7,
+          "yoy_index": 96.7,
+          "ytd_avg_index": 95.3
+        },
+        "无锡": {
+          "mom_index": 99.8,
+          "yoy_index": 97.5,
+          "ytd_avg_index": 96.0
+        },
+        "昆明": {
+          "mom_index": 99.8,
+          "yoy_index": 95.1,
+          "ytd_avg_index": 94.2
+        },
+        "杭州": {
+          "mom_index": 100.1,
+          "yoy_index": 101.8,
+          "ytd_avg_index": 102.3
+        },
+        "桂林": {
+          "mom_index": 99.8,
+          "yoy_index": 94.3,
+          "ytd_avg_index": 94.4
+        },
+        "武汉": {
+          "mom_index": 100.2,
+          "yoy_index": 98.9,
+          "ytd_avg_index": 97.1
+        },
+        "沈阳": {
+          "mom_index": 100.0,
+          "yoy_index": 100.5,
+          "ytd_avg_index": 100.0
+        },
+        "泉州": {
+          "mom_index": 99.8,
+          "yoy_index": 96.4,
+          "ytd_avg_index": 96.5
+        },
+        "泸州": {
+          "mom_index": 99.5,
+          "yoy_index": 92.4,
+          "ytd_avg_index": 92.8
+        },
+        "洛阳": {
+          "mom_index": 99.7,
+          "yoy_index": 93.7,
+          "ytd_avg_index": 94.6
+        },
+        "济南": {
+          "mom_index": 100.0,
+          "yoy_index": 97.1,
+          "ytd_avg_index": 96.6
+        },
+        "济宁": {
+          "mom_index": 99.8,
+          "yoy_index": 96.4,
+          "ytd_avg_index": 95.6
+        },
+        "海口": {
+          "mom_index": 99.7,
+          "yoy_index": 95.5,
+          "ytd_avg_index": 94.9
+        },
+        "深圳": {
+          "mom_index": 100.3,
+          "yoy_index": 99.0,
+          "ytd_avg_index": 96.0
+        },
+        "温州": {
+          "mom_index": 99.7,
+          "yoy_index": 96.6,
+          "ytd_avg_index": 96.0
+        },
+        "湛江": {
+          "mom_index": 99.4,
+          "yoy_index": 94.3,
+          "ytd_avg_index": 95.2
+        },
+        "烟台": {
+          "mom_index": 99.9,
+          "yoy_index": 97.8,
+          "ytd_avg_index": 96.7
+        },
+        "牡丹江": {
+          "mom_index": 99.8,
+          "yoy_index": 98.0,
+          "ytd_avg_index": 98.2
+        },
+        "石家庄": {
+          "mom_index": 99.9,
+          "yoy_index": 96.1,
+          "ytd_avg_index": 95.6
+        },
+        "福州": {
+          "mom_index": 99.5,
+          "yoy_index": 94.6,
+          "ytd_avg_index": 95.1
+        },
+        "秦皇岛": {
+          "mom_index": 99.6,
+          "yoy_index": 94.8,
+          "ytd_avg_index": 94.8
+        },
+        "蚌埠": {
+          "mom_index": 99.9,
+          "yoy_index": 96.7,
+          "ytd_avg_index": 96.4
+        },
+        "襄阳": {
+          "mom_index": 99.9,
+          "yoy_index": 95.1,
+          "ytd_avg_index": 94.9
+        },
+        "西宁": {
+          "mom_index": 99.9,
+          "yoy_index": 95.3,
+          "ytd_avg_index": 96.0
+        },
+        "西安": {
+          "mom_index": 99.7,
+          "yoy_index": 95.0,
+          "ytd_avg_index": 94.5
+        },
+        "贵阳": {
+          "mom_index": 99.7,
+          "yoy_index": 96.8,
+          "ytd_avg_index": 96.3
+        },
+        "赣州": {
+          "mom_index": 99.8,
+          "yoy_index": 96.5,
+          "ytd_avg_index": 95.7
+        },
+        "遵义": {
+          "mom_index": 99.7,
+          "yoy_index": 96.1,
+          "ytd_avg_index": 96.3
+        },
+        "郑州": {
+          "mom_index": 99.5,
+          "yoy_index": 95.2,
+          "ytd_avg_index": 94.7
+        },
+        "重庆": {
+          "mom_index": 100.3,
+          "yoy_index": 97.6,
+          "ytd_avg_index": 96.2
+        },
+        "金华": {
+          "mom_index": 99.6,
+          "yoy_index": 95.6,
+          "ytd_avg_index": 95.7
+        },
+        "银川": {
+          "mom_index": 99.9,
+          "yoy_index": 99.4,
+          "ytd_avg_index": 97.6
+        },
+        "锦州": {
+          "mom_index": 100.1,
+          "yoy_index": 97.5,
+          "ytd_avg_index": 97.1
+        },
+        "长春": {
+          "mom_index": 100.3,
+          "yoy_index": 99.3,
+          "ytd_avg_index": 98.4
+        },
+        "长沙": {
+          "mom_index": 100.0,
+          "yoy_index": 96.3,
+          "ytd_avg_index": 96.4
+        },
+        "青岛": {
+          "mom_index": 100.2,
+          "yoy_index": 99.1,
+          "ytd_avg_index": 97.7
+        },
+        "韶关": {
+          "mom_index": 99.4,
+          "yoy_index": 95.9,
+          "ytd_avg_index": 97.2
+        }
+      },
+      "city_count": 70,
+      "mom_falling": 49,
+      "mom_flat": 4,
+      "mom_rising": 17,
+      "yoy_rising": 5
+    },
+    "origin": "NBS",
+    "period_end": "2026-09-30",
+    "published_date": "2026-10-19",
+    "source_url": "https://www.stats.gov.cn/sj/zxfb/202610/t20261019_1965609.html",
+    "status": "complete",
+    "unit": "index_previous_month_equals_100",
+    "used": {
+      "cities": {
+        "三亚": {
+          "mom_index": 100.0,
+          "yoy_index": 93.9,
+          "ytd_avg_index": 93.1
+        },
+        "上海": {
+          "mom_index": 100.5,
+          "yoy_index": 100.8,
+          "ytd_avg_index": 96.2
+        },
+        "丹东": {
+          "mom_index": 99.8,
+          "yoy_index": 97.4,
+          "ytd_avg_index": 96.7
+        },
+        "乌鲁木齐": {
+          "mom_index": 99.8,
+          "yoy_index": 95.9,
+          "ytd_avg_index": 95.3
+        },
+        "九江": {
+          "mom_index": 99.7,
+          "yoy_index": 93.3,
+          "ytd_avg_index": 92.8
+        },
+        "兰州": {
+          "mom_index": 99.9,
+          "yoy_index": 96.2,
+          "ytd_avg_index": 95.0
+        },
+        "包头": {
+          "mom_index": 99.5,
+          "yoy_index": 93.2,
+          "ytd_avg_index": 92.2
+        },
+        "北京": {
+          "mom_index": 100.1,
+          "yoy_index": 97.5,
+          "ytd_avg_index": 93.8
+        },
+        "北海": {
+          "mom_index": 99.4,
+          "yoy_index": 93.3,
+          "ytd_avg_index": 93.1
+        },
+        "南京": {
+          "mom_index": 99.6,
+          "yoy_index": 95.6,
+          "ytd_avg_index": 93.4
+        },
+        "南充": {
+          "mom_index": 99.7,
+          "yoy_index": 94.6,
+          "ytd_avg_index": 94.6
+        },
+        "南宁": {
+          "mom_index": 99.7,
+          "yoy_index": 94.3,
+          "ytd_avg_index": 93.5
+        },
+        "南昌": {
+          "mom_index": 99.6,
+          "yoy_index": 94.2,
+          "ytd_avg_index": 93.3
+        },
+        "厦门": {
+          "mom_index": 99.7,
+          "yoy_index": 96.0,
+          "ytd_avg_index": 94.0
+        },
+        "合肥": {
+          "mom_index": 100.2,
+          "yoy_index": 96.9,
+          "ytd_avg_index": 94.2
+        },
+        "吉林": {
+          "mom_index": 99.5,
+          "yoy_index": 95.9,
+          "ytd_avg_index": 95.8
+        },
+        "呼和浩特": {
+          "mom_index": 99.7,
+          "yoy_index": 94.3,
+          "ytd_avg_index": 94.2
+        },
+        "哈尔滨": {
+          "mom_index": 99.6,
+          "yoy_index": 95.6,
+          "ytd_avg_index": 95.3
+        },
+        "唐山": {
+          "mom_index": 99.5,
+          "yoy_index": 92.9,
+          "ytd_avg_index": 92.1
+        },
+        "大理": {
+          "mom_index": 99.5,
+          "yoy_index": 93.0,
+          "ytd_avg_index": 93.5
+        },
+        "大连": {
+          "mom_index": 100.1,
+          "yoy_index": 97.9,
+          "ytd_avg_index": 96.0
+        },
+        "天津": {
+          "mom_index": 99.7,
+          "yoy_index": 94.7,
+          "ytd_avg_index": 94.1
+        },
+        "太原": {
+          "mom_index": 99.6,
+          "yoy_index": 94.7,
+          "ytd_avg_index": 95.1
+        },
+        "宁波": {
+          "mom_index": 99.9,
+          "yoy_index": 98.2,
+          "ytd_avg_index": 95.2
+        },
+        "安庆": {
+          "mom_index": 99.7,
+          "yoy_index": 95.9,
+          "ytd_avg_index": 94.7
+        },
+        "宜昌": {
+          "mom_index": 99.7,
+          "yoy_index": 96.2,
+          "ytd_avg_index": 95.7
+        },
+        "岳阳": {
+          "mom_index": 99.7,
+          "yoy_index": 94.0,
+          "ytd_avg_index": 93.7
+        },
+        "常德": {
+          "mom_index": 99.6,
+          "yoy_index": 93.5,
+          "ytd_avg_index": 92.5
+        },
+        "平顶山": {
+          "mom_index": 99.6,
+          "yoy_index": 93.1,
+          "ytd_avg_index": 92.7
+        },
+        "广州": {
+          "mom_index": 100.1,
+          "yoy_index": 97.1,
+          "ytd_avg_index": 93.6
+        },
+        "徐州": {
+          "mom_index": 100.3,
+          "yoy_index": 97.1,
+          "ytd_avg_index": 93.2
+        },
+        "惠州": {
+          "mom_index": 99.6,
+          "yoy_index": 95.0,
+          "ytd_avg_index": 93.9
+        },
+        "成都": {
+          "mom_index": 99.5,
+          "yoy_index": 94.4,
+          "ytd_avg_index": 94.1
+        },
+        "扬州": {
+          "mom_index": 99.7,
+          "yoy_index": 93.7,
+          "ytd_avg_index": 92.9
+        },
+        "无锡": {
+          "mom_index": 100.3,
+          "yoy_index": 96.9,
+          "ytd_avg_index": 94.8
+        },
+        "昆明": {
+          "mom_index": 99.5,
+          "yoy_index": 93.3,
+          "ytd_avg_index": 92.9
+        },
+        "杭州": {
+          "mom_index": 99.7,
+          "yoy_index": 96.8,
+          "ytd_avg_index": 95.8
+        },
+        "桂林": {
+          "mom_index": 99.9,
+          "yoy_index": 94.0,
+          "ytd_avg_index": 93.1
+        },
+        "武汉": {
+          "mom_index": 100.1,
+          "yoy_index": 94.7,
+          "ytd_avg_index": 91.8
+        },
+        "沈阳": {
+          "mom_index": 100.0,
+          "yoy_index": 99.7,
+          "ytd_avg_index": 98.1
+        },
+        "泉州": {
+          "mom_index": 99.6,
+          "yoy_index": 95.6,
+          "ytd_avg_index": 95.6
+        },
+        "泸州": {
+          "mom_index": 99.6,
+          "yoy_index": 91.2,
+          "ytd_avg_index": 91.3
+        },
+        "洛阳": {
+          "mom_index": 99.4,
+          "yoy_index": 93.5,
+          "ytd_avg_index": 94.6
+        },
+        "济南": {
+          "mom_index": 99.6,
+          "yoy_index": 95.2,
+          "ytd_avg_index": 94.8
+        },
+        "济宁": {
+          "mom_index": 99.6,
+          "yoy_index": 95.2,
+          "ytd_avg_index": 93.8
+        },
+        "海口": {
+          "mom_index": 99.2,
+          "yoy_index": 92.8,
+          "ytd_avg_index": 93.4
+        },
+        "深圳": {
+          "mom_index": 100.2,
+          "yoy_index": 98.5,
+          "ytd_avg_index": 95.0
+        },
+        "温州": {
+          "mom_index": 99.7,
+          "yoy_index": 95.0,
+          "ytd_avg_index": 94.0
+        },
+        "湛江": {
+          "mom_index": 99.5,
+          "yoy_index": 93.9,
+          "ytd_avg_index": 94.2
+        },
+        "烟台": {
+          "mom_index": 99.9,
+          "yoy_index": 95.5,
+          "ytd_avg_index": 93.9
+        },
+        "牡丹江": {
+          "mom_index": 99.8,
+          "yoy_index": 97.1,
+          "ytd_avg_index": 97.2
+        },
+        "石家庄": {
+          "mom_index": 99.8,
+          "yoy_index": 95.6,
+          "ytd_avg_index": 94.6
+        },
+        "福州": {
+          "mom_index": 99.6,
+          "yoy_index": 95.5,
+          "ytd_avg_index": 94.5
+        },
+        "秦皇岛": {
+          "mom_index": 99.7,
+          "yoy_index": 93.1,
+          "ytd_avg_index": 92.3
+        },
+        "蚌埠": {
+          "mom_index": 99.8,
+          "yoy_index": 95.9,
+          "ytd_avg_index": 95.3
+        },
+        "襄阳": {
+          "mom_index": 99.6,
+          "yoy_index": 93.1,
+          "ytd_avg_index": 92.9
+        },
+        "西宁": {
+          "mom_index": 99.8,
+          "yoy_index": 97.0,
+          "ytd_avg_index": 97.8
+        },
+        "西安": {
+          "mom_index": 99.7,
+          "yoy_index": 94.9,
+          "ytd_avg_index": 92.4
+        },
+        "贵阳": {
+          "mom_index": 99.6,
+          "yoy_index": 95.0,
+          "ytd_avg_index": 94.7
+        },
+        "赣州": {
+          "mom_index": 99.6,
+          "yoy_index": 94.4,
+          "ytd_avg_index": 93.6
+        },
+        "遵义": {
+          "mom_index": 99.8,
+          "yoy_index": 94.9,
+          "ytd_avg_index": 94.7
+        },
+        "郑州": {
+          "mom_index": 99.6,
+          "yoy_index": 95.3,
+          "ytd_avg_index": 93.0
+        },
+        "重庆": {
+          "mom_index": 99.7,
+          "yoy_index": 96.5,
+          "ytd_avg_index": 94.9
+        },
+        "金华": {
+          "mom_index": 99.8,
+          "yoy_index": 94.9,
+          "ytd_avg_index": 94.2
+        },
+        "银川": {
+          "mom_index": 99.7,
+          "yoy_index": 94.7,
+          "ytd_avg_index": 93.8
+        },
+        "锦州": {
+          "mom_index": 99.8,
+          "yoy_index": 97.3,
+          "ytd_avg_index": 96.6
+        },
+        "长春": {
+          "mom_index": 99.6,
+          "yoy_index": 96.4,
+          "ytd_avg_index": 96.1
+        },
+        "长沙": {
+          "mom_index": 99.7,
+          "yoy_index": 94.5,
+          "ytd_avg_index": 92.6
+        },
+        "青岛": {
+          "mom_index": 99.9,
+          "yoy_index": 95.0,
+          "ytd_avg_index": 93.7
+        },
+        "韶关": {
+          "mom_index": 99.5,
+          "yoy_index": 94.0,
+          "ytd_avg_index": 94.5
+        }
+      },
+      "city_count": 70,
+      "mom_falling": 59,
+      "mom_flat": 2,
+      "mom_rising": 9,
+      "yoy_rising": 1
+    }
+  },
+  "previous_market": {
+    "credit_warning": "Developer mortgage receipts are NOT PBOC household mortgage balances; prepayment and operating-loan flows unobserved.",
+    "developer_funding": {
+      "developer_deposits_advance": {
+        "amount_100m_cny": 16037,
+        "cumulative_yoy_pct": -14.8,
+        "statistical_entity": "developer_received_funds_not_household_credit"
+      },
+      "developer_domestic_loans": {
+        "amount_100m_cny": 6880,
+        "cumulative_yoy_pct": -33.3,
+        "statistical_entity": "developer_received_funds_not_household_credit"
+      },
+      "developer_received_mortgages": {
+        "amount_100m_cny": 6846,
+        "cumulative_yoy_pct": -22.4,
+        "statistical_entity": "developer_received_funds_not_household_credit"
+      },
+      "developer_self_financing": {
+        "amount_100m_cny": 18432,
+        "cumulative_yoy_pct": -20.0,
+        "statistical_entity": "developer_received_funds_not_household_credit"
+      }
+    },
+    "new_homes_unsold_area_yoy_pct": -1.1,
+    "origin": "NBS",
+    "period_end": "2026-08-31",
+    "period_type": "year_to_date_cumulative",
+    "published_date": "2026-09-15",
+    "residential_sales_area_yoy_pct": -13.0,
+    "residential_sales_value_yoy_pct": -13.1,
+    "source_url": "https://www.stats.gov.cn/sj/zxfb/202609/t20260915_1965310.html",
+    "status": "complete"
+  },
+  "previous_prices": {
+    "month": "2026-08",
+    "new": {
+      "cities": {
+        "三亚": {
+          "mom_index": 100.0,
+          "yoy_index": 98.3,
+          "ytd_avg_index": 98.6
+        },
+        "上海": {
+          "mom_index": 100.4,
+          "yoy_index": 103.0,
+          "ytd_avg_index": 103.5
+        },
+        "丹东": {
+          "mom_index": 99.7,
+          "yoy_index": 97.4,
+          "ytd_avg_index": 97.6
+        },
+        "乌鲁木齐": {
+          "mom_index": 100.1,
+          "yoy_index": 98.9,
+          "ytd_avg_index": 99.7
+        },
+        "九江": {
+          "mom_index": 99.8,
+          "yoy_index": 94.5,
+          "ytd_avg_index": 95.5
+        },
+        "兰州": {
+          "mom_index": 99.8,
+          "yoy_index": 96.5,
+          "ytd_avg_index": 95.8
+        },
+        "包头": {
+          "mom_index": 99.5,
+          "yoy_index": 93.2,
+          "ytd_avg_index": 92.7
+        },
+        "北京": {
+          "mom_index": 99.8,
+          "yoy_index": 97.7,
+          "ytd_avg_index": 97.8
+        },
+        "北海": {
+          "mom_index": 99.4,
+          "yoy_index": 93.8,
+          "ytd_avg_index": 93.9
+        },
+        "南京": {
+          "mom_index": 99.9,
+          "yoy_index": 98.7,
+          "ytd_avg_index": 97.0
+        },
+        "南充": {
+          "mom_index": 99.7,
+          "yoy_index": 96.5,
+          "ytd_avg_index": 96.5
+        },
+        "南宁": {
+          "mom_index": 100.2,
+          "yoy_index": 96.4,
+          "ytd_avg_index": 96.9
+        },
+        "南昌": {
+          "mom_index": 99.7,
+          "yoy_index": 96.0,
+          "ytd_avg_index": 95.3
+        },
+        "厦门": {
+          "mom_index": 100.1,
+          "yoy_index": 98.6,
+          "ytd_avg_index": 97.3
+        },
+        "合肥": {
+          "mom_index": 100.1,
+          "yoy_index": 100.1,
+          "ytd_avg_index": 100.8
+        },
+        "吉林": {
+          "mom_index": 100.0,
+          "yoy_index": 98.4,
+          "ytd_avg_index": 98.1
+        },
+        "呼和浩特": {
+          "mom_index": 99.7,
+          "yoy_index": 96.3,
+          "ytd_avg_index": 96.1
+        },
+        "哈尔滨": {
+          "mom_index": 99.8,
+          "yoy_index": 97.5,
+          "ytd_avg_index": 97.4
+        },
+        "唐山": {
+          "mom_index": 99.6,
+          "yoy_index": 94.1,
+          "ytd_avg_index": 93.9
+        },
+        "大理": {
+          "mom_index": 99.9,
+          "yoy_index": 97.6,
+          "ytd_avg_index": 96.6
+        },
+        "大连": {
+          "mom_index": 100.1,
+          "yoy_index": 100.3,
+          "ytd_avg_index": 99.5
+        },
+        "天津": {
+          "mom_index": 99.8,
+          "yoy_index": 95.9,
+          "ytd_avg_index": 95.5
+        },
+        "太原": {
+          "mom_index": 99.8,
+          "yoy_index": 98.2,
+          "ytd_avg_index": 98.2
+        },
+        "宁波": {
+          "mom_index": 100.1,
+          "yoy_index": 99.2,
+          "ytd_avg_index": 98.3
+        },
+        "安庆": {
+          "mom_index": 99.5,
+          "yoy_index": 95.2,
+          "ytd_avg_index": 96.2
+        },
+        "宜昌": {
+          "mom_index": 99.9,
+          "yoy_index": 98.9,
+          "ytd_avg_index": 99.7
+        },
+        "岳阳": {
+          "mom_index": 99.7,
+          "yoy_index": 95.0,
+          "ytd_avg_index": 95.2
+        },
+        "常德": {
+          "mom_index": 99.6,
+          "yoy_index": 94.2,
+          "ytd_avg_index": 94.8
+        },
+        "平顶山": {
+          "mom_index": 99.6,
+          "yoy_index": 96.9,
+          "ytd_avg_index": 97.6
+        },
+        "广州": {
+          "mom_index": 100.1,
+          "yoy_index": 98.1,
+          "ytd_avg_index": 96.3
+        },
+        "徐州": {
+          "mom_index": 100.3,
+          "yoy_index": 96.8,
+          "ytd_avg_index": 95.5
+        },
+        "惠州": {
+          "mom_index": 100.2,
+          "yoy_index": 96.2,
+          "ytd_avg_index": 95.3
+        },
+        "成都": {
+          "mom_index": 99.9,
+          "yoy_index": 95.0,
+          "ytd_avg_index": 95.4
+        },
+        "扬州": {
+          "mom_index": 99.6,
+          "yoy_index": 96.4,
+          "ytd_avg_index": 95.2
+        },
+        "无锡": {
+          "mom_index": 100.4,
+          "yoy_index": 97.4,
+          "ytd_avg_index": 95.8
+        },
+        "昆明": {
+          "mom_index": 99.9,
+          "yoy_index": 94.8,
+          "ytd_avg_index": 94.1
+        },
+        "杭州": {
+          "mom_index": 100.2,
+          "yoy_index": 102.2,
+          "ytd_avg_index": 102.3
+        },
+        "桂林": {
+          "mom_index": 99.7,
+          "yoy_index": 94.2,
+          "ytd_avg_index": 94.4
+        },
+        "武汉": {
+          "mom_index": 99.9,
+          "yoy_index": 98.3,
+          "ytd_avg_index": 96.9
+        },
+        "沈阳": {
+          "mom_index": 100.2,
+          "yoy_index": 100.3,
+          "ytd_avg_index": 99.9
+        },
+        "泉州": {
+          "mom_index": 99.8,
+          "yoy_index": 96.3,
+          "ytd_avg_index": 96.5
+        },
+        "泸州": {
+          "mom_index": 99.4,
+          "yoy_index": 92.3,
+          "ytd_avg_index": 92.9
+        },
+        "洛阳": {
+          "mom_index": 99.4,
+          "yoy_index": 93.7,
+          "ytd_avg_index": 94.7
+        },
+        "济南": {
+          "mom_index": 99.8,
+          "yoy_index": 96.7,
+          "ytd_avg_index": 96.6
+        },
+        "济宁": {
+          "mom_index": 99.9,
+          "yoy_index": 96.3,
+          "ytd_avg_index": 95.5
+        },
+        "海口": {
+          "mom_index": 99.2,
+          "yoy_index": 94.9,
+          "ytd_avg_index": 94.9
+        },
+        "深圳": {
+          "mom_index": 100.2,
+          "yoy_index": 97.7,
+          "ytd_avg_index": 95.7
+        },
+        "温州": {
+          "mom_index": 99.7,
+          "yoy_index": 96.2,
+          "ytd_avg_index": 95.9
+        },
+        "湛江": {
+          "mom_index": 99.8,
+          "yoy_index": 94.7,
+          "ytd_avg_index": 95.3
+        },
+        "烟台": {
+          "mom_index": 99.9,
+          "yoy_index": 97.6,
+          "ytd_avg_index": 96.6
+        },
+        "牡丹江": {
+          "mom_index": 99.7,
+          "yoy_index": 97.9,
+          "ytd_avg_index": 98.3
+        },
+        "石家庄": {
+          "mom_index": 99.4,
+          "yoy_index": 95.7,
+          "ytd_avg_index": 95.6
+        },
+        "福州": {
+          "mom_index": 100.0,
+          "yoy_index": 94.7,
+          "ytd_avg_index": 95.2
+        },
+        "秦皇岛": {
+          "mom_index": 99.5,
+          "yoy_index": 94.9,
+          "ytd_avg_index": 94.8
+        },
+        "蚌埠": {
+          "mom_index": 99.8,
+          "yoy_index": 96.6,
+          "ytd_avg_index": 96.4
+        },
+        "襄阳": {
+          "mom_index": 99.7,
+          "yoy_index": 94.6,
+          "ytd_avg_index": 94.9
+        },
+        "西宁": {
+          "mom_index": 99.8,
+          "yoy_index": 95.2,
+          "ytd_avg_index": 96.1
+        },
+        "西安": {
+          "mom_index": 99.6,
+          "yoy_index": 94.6,
+          "ytd_avg_index": 94.4
+        },
+        "贵阳": {
+          "mom_index": 99.6,
+          "yoy_index": 96.7,
+          "ytd_avg_index": 96.3
+        },
+        "赣州": {
+          "mom_index": 99.7,
+          "yoy_index": 95.8,
+          "ytd_avg_index": 95.5
+        },
+        "遵义": {
+          "mom_index": 99.8,
+          "yoy_index": 96.0,
+          "ytd_avg_index": 96.4
+        },
+        "郑州": {
+          "mom_index": 99.6,
+          "yoy_index": 95.1,
+          "ytd_avg_index": 94.6
+        },
+        "重庆": {
+          "mom_index": 100.0,
+          "yoy_index": 96.9,
+          "ytd_avg_index": 96.0
+        },
+        "金华": {
+          "mom_index": 99.8,
+          "yoy_index": 95.7,
+          "ytd_avg_index": 95.7
+        },
+        "银川": {
+          "mom_index": 100.1,
+          "yoy_index": 98.7,
+          "ytd_avg_index": 97.4
+        },
+        "锦州": {
+          "mom_index": 99.9,
+          "yoy_index": 97.3,
+          "ytd_avg_index": 97.1
+        },
+        "长春": {
+          "mom_index": 99.6,
+          "yoy_index": 99.1,
+          "ytd_avg_index": 98.3
+        },
+        "长沙": {
+          "mom_index": 100.0,
+          "yoy_index": 95.9,
+          "ytd_avg_index": 96.4
+        },
+        "青岛": {
+          "mom_index": 100.0,
+          "yoy_index": 98.4,
+          "ytd_avg_index": 97.5
+        },
+        "韶关": {
+          "mom_index": 99.7,
+          "yoy_index": 96.4,
+          "ytd_avg_index": 97.4
+        }
+      },
+      "city_count": 70,
+      "mom_falling": 49,
+      "mom_flat": 6,
+      "mom_rising": 15,
+      "yoy_rising": 5
+    },
+    "origin": "NBS",
+    "period_end": "2026-08-31",
+    "published_date": "2026-09-15",
+    "source_url": "https://www.stats.gov.cn/sj/zxfb/202609/t20260915_1965304.html",
+    "status": "complete",
+    "unit": "index_previous_month_equals_100",
+    "used": {
+      "cities": {
+        "三亚": {
+          "mom_index": 99.7,
+          "yoy_index": 93.2,
+          "ytd_avg_index": 93.0
+        },
+        "上海": {
+          "mom_index": 100.3,
+          "yoy_index": 99.2,
+          "ytd_avg_index": 95.6
+        },
+        "丹东": {
+          "mom_index": 99.6,
+          "yoy_index": 97.3,
+          "ytd_avg_index": 96.6
+        },
+        "乌鲁木齐": {
+          "mom_index": 99.9,
+          "yoy_index": 95.5,
+          "ytd_avg_index": 95.2
+        },
+        "九江": {
+          "mom_index": 99.8,
+          "yoy_index": 92.6,
+          "ytd_avg_index": 92.7
+        },
+        "兰州": {
+          "mom_index": 99.7,
+          "yoy_index": 95.7,
+          "ytd_avg_index": 94.8
+        },
+        "包头": {
+          "mom_index": 99.4,
+          "yoy_index": 92.8,
+          "ytd_avg_index": 92.1
+        },
+        "北京": {
+          "mom_index": 99.9,
+          "yoy_index": 96.5,
+          "ytd_avg_index": 93.4
+        },
+        "北海": {
+          "mom_index": 99.6,
+          "yoy_index": 93.4,
+          "ytd_avg_index": 93.1
+        },
+        "南京": {
+          "mom_index": 99.8,
+          "yoy_index": 95.2,
+          "ytd_avg_index": 93.2
+        },
+        "南充": {
+          "mom_index": 99.6,
+          "yoy_index": 94.5,
+          "ytd_avg_index": 94.6
+        },
+        "南宁": {
+          "mom_index": 99.8,
+          "yoy_index": 93.8,
+          "ytd_avg_index": 93.4
+        },
+        "南昌": {
+          "mom_index": 99.8,
+          "yoy_index": 94.2,
+          "ytd_avg_index": 93.2
+        },
+        "厦门": {
+          "mom_index": 99.4,
+          "yoy_index": 95.2,
+          "ytd_avg_index": 93.8
+        },
+        "合肥": {
+          "mom_index": 100.0,
+          "yoy_index": 96.2,
+          "ytd_avg_index": 93.9
+        },
+        "吉林": {
+          "mom_index": 99.7,
+          "yoy_index": 96.1,
+          "ytd_avg_index": 95.7
+        },
+        "呼和浩特": {
+          "mom_index": 99.4,
+          "yoy_index": 94.1,
+          "ytd_avg_index": 94.2
+        },
+        "哈尔滨": {
+          "mom_index": 99.9,
+          "yoy_index": 95.8,
+          "ytd_avg_index": 95.3
+        },
+        "唐山": {
+          "mom_index": 99.4,
+          "yoy_index": 92.6,
+          "ytd_avg_index": 92.0
+        },
+        "大理": {
+          "mom_index": 99.6,
+          "yoy_index": 93.2,
+          "ytd_avg_index": 93.6
+        },
+        "大连": {
+          "mom_index": 100.0,
+          "yoy_index": 97.1,
+          "ytd_avg_index": 95.8
+        },
+        "天津": {
+          "mom_index": 99.5,
+          "yoy_index": 94.4,
+          "ytd_avg_index": 94.1
+        },
+        "太原": {
+          "mom_index": 99.4,
+          "yoy_index": 94.5,
+          "ytd_avg_index": 95.2
+        },
+        "宁波": {
+          "mom_index": 100.0,
+          "yoy_index": 97.3,
+          "ytd_avg_index": 94.8
+        },
+        "安庆": {
+          "mom_index": 99.7,
+          "yoy_index": 95.8,
+          "ytd_avg_index": 94.6
+        },
+        "宜昌": {
+          "mom_index": 99.8,
+          "yoy_index": 96.3,
+          "ytd_avg_index": 95.7
+        },
+        "岳阳": {
+          "mom_index": 99.5,
+          "yoy_index": 94.0,
+          "ytd_avg_index": 93.7
+        },
+        "常德": {
+          "mom_index": 99.5,
+          "yoy_index": 93.2,
+          "ytd_avg_index": 92.4
+        },
+        "平顶山": {
+          "mom_index": 99.7,
+          "yoy_index": 92.6,
+          "ytd_avg_index": 92.6
+        },
+        "广州": {
+          "mom_index": 100.0,
+          "yoy_index": 96.2,
+          "ytd_avg_index": 93.2
+        },
+        "徐州": {
+          "mom_index": 99.8,
+          "yoy_index": 96.0,
+          "ytd_avg_index": 92.7
+        },
+        "惠州": {
+          "mom_index": 99.9,
+          "yoy_index": 94.8,
+          "ytd_avg_index": 93.7
+        },
+        "成都": {
+          "mom_index": 99.6,
+          "yoy_index": 94.2,
+          "ytd_avg_index": 94.1
+        },
+        "扬州": {
+          "mom_index": 100.2,
+          "yoy_index": 92.9,
+          "ytd_avg_index": 92.8
+        },
+        "无锡": {
+          "mom_index": 99.9,
+          "yoy_index": 96.1,
+          "ytd_avg_index": 94.5
+        },
+        "昆明": {
+          "mom_index": 99.6,
+          "yoy_index": 93.1,
+          "ytd_avg_index": 92.9
+        },
+        "杭州": {
+          "mom_index": 99.8,
+          "yoy_index": 96.5,
+          "ytd_avg_index": 95.7
+        },
+        "桂林": {
+          "mom_index": 99.7,
+          "yoy_index": 93.5,
+          "ytd_avg_index": 93.0
+        },
+        "武汉": {
+          "mom_index": 99.8,
+          "yoy_index": 93.7,
+          "ytd_avg_index": 91.5
+        },
+        "沈阳": {
+          "mom_index": 100.0,
+          "yoy_index": 99.1,
+          "ytd_avg_index": 97.8
+        },
+        "泉州": {
+          "mom_index": 99.5,
+          "yoy_index": 95.6,
+          "ytd_avg_index": 95.6
+        },
+        "泸州": {
+          "mom_index": 99.4,
+          "yoy_index": 91.0,
+          "ytd_avg_index": 91.3
+        },
+        "洛阳": {
+          "mom_index": 99.3,
+          "yoy_index": 93.8,
+          "ytd_avg_index": 94.7
+        },
+        "济南": {
+          "mom_index": 99.4,
+          "yoy_index": 94.8,
+          "ytd_avg_index": 94.7
+        },
+        "济宁": {
+          "mom_index": 99.6,
+          "yoy_index": 95.0,
+          "ytd_avg_index": 93.7
+        },
+        "海口": {
+          "mom_index": 99.0,
+          "yoy_index": 92.7,
+          "ytd_avg_index": 93.4
+        },
+        "深圳": {
+          "mom_index": 100.1,
+          "yoy_index": 97.3,
+          "ytd_avg_index": 94.5
+        },
+        "温州": {
+          "mom_index": 99.8,
+          "yoy_index": 94.7,
+          "ytd_avg_index": 93.8
+        },
+        "湛江": {
+          "mom_index": 99.3,
+          "yoy_index": 93.6,
+          "ytd_avg_index": 94.2
+        },
+        "烟台": {
+          "mom_index": 99.8,
+          "yoy_index": 95.1,
+          "ytd_avg_index": 93.8
+        },
+        "牡丹江": {
+          "mom_index": 99.8,
+          "yoy_index": 97.2,
+          "ytd_avg_index": 97.2
+        },
+        "石家庄": {
+          "mom_index": 99.7,
+          "yoy_index": 95.1,
+          "ytd_avg_index": 94.5
+        },
+        "福州": {
+          "mom_index": 99.8,
+          "yoy_index": 95.2,
+          "ytd_avg_index": 94.4
+        },
+        "秦皇岛": {
+          "mom_index": 99.5,
+          "yoy_index": 92.9,
+          "ytd_avg_index": 92.2
+        },
+        "蚌埠": {
+          "mom_index": 99.6,
+          "yoy_index": 95.8,
+          "ytd_avg_index": 95.2
+        },
+        "襄阳": {
+          "mom_index": 99.6,
+          "yoy_index": 93.3,
+          "ytd_avg_index": 92.9
+        },
+        "西宁": {
+          "mom_index": 99.6,
+          "yoy_index": 97.1,
+          "ytd_avg_index": 97.9
+        },
+        "西安": {
+          "mom_index": 99.7,
+          "yoy_index": 94.0,
+          "ytd_avg_index": 92.1
+        },
+        "贵阳": {
+          "mom_index": 99.5,
+          "yoy_index": 94.8,
+          "ytd_avg_index": 94.6
+        },
+        "赣州": {
+          "mom_index": 99.4,
+          "yoy_index": 93.7,
+          "ytd_avg_index": 93.5
+        },
+        "遵义": {
+          "mom_index": 99.7,
+          "yoy_index": 94.5,
+          "ytd_avg_index": 94.7
+        },
+        "郑州": {
+          "mom_index": 99.7,
+          "yoy_index": 94.7,
+          "ytd_avg_index": 92.7
+        },
+        "重庆": {
+          "mom_index": 99.6,
+          "yoy_index": 95.9,
+          "ytd_avg_index": 94.7
+        },
+        "金华": {
+          "mom_index": 99.7,
+          "yoy_index": 94.7,
+          "ytd_avg_index": 94.2
+        },
+        "银川": {
+          "mom_index": 99.8,
+          "yoy_index": 94.4,
+          "ytd_avg_index": 93.7
+        },
+        "锦州": {
+          "mom_index": 99.7,
+          "yoy_index": 97.1,
+          "ytd_avg_index": 96.5
+        },
+        "长春": {
+          "mom_index": 99.6,
+          "yoy_index": 96.2,
+          "ytd_avg_index": 96.0
+        },
+        "长沙": {
+          "mom_index": 99.8,
+          "yoy_index": 94.0,
+          "ytd_avg_index": 92.3
+        },
+        "青岛": {
+          "mom_index": 99.8,
+          "yoy_index": 94.6,
+          "ytd_avg_index": 93.6
+        },
+        "韶关": {
+          "mom_index": 99.6,
+          "yoy_index": 94.0,
+          "ytd_avg_index": 94.6
+        }
+      },
+      "city_count": 70,
+      "mom_falling": 62,
+      "mom_flat": 5,
+      "mom_rising": 3,
+      "yoy_rising": 0
+    }
+  },
+  "risk_alert_role": "context_only_no_independent_systemic_family",
+  "schema": "fcews.nbs_property.v1",
+  "status": "complete"
+}
