@@ -2,7 +2,7 @@
 title: FCEWS Project Operation Log
 kind: log
 status: active
-updated: 2026-11-06
+updated: 2026-11-09
 summary: Append-only developer and agent actions; runtime checkpoints are stored separately.
 ---
 
@@ -71,3 +71,7 @@ While staging [PR #13](https://github.com/lican1213/financial-crisis-early-warni
 ## 2026-11-06 — merged CI and live source readback
 
 [PR #13](https://github.com/lican1213/financial-crisis-early-warning/pull/13) merged as [a7ea416](https://github.com/lican1213/financial-crisis-early-warning/commit/a7ea4167749e903e370b5a5996e820b3b54a4a47). [PR validation 42183639758](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42183639758), [main test 42183769730](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42183769730) and [main official-source check 42183769689](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42183769689) all completed SUCCESS. GitHub main health source record had four live families, recovered official FRED TGCR through NY Fed, zero unresolved source errors; ChatGPT feed remained zero candidates, explicit no notification. A push-triggered passing run is not proof of an hourly schedule SLA. [Handoff](operations/HANDOFF.md) records the remaining work and exact links.
+
+
+## 2026-11-09 — paused weekly report -> structured leading research migration
+Opened [Issue #14](https://github.com/lican1213/financial-crisis-early-warning/issues/14) and branch `feature/monitor-research-gates-20261109`. Implemented [official US labor/curve/IG context and primary release ledger](../src/fcews/research.py), [red-team regressions](../tests/test_research.py), [separate daily research workflow](../.github/workflows/research.yml), and removed outdated Sunday alert scheduling text. Added a second best-effort GitHub cron check slot and pull/rebase before data writes. Preserved four-family alert policy, latest 2026-11-08 historical six-module orange/70 baseline, and `model_comparability=not_calibrated`. Note: GitHub CI, live collector run, and external independent heartbeat require **separate actual evidence readback**; do not mark DONE from these commits alone.
