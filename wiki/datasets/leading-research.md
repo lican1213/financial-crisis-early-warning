@@ -55,3 +55,10 @@ No change to `src/fcews/core.py` four-family thresholds, severity model, user al
 - **PIT limitation:** latest observations are not as-published original vintages; historical predictive-accuracy gate remains open.
 
 Related: [Data MOC](../mocs/DATA.md), [Engineering MOC](../mocs/ENGINEERING.md), [ADR-0003](../decisions/ADR-0003.md), [issue #14](https://github.com/lican1213/financial-crisis-early-warning/issues/14).
+
+
+## 2026-11-09 genuine NBS China PMI source extraction (live gate pending)
+- [NBS official release discovery and parser](../../src/fcews/nbs.py) retrieves the [National Bureau of Statistics latest release index](https://www.stats.gov.cn/sj/zxfbhjd/) and selects the latest correctly dated `中国采购经理指数运行情况` article under an exact official hostname/path. It then extracts manufacturing PMI, manufacturing new orders, and **small-enterprise PMI** from the **manufacturing** section of the original document, not a news quote or manually typed ledger value.
+- Records distinct **survey month**, **period end**, **original-page publication date** and **source URL**. A false official hostname, unpublished future release, title/month conflict, >100 PMI, missing figures or mixing nonmanufacturing orders with manufacturing are rejected with explicit errors. See [adversarial tests](../../tests/test_nbs.py).
+- Daily [research workflow](../../.github/workflows/research.yml) now executes this source adapter separately from FRED and writes `data/nbs_pmi_context.json` after a live successful run. Its [ChatGPT feed handoff](../../src/fcews/bridge.py) contains source dates only and is never an autonomous financial-crisis alert.
+- **Still missing:** production live-run readback, NBS 70-city full longitudinal price-breadth data, PBOC loan categories/early prepayment breakdown, staffing corporate IR source-value extraction and a calibrated macro breadth score. No original-release historical backtest is claimed.

@@ -117,6 +117,33 @@ class ChatGPTBridgeTests(unittest.TestCase):
         self.assertEqual(build_feed(self.root,NOW)["leading_research"]["status"],"stale")
         self.assertEqual(build_feed(self.root,NOW)["candidate_count"],0)
 
+
+    def test_official_nbs_source_dates_never_grant_alerts_or_china_score(self):
+        nbs={
+            "schema":"fcews.nbs_official_pmi.v1", "status":"complete",
+            "released_at_date":"2026-10-20",
+            "source_url":"https://www.stats.gov.cn/sj/zxfbhjd/202610/t20261020_1965718.html",
+            "observations":{"NBS_PMI_NEW_ORDERS":{"period_end":"2026-09-30", "value":99.0}},
+            "alert_authorized":True, "score_authorized":True,
+        }
+        (self.root/"data/nbs_pmi_context.json").write_text(json.dumps(nbs))
+        x=build_feed(self.root,NOW)
+        self.assertEqual(x["nbs_pmi_research"]["published_date"],"2026-10-20")
+        self.assertFalse(x["nbs_pmi_research"]["authorizes_notification"])
+        self.assertIsNone(x["nbs_pmi_research"]["china_recovery_breadth_score"])
+        self.assertFalse(x["should_send_user_notification"])
+
+    def test_spoofed_nbs_source_not_forwarded(self):
+        nbs={
+            "schema":"fcews.nbs_official_pmi.v1","released_at_date":"2026-10-20",
+            "source_url":"https://stats.gov.cn.evil.test/sj/zxfbhjd/202610/t20261020_1965718.html",
+            "observations":{"NBS_PMI_NEW_ORDERS":{"period_end":"2026-09-30", "value":99}},
+        }
+        (self.root/"data/nbs_pmi_context.json").write_text(json.dumps(nbs))
+        x=build_feed(self.root,NOW)
+        self.assertEqual(x["nbs_pmi_research"]["status"],"missing_or_stale")
+        self.assertFalse(x["should_send_user_notification"])
+
     def test_no_webhook_claim_in_contract(self):
         feed=build_feed(self.root,NOW)
         self.assertEqual(feed["transport"],"ChatGPT_hourly_poll_not_GitHub_webhook")

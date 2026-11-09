@@ -75,3 +75,7 @@ For project rationale read [engineering MOC](mocs/ENGINEERING.md).
 ## 2026-11-09 follow-up acceptance gate
 - [PR #16 read-only bridge](https://github.com/lican1213/financial-crisis-early-warning/pull/16): merged; actual feed readback fresh, six US research series and no market alert. [CI 175 tests + 31 wiki](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42547919361) passed.
 - **Still P1 #14:** source-specific NBS/PBOC (housing/credit) and recruiter company original-document numeric readback, publication-vintage verification and objective scoring gate. **Still P0 #1:** truly independent scheduler/heartbeat. No claims of full coverage until each acceptance is real.
+
+
+## 2026-11-09 NBS first live source candidate
+[Issue #14](https://github.com/lican1213/financial-crisis-early-warning/issues/14): NBS manufacturing PMI/new orders/small-firm adapter under gate; must be verified by main Actions after merge. Other China/firm original releases and the actual national recovery breadth scoring method remain open.
