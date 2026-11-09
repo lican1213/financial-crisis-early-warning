@@ -6,6 +6,8 @@ and earnings/profit from restructuring cannot masquerade as hiring demand.
 """
 from __future__ import annotations
 import argparse
+import hashlib
+import io
 import json
 import math
 import re
@@ -13,6 +15,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
+from urllib.request import Request, urlopen
 
 from .cli import ROOT, write_if_changed
 from .collect import read_url
@@ -40,9 +43,9 @@ RELEASES={
         "published":"2026-10-12","period_end":"2026-09-30","basis":"like_for_like_net_fees_yoy_pct",
         "label":"like-for-like net fees", "roots":("haysplc.com",)},
     "PAGEGROUP":{
-        "url":"https://www.londonstockexchange.com/en/news/article/PAGE/third-quarter-2026-trading-update/17832048",
+        "url":"https://investors.michaelpage.com/~/media/Files/P/page-v2/ir/result-reports/2026/q3-2026-trading-statement.pdf",
         "published":"2026-10-13","period_end":"2026-09-30","basis":"constant_currency_gross_profit_yoy_pct",
-        "label":"constant currency gross profit", "roots":("londonstockexchange.com",)},
+        "label":"constant currency gross profit", "roots":("michaelpage.com",)},
 }
 # Scripts must NOT replace original statements with unverified press estimates.
 PATTERNS={
@@ -74,13 +77,41 @@ def official_host(url: str, company: str) -> bool:
         return False
 
 
+def fetch_official_pdf(url: str, timeout: float = 12) -> tuple[str, str]:
+    """Read issuer original PDF, not the LSE JS-shell landing page.
+
+    Enforce a bounded download, HTTPS official host (also after redirect),
+    a PDF magic header, a text-bearing document, and original-document hash.
+    """
+    if url != RELEASES["PAGEGROUP"]["url"] or not official_host(url, "PAGEGROUP"):
+        raise ValueError("not exact authorised Michael Page investor PDF")
+    req=Request(url, headers={
+        "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/123.0.0.0 Safari/537.36",
+        "Accept":"application/pdf", "X-Project-Source":"FCEWS public IR research",
+    })
+    with urlopen(req, timeout=timeout) as response:
+        if response.geturl() != url:
+            raise ValueError("issuer PDF redirect not pinned to original source")
+        raw=response.read(2_000_001)
+    if not raw.startswith(b"%PDF-") or len(raw)>2_000_000:
+        raise ValueError("invalid/oversized original issuer PDF")
+    from pypdf import PdfReader
+    pdf=PdfReader(io.BytesIO(raw))
+    if pdf.is_encrypted or not 1<=len(pdf.pages)<=10:
+        raise ValueError("encrypted/unexpected issuer PDF page count")
+    text="\n".join((page.extract_text() or "") for page in pdf.pages)
+    if len(text)<150:
+        raise ValueError("issuer PDF contains no accessible text")
+    return text, hashlib.sha256(raw).hexdigest()
+
+
 def visible_html(raw: str)->str:
     p=VisibleText()
     p.feed(raw)
     return re.sub(r"\s+"," "," ".join(p.parts))
 
 
-def extract(code: str,html: str,today: date,url: str|None=None)->dict:
+def extract(code: str,html: str,today: date,url: str|None=None,source_sha256: str|None=None)->dict:
     if code not in RELEASES:
         raise ValueError("unregistered global recruiter")
     release=RELEASES[code]
@@ -136,7 +167,8 @@ def extract(code: str,html: str,today: date,url: str|None=None)->dict:
         "company":code,"period_end":period.isoformat(),
         "published_date":published.isoformat(),
         "publication_date_in_document":verified_date,
-        "source_url":url,"origin":"issuer_IR_or_primary_exchange_RNS",
+        "source_url":url,"origin":"original_issuer_IR_pdf" if code=="PAGEGROUP" else "issuer_IR",
+        "document_sha256":source_sha256,
         "demand_measure":release["basis"],"value_pct":value,
         "measurement_label":release["label"],"effects_to_review":caution_terms,
         "other_reported_demand_measures":"not_extracted_unverified",
@@ -152,11 +184,25 @@ def collect(now:datetime|None=None,fetcher=read_url)->dict:
     today=now.astimezone(timezone.utc).date()
     accepted,errors={},{}
     with ThreadPoolExecutor(max_workers=5) as pool:
-        futures={pool.submit(fetcher,RELEASES[code]["url"],12):code for code in RELEASES}
+        futures={}
+        for code in RELEASES:
+            url=RELEASES[code]["url"]
+            # In tests, a supplied fake fetcher acts as the controlled HTML/text
+            # fixture. Production fetches the one actual issuer PDF.
+            if code=="PAGEGROUP" and fetcher is read_url:
+                future=pool.submit(fetch_official_pdf,url,12)
+            else:
+                future=pool.submit(fetcher,url,12)
+            futures[future]=code
         for fut in as_completed(futures):
             code=futures[fut]
             try:
-                accepted[code]=extract(code,fut.result(),today)
+                fetched=fut.result()
+                if code=="PAGEGROUP" and fetcher is read_url:
+                    doc, sha=fetched
+                else:
+                    doc, sha=fetched, None
+                accepted[code]=extract(code,doc,today,source_sha256=sha)
             except (OSError,UnicodeError,ValueError,KeyError,TypeError) as exc:
                 errors[code]=type(exc).__name__+": "+str(exc)[:180]
     complete=len(accepted)==5
