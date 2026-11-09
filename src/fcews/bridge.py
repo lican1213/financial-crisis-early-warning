@@ -124,7 +124,8 @@ def property_summary(context: dict, now: datetime) -> dict:
 
 
 def staffing_summary(context: dict, now: datetime) -> dict:
-    """Only source-validated demand directions, never profits or uncalibrated scores."""
+    """Only official issuer demand directions, never profits or uncalibrated scores."""
+    from .staffing_ir import RELEASES
     empty = {
         "status":"missing_or_stale", "available_issuers":[], "missing_issuers":[],
         "demand_directions":{}, "positive_fee_breadth_pct":None,
@@ -142,7 +143,10 @@ def staffing_summary(context: dict, now: datetime) -> dict:
         allowed={"RANDSTAD","MANPOWERGROUP","KORN_FERRY","HAYS","PAGEGROUP"}
         verified={}
         for company,row in reports.items():
-            if company not in allowed or not isinstance(row,dict) or row.get("source_status")!="issuer_document_parsed":
+            if (company not in allowed or not isinstance(row,dict)
+                or row.get("source_status")!="issuer_document_parsed"
+                or row.get("source_url")!=RELEASES[company]["url"]
+                or row.get("demand_measure")!=RELEASES[company]["basis"]):
                 continue
             reported=datetime.fromisoformat(row["published_date"]).date()
             if not 0<=(now.date()-reported).days<=120:
