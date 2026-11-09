@@ -171,6 +171,47 @@ def staffing_summary(context: dict, now: datetime) -> dict:
         return empty
 
 
+
+def pboc_credit_summary(context: dict, now: datetime) -> dict:
+    """Official government republication evidence, NEVER a calibrated recession score."""
+    from .pboc_credit import FINANCIAL, CREDIT
+    empty = {
+        "status": "missing_or_stale", "report_period": None,
+        "mortgage_balance_yoy_pct": None, "mortgage_ytd_net_change_trillion_cny": None,
+        "household_mlt_ytd_flow_100m_cny": None, "government_bond_share_tsf_pct": None,
+        "original_first_published_at": None, "source_urls": {},
+        "housing_turning_point_confirmed": False,
+        "risk_alert_authorized": False, "china_recovery_breadth_score": None,
+    }
+    try:
+        if not isinstance(context,dict) or context.get("schema")!="fcews.pboc_official_republication.v1":
+            return empty
+        asof=datetime.fromisoformat(context["as_of_date_utc"]).date()
+        period=context["period_end"]
+        a,b=context["financial_statistics"],context["loan_allocation"]
+        if (context.get("status")!="complete"
+            or not 0<=(now.date()-asof).days<=3
+            or a["source_url"] != FINANCIAL or b["source_url"] != CREDIT
+            or a["period_end"]!=period or b["period_end"]!=period
+            or a["publication_provenance"]!="official_shanghai_government_republication_of_PBOC_not_original_vintage"
+            or b["publication_provenance"]!="official_shanghai_government_republication_of_PBOC_not_original_vintage"):
+            return empty
+        return {
+            "status":"official_government_republication_not_original_vintage",
+            "report_period":period,
+            "mortgage_balance_yoy_pct":b["individual_mortgage_balance_yoy_pct"],
+            "mortgage_ytd_net_change_trillion_cny":b["individual_mortgage_ytd_net_change_trillion_cny"],
+            "household_mlt_ytd_flow_100m_cny":a["household_medium_long_ytd_flow_100m_cny"],
+            "government_bond_share_tsf_pct":a["gov_bond_fraction_of_tsf_pct"],
+            "original_first_published_at":None,
+            "source_urls":{"mortgage":CREDIT,"financing":FINANCIAL},
+            "housing_turning_point_confirmed":False,
+            "risk_alert_authorized":False,"china_recovery_breadth_score":None,
+        }
+    except (ValueError,TypeError,KeyError):
+        return empty
+
+
 def build_feed(root: Path, now: datetime | None = None) -> dict:
     now = now or datetime.now(timezone.utc)
     if now.tzinfo is None:
@@ -184,6 +225,7 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
     nbs_pmi = read_json(root/"data/nbs_pmi_context.json", {})
     nbs_property = read_json(root/"data/nbs_property_context.json", {})
     staffing_ir = read_json(root/"data/staffing_ir_context.json", {})
+    pboc_credit = read_json(root/"data/pboc_credit_context.json", {})
     outbox = read_json(root/"data/outbox.json", {"pending":[],"delivered":[]})
     candidates = []
     seen = set()
@@ -240,6 +282,7 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
         "nbs_pmi_research": nbs_pmi_summary(nbs_pmi, now),
         "nbs_property_research": property_summary(nbs_property, now),
         "staffing_issuer_research": staffing_summary(staffing_ir, now),
+        "pboc_credit_research": pboc_credit_summary(pboc_credit, now),
         "last_evidence_observation_dates": {k:v["date"] for k,v in source_summary.items() if v.get("date")},
         "source_url": "https://github.com/"+PROJECT,
         "contract": {
