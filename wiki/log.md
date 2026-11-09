@@ -99,3 +99,7 @@ Added [NBS article discovery/section parser](../src/fcews/nbs.py) and [negative 
 
 ## 2026-11-09 — full official housing + five-issuer demand adapters (PR staging)
 Extended [research pipeline](../.github/workflows/research.yml) with [70-city full price/developer data adapter](../src/fcews/nbs_property.py) and [five primary IR recruiting adapters](../src/fcews/staffing_ir.py), complete with [property counterexamples](../tests/test_nbs_property.py), [staffing counterexamples](../tests/test_staffing_ir.py), read-only feed and missingness isolation. Retain original NBS source dates, split monthly price breadth from cumulative year-over-year demand, and never treat developer mortgage receipts as PBOC household mortgages. **Remote CI and main live source readback have separate gates; this staging entry does not claim success until proven.**
+
+
+## 2026-11-09 — production failure-led 70-city and issuer-IR source repairs
+Initial [main research Action 42605458287](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42605458287) failed operationally while saving valid US, NBS PMI and three company releases. Live failures: official NBS 70-city HTML over generic 1MB cap; Manpower investor site HTTP403; Michael Page original LSE release failed metric extraction. Focused repair branch `fix/live-70city-issuer-v2-20261109` added bounded dedicated NBS HTML reader, a corporate Manpower original alternate and a page-gross-fee regex plus tests. CI/live acceptance follow separately; no fabricated missing data and no market-crisis alert.
