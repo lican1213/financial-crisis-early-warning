@@ -34,6 +34,7 @@ class WorkflowSafetyTests(unittest.TestCase):
         )
         self.assertIn("id: property", content)
         self.assertIn("id: staffing", content)
+        self.assertIn("git add data/staffing_last_verified.json", content)
         self.assertIn("if: always()", content)
         self.assertIn("steps.property.outcome == 'failure'", content)
         self.assertIn("steps.staffing.outcome == 'failure'", content)
