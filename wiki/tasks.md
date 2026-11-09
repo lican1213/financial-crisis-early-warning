@@ -70,3 +70,8 @@ For project rationale read [engineering MOC](mocs/ENGINEERING.md).
 ## 2026-11-09 production verification
 - [Issue #14](https://github.com/lican1213/financial-crisis-early-warning/issues/14): base PR #15 merged; official US research 6/6 live source-dated records, regression 172 tests and MOC 31 pages passed. Research bridge follow-up and full China/company original-document ingestion need separate gates; do not claim complete automated China scores.
 - [Issue #1](https://github.com/lican1213/financial-crisis-early-warning/issues/1): GitHub twice-hourly schedule mitigation deployed, but independent heartbeat/service-level guarantee not completed. Remains open.
+
+
+## 2026-11-09 follow-up acceptance gate
+- [PR #16 read-only bridge](https://github.com/lican1213/financial-crisis-early-warning/pull/16): merged; actual feed readback fresh, six US research series and no market alert. [CI 175 tests + 31 wiki](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42547919361) passed.
+- **Still P1 #14:** source-specific NBS/PBOC (housing/credit) and recruiter company original-document numeric readback, publication-vintage verification and objective scoring gate. **Still P0 #1:** truly independent scheduler/heartbeat. No claims of full coverage until each acceptance is real.
