@@ -1,9 +1,12 @@
 """Issuer IR adversarial tests: measure definition, quarter and spoofed source."""
 import unittest
+import json
+import tempfile
+from pathlib import Path
 from unittest.mock import patch
 from datetime import date, datetime,timezone
 
-from fcews.staffing_ir import RELEASES, collect,extract,official_host,fetch_official_pdf
+from fcews.staffing_ir import RELEASES, collect,extract,official_host,fetch_official_pdf,publish
 
 NOW=date(2026,11,9)
 
@@ -142,6 +145,40 @@ class StaffingIRTests(unittest.TestCase):
         self.assertEqual(result["value_pct"],1.5)
         self.assertEqual(result["origin"],"original_issuer_IR_pdf")
         self.assertNotIn("hiring_volume",result["demand_measure"])
+
+
+    def test_last_fully_verified_quarter_survives_transient_network_outage(self):
+        mapping={RELEASES[c]["url"]:report(c) for c in RELEASES}
+        now=datetime(2026,11,9,tzinfo=timezone.utc)
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            first=publish(root,now,lambda url,timeout:mapping[url])
+            self.assertEqual(first["status"],"complete")
+            last=(root/"data/staffing_last_verified.json").read_bytes()
+            def partial(url,timeout):
+                if url==RELEASES["MANPOWERGROUP"]["url"]:
+                    raise TimeoutError("issuer connection temporarily unavailable")
+                return mapping[url]
+            second=publish(root,now,partial)
+            self.assertEqual(second["status"],"partial")
+            self.assertIn("MANPOWERGROUP",second["missing"])
+            self.assertIsNone(second["positive_fee_revenue_direction_breadth_pct"])
+            self.assertEqual(last,(root/"data/staffing_last_verified.json").read_bytes())
+            self.assertEqual(json.loads(last)["positive_fee_revenue_direction_breadth_pct"],80)
+            self.assertEqual(json.loads((root/"data/staffing_ir_context.json").read_text())["status"],"partial")
+
+    def test_transient_issuer_timeout_retries_at_most_once(self):
+        mapping={RELEASES[c]["url"]:report(c) for c in RELEASES}
+        calls={}
+        def sometimes(url,timeout):
+            calls[url]=calls.get(url,0)+1
+            if url==RELEASES["MANPOWERGROUP"]["url"] and calls[url]==1:
+                raise TimeoutError("first network attempt")
+            return mapping[url]
+        got=collect(datetime(2026,11,9,tzinfo=timezone.utc),sometimes)
+        self.assertEqual(got["status"],"complete")
+        self.assertEqual(calls[RELEASES["MANPOWERGROUP"]["url"]],2)
+        self.assertEqual(got["positive_fee_revenue_direction_breadth_pct"],80)
 
     def test_earnings_only_cannot_pass(self):
         raw="<html>13 October 2026 THIRD QUARTER 2026 TRADING UPDATE "
