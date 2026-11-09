@@ -2,7 +2,7 @@
 title: MOC — Data Lineage and Interfaces
 kind: moc
 status: active
-updated: 2026-11-06
+updated: 2026-11-09
 summary: Navigation map from risk claims to source, units, publication lag and adapter.
 ---
 
@@ -12,6 +12,7 @@ summary: Navigation map from risk claims to source, units, publication lag and a
 - [FRED adapter contract](../datasets/fred.md): series IDs, percent-vs-bp, revisions.
 - [Planned OFR/MOVE/repo/energy interfaces](../datasets/official-pending.md): sources not yet operational.
 - [Event-evidence schema](../datasets/events.md): bank/fund/sovereign/energy cases.
+- [Source-dated leading research and anti-lookahead evidence ledger](../datasets/leading-research.md): staffing, rates, China price/volume/mortgage and credit, no spoofed releases.
 - [Point-in-time interpretation](../concepts/point-in-time.md): observation date ≠ availability date.
 - [Source-provenance method](../sources/llm-wiki-methods.md): compile once with citations, revise transparently.
 
