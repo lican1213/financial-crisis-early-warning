@@ -65,3 +65,8 @@ For project rationale read [engineering MOC](mocs/ENGINEERING.md).
 - [#2 Data feeds](https://github.com/lican1213/financial-crisis-early-warning/issues/2): fallback SOFR/TGCR errors separated into recovered/unresolved, four-family live-health requirement and weekday source-age diagnostics. Licensed ICE MOVE, Treasury depth and full private-credit sources remain open.
 - [#7 Verified events](https://github.com/lican1213/financial-crisis-early-warning/issues/7): accept known official regulator hosts in Brazil, Paraguay and Serbia (and other named authorities) under the existing document-hash/reviewer gate; forged domains and malformed URLs tested. **No newly authenticated real cross-market event has been promoted**.
 - [#8 Weekly baseline](https://github.com/lican1213/financial-crisis-early-warning/issues/8): baseline test no longer hardcodes historic 66/100 once the 2026-11-01 six-module baseline became orange 68/100. Technical green remains incomparable and no ChatGPT notification receipt is claimed.
+
+
+## 2026-11-09 production verification
+- [Issue #14](https://github.com/lican1213/financial-crisis-early-warning/issues/14): base PR #15 merged; official US research 6/6 live source-dated records, regression 172 tests and MOC 31 pages passed. Research bridge follow-up and full China/company original-document ingestion need separate gates; do not claim complete automated China scores.
+- [Issue #1](https://github.com/lican1213/financial-crisis-early-warning/issues/1): GitHub twice-hourly schedule mitigation deployed, but independent heartbeat/service-level guarantee not completed. Remains open.
