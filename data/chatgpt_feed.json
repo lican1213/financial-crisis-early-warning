@@ -10,7 +10,7 @@
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "75c7694a76be1262af94ea927eda3a6d4465a5a946acdc97e6d3c3aa167eb9f9",
+  "fingerprint_sha256": "b14b20d12a2821bdc18b851591ce5972fd0844efa8c77670e303f6045e450346",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-10-30",
@@ -85,6 +85,7 @@
       "HAYS",
       "KORN_FERRY",
       "MANPOWERGROUP",
+      "PAGEGROUP",
       "RANDSTAD"
     ],
     "demand_directions": {
@@ -106,6 +107,12 @@
         "period_end": "2026-09-30",
         "source_url": "https://www.manpowergroup.com/en/news-releases/news/manpowergroup-reports-3rd-quarter-2026-results"
       },
+      "PAGEGROUP": {
+        "basis": "constant_currency_gross_profit_yoy_pct",
+        "direction": "positive",
+        "period_end": "2026-09-30",
+        "source_url": "https://investors.michaelpage.com/~/media/Files/P/page-v2/ir/result-reports/2026/q3-2026-trading-statement.pdf"
+      },
       "RANDSTAD": {
         "basis": "organic_revenue_yoy_pct",
         "direction": "positive",
@@ -113,13 +120,11 @@
         "source_url": "https://www.randstad.com/press/2026/q3-2026-continued-top-line-momentum-drives-double-digit-profit-growth/"
       }
     },
-    "missing_issuers": [
-      "PAGEGROUP"
-    ],
-    "positive_fee_breadth_pct": null,
+    "missing_issuers": [],
+    "positive_fee_breadth_pct": 80.0,
     "risk_alert_authorized": false,
     "staffing_global_score": null,
-    "status": "partial"
+    "status": "complete"
   },
   "technical_model_comparable_to_weekly": false,
   "transport": "ChatGPT_hourly_poll_not_GitHub_webhook",
