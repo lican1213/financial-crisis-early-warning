@@ -92,3 +92,5 @@ For project rationale read [engineering MOC](mocs/ENGINEERING.md).
 
 ## 2026-11-09 property/IR expansion acceptance
 - [#14](https://github.com/lican1213/financial-crisis-early-warning/issues/14): 70-city table coverage, NBS developer sales/funding and five issuer IR original-source automation staged. CI fixture pass is **not** source-live acceptance. Missing PBOC personal mortgage lending, China lending/private-credit impulse, complete staffing actual hiring/contract volume and index scoring remain as explicit acceptance gaps. Keep issue OPEN until verified.
+
+- [#14](https://github.com/lican1213/financial-crisis-early-warning/issues/14) live acceptance: PR #19 code merged but [research Action 42605458287](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42605458287) failed 70-city page over 1MB generic cap; 3/5 recruiter originals verified, 2 unavailable. Transport repair branch `fix/live-70city-issuer-v2-20261109` staged; do not mark full source coverage complete until original government and primary issuer readback passes.
