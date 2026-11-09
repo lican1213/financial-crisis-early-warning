@@ -10,7 +10,7 @@
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "75ef52ab452e1d145973ac7ccb0ed6ad65edb7c97a3607f034c14f9d66b987a3",
+  "fingerprint_sha256": "75c7694a76be1262af94ea927eda3a6d4465a5a946acdc97e6d3c3aa167eb9f9",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-10-30",
@@ -59,14 +59,22 @@
   },
   "nbs_property_research": {
     "china_recovery_breadth_score": null,
-    "directional_signals": null,
+    "developer_source": "https://www.stats.gov.cn/sj/zxfb/202610/t20261019_1965615.html",
+    "directional_signals": {
+      "developer_mortgage_receipts_yoy_pp_change": 0.3,
+      "new_price_rising_city_count_change": 2,
+      "residential_sales_cumulative_yoy_pp_change": -0.8,
+      "unsold_area_yoy_pp_change": -0.4,
+      "used_price_rising_city_count_change": 6
+    },
     "needs_independent_pboc_mortgage_crosscheck": true,
-    "new_city_rising_count": null,
+    "new_city_rising_count": 17,
+    "new_price_source": "https://www.stats.gov.cn/sj/zxfb/202610/t20261019_1965609.html",
     "risk_alert_authorized": false,
-    "source_period": null,
-    "status": "missing_or_stale",
+    "source_period": "2026-09-30",
+    "status": "source_snapshot_available_not_original_vintage",
     "turning_point_confirmed": false,
-    "used_city_rising_count": null
+    "used_city_rising_count": 9
   },
   "notification_decision": "ChatGPT_independent_primary_source_and_four_gate_review_required",
   "schema": "fcews.chatgpt.readonly.v1",
@@ -76,6 +84,7 @@
     "available_issuers": [
       "HAYS",
       "KORN_FERRY",
+      "MANPOWERGROUP",
       "RANDSTAD"
     ],
     "demand_directions": {
@@ -91,6 +100,12 @@
         "period_end": "2026-07-31",
         "source_url": "https://ir.kornferry.com/news-events/press-releases/detail/733/korn-ferry-announces-first-quarter-fiscal-2027-results-of-operations"
       },
+      "MANPOWERGROUP": {
+        "basis": "organic_constant_currency_revenue_yoy_pct",
+        "direction": "positive",
+        "period_end": "2026-09-30",
+        "source_url": "https://www.manpowergroup.com/en/news-releases/news/manpowergroup-reports-3rd-quarter-2026-results"
+      },
       "RANDSTAD": {
         "basis": "organic_revenue_yoy_pct",
         "direction": "positive",
@@ -99,7 +114,6 @@
       }
     },
     "missing_issuers": [
-      "MANPOWERGROUP",
       "PAGEGROUP"
     ],
     "positive_fee_breadth_pct": null,
