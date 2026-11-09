@@ -1,7 +1,9 @@
 {
   "as_of_date_utc": "2026-11-09",
   "breadth_definition": "simple 5-issuer positive comparable direction share, NOT demand-volume weighting or forecast-calibrated",
-  "errors": {},
+  "errors": {
+    "MANPOWERGROUP": "TimeoutError: The read operation timed out"
+  },
   "issuer_reports": {
     "HAYS": {
       "company": "HAYS",
@@ -44,27 +46,6 @@
       "source_status": "issuer_document_parsed",
       "source_url": "https://ir.kornferry.com/news-events/press-releases/detail/733/korn-ferry-announces-first-quarter-fiscal-2027-results-of-operations",
       "value_pct": 7.0
-    },
-    "MANPOWERGROUP": {
-      "company": "MANPOWERGROUP",
-      "demand_measure": "organic_constant_currency_revenue_yoy_pct",
-      "document_sha256": null,
-      "effects_to_review": {
-        "cost_reductions": true,
-        "currency": true,
-        "m_and_a": true
-      },
-      "historical_vintage_status": "current_issuer_snapshot_not_original_asof_archive",
-      "measurement_label": "organic constant currency revenue",
-      "notification_authorized": false,
-      "origin": "issuer_IR",
-      "other_reported_demand_measures": "not_extracted_unverified",
-      "period_end": "2026-09-30",
-      "publication_date_in_document": true,
-      "published_date": "2026-10-15",
-      "source_status": "issuer_document_parsed",
-      "source_url": "https://www.manpowergroup.com/en/news-releases/news/manpowergroup-reports-3rd-quarter-2026-results",
-      "value_pct": 6.0
     },
     "PAGEGROUP": {
       "company": "PAGEGROUP",
@@ -109,12 +90,14 @@
       "value_pct": 3.9
     }
   },
-  "missing": [],
+  "missing": [
+    "MANPOWERGROUP"
+  ],
   "notification_authorized": false,
-  "positive_fee_revenue_direction_breadth_pct": 80.0,
+  "positive_fee_revenue_direction_breadth_pct": null,
   "risk_alert_role": "context_only",
   "schema": "fcews.staffing_official_ir.v1",
   "staffing_global_score": null,
   "staffing_global_score_status": "not_calibrated",
-  "status": "complete"
+  "status": "partial"
 }
