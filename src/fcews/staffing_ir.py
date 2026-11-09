@@ -28,9 +28,9 @@ RELEASES={
         "published":"2026-10-21","period_end":"2026-09-30","basis":"organic_revenue_yoy_pct",
         "label":"organic revenue", "roots":("randstad.com",)},
     "MANPOWERGROUP":{
-        "url":"https://investor.manpower.com/news-releases/news-release-details/manpowergroup-reports-3rd-quarter-2026-results",
+        "url":"https://www.manpowergroup.com/en/news-releases/news/manpowergroup-reports-3rd-quarter-2026-results",
         "published":"2026-10-15","period_end":"2026-09-30","basis":"organic_constant_currency_revenue_yoy_pct",
-        "label":"organic constant currency revenue", "roots":("manpower.com",)},
+        "label":"organic constant currency revenue", "roots":("manpowergroup.com","manpower.com",)},
     "KORN_FERRY":{
         "url":"https://ir.kornferry.com/news-events/press-releases/detail/733/korn-ferry-announces-first-quarter-fiscal-2027-results-of-operations",
         "published":"2026-09-09","period_end":"2026-07-31","basis":"constant_currency_fee_revenue_yoy_pct",
@@ -52,7 +52,8 @@ PATTERNS={
                     r"organic constant currency\s+revenue\s+(?:growth|of)\s+([+-]?\d+(?:\.\d+)?)%"],
     "KORN_FERRY":[r"fee revenue of\s+\$756\.5\s+million,\s+an increase of\s+(\d+(?:\.\d+)?)%\s+year.over.year\s+at both actual and constant currency"],
     "HAYS":[r"Group net fees down\s+(\d+(?:\.\d+)?)%\s+with Temp"],
-    "PAGEGROUP":[r"Group gross profit of\s*£190\.5m,\s*\+(\d+(?:\.\d+)?)%\s+vs\.\s*Q3\s*2025"],
+    "PAGEGROUP":[r"Group\s+gross\s+profit\s+of\s*(?:£\s*)?190\.5\s*m\s*,?\s*\+(\d+(?:\.\d+)?)\s*%\s+vs\.?\s*Q3\s*2025",
+                r"Gross\s+Profit\s+of\s*(?:£\s*)?190\.5\s*m\s*,?\s*\+(\d+(?:\.\d+)?)\s*%"],
 }
 PUBLISHED_TOKENS={
     "RANDSTAD":("21 October 2026",),
@@ -114,6 +115,10 @@ def extract(code: str,html: str,today: date,url: str|None=None)->dict:
         elif len(matches)>1 and len(set(matches))>1:
             raise ValueError("ambiguous demand growth rate in issuer original")
     if not hits or any(abs(v)>100 for v in hits):
+        if code=="PAGEGROUP":
+            k=text.lower().find("gross profit")
+            excerpt=text[max(0,k-30):k+150] if k>=0 else "[no gross profit heading]"
+            raise ValueError("missing PAGEGROUP official gross-fee metric, excerpt: "+excerpt[:160])
         raise ValueError("missing/invalid employer demand growth rate")
     if len(set(hits))>1:
         raise ValueError("contradictory demand growth measures")
