@@ -1,0 +1,41 @@
+{
+  "alert_authorized": false,
+  "interpretation": "Manufacturing PMI demand context only; no housing/credit score or crisis notification",
+  "observations": {
+    "NBS_PMI_MANUFACTURING": {
+      "observation_month": "2026-10",
+      "origin": "China_National_Bureau_of_Statistics",
+      "period_end": "2026-10-31",
+      "published_date": "2026-10-31",
+      "source_url": "https://www.stats.gov.cn/sj/zxfbhjd/202610/t20261031_1965718.html",
+      "source_validation": "live_article_section_parsed_not_independent_historical_vintage",
+      "unit": "diffusion_index_percent",
+      "value": 49.3
+    },
+    "NBS_PMI_NEW_ORDERS": {
+      "observation_month": "2026-10",
+      "origin": "China_National_Bureau_of_Statistics",
+      "period_end": "2026-10-31",
+      "published_date": "2026-10-31",
+      "source_url": "https://www.stats.gov.cn/sj/zxfbhjd/202610/t20261031_1965718.html",
+      "source_validation": "live_article_section_parsed_not_independent_historical_vintage",
+      "unit": "diffusion_index_percent",
+      "value": 49.4
+    },
+    "NBS_PMI_SMALL": {
+      "observation_month": "2026-10",
+      "origin": "China_National_Bureau_of_Statistics",
+      "period_end": "2026-10-31",
+      "published_date": "2026-10-31",
+      "source_url": "https://www.stats.gov.cn/sj/zxfbhjd/202610/t20261031_1965718.html",
+      "source_validation": "live_article_section_parsed_not_independent_historical_vintage",
+      "unit": "diffusion_index_percent",
+      "value": 47.5
+    }
+  },
+  "released_at_date": "2026-10-31",
+  "schema": "fcews.nbs_official_pmi.v1",
+  "score_authorized": false,
+  "source_url": "https://www.stats.gov.cn/sj/zxfbhjd/202610/t20261031_1965718.html",
+  "status": "complete"
+}
