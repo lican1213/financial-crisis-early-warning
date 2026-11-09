@@ -152,7 +152,7 @@ class USContextGates(unittest.TestCase):
         self.today = date(2026, 11, 9)
 
     def fake(self, code):
-        return Observation(code, "2026-11-05", 2.5,
+        return Observation(code, "2026-10-01" if US_SERIES[code][2] == "monthly" else "2026-11-05", 2.5,
                            "https://fred.stlouisfed.org/series/" + code,
                            "2026-11-09T01:00:00Z")
 
@@ -163,7 +163,7 @@ class USContextGates(unittest.TestCase):
 
     def test_stale_monthly_and_wrong_codes_fail_closed(self):
         def wrong(code):
-            day = "2025-01-01" if code == "TEMPHELPS" else "2026-11-05"
+            day = "2025-01-01" if code == "TEMPHELPS" else ("2026-10-01" if US_SERIES[code][2] == "monthly" else "2026-11-05")
             return Observation(code, day, 1, "https://fred.stlouisfed.org",
                                "2026-11-09T01:00:00Z")
         got = collect_us(wrong, self.today)
