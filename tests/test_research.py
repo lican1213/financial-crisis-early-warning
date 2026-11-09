@@ -123,8 +123,15 @@ class OfficialReleaseGates(unittest.TestCase):
 
     def test_two_independent_groups_and_inventory_can_confirm(self):
         got = housing_turning_point(self._full_housing(), self.today)
-        self.assertTrue(got["confirmed"])
+        self.assertTrue(got["directional_rule_satisfied"])
+        self.assertFalse(got["confirmed"])  # no independent live source-document readback
         self.assertEqual(got["improving_groups"], 3)
+
+    def test_forged_official_host_shape_cannot_prove_real_world_inflection(self):
+        got = evaluate_releases(self._full_housing(), self.today)
+        self.assertTrue(got["housing_turning_point"]["directional_rule_satisfied"])
+        self.assertFalse(got["housing_turning_point"]["confirmed"])
+        self.assertEqual(got["release_authority_status"], "hostname_and_schema_checked_not_live_document_readback")
 
     def test_inconsistent_period_blocks_turning_point(self):
         items = self._full_housing()
