@@ -10,7 +10,7 @@
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "2eabbc21d1d38bf265004670d988a8ff65238e13f509dfd2c289cff441e62202",
+  "fingerprint_sha256": "4152d1a586531c03cc84ab1e99f3cb2d5918bf135d6cb77cf4464a6cd926993c",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-10-30",
@@ -45,6 +45,14 @@
     "us_source_status": "complete"
   },
   "monitor_health": "healthy",
+  "nbs_pmi_research": {
+    "authorizes_notification": false,
+    "china_recovery_breadth_score": null,
+    "observation_periods": {},
+    "published_date": null,
+    "source_url": null,
+    "status": "missing_or_stale"
+  },
   "notification_decision": "ChatGPT_independent_primary_source_and_four_gate_review_required",
   "schema": "fcews.chatgpt.readonly.v1",
   "should_send_user_notification": false,
