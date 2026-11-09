@@ -17,3 +17,7 @@ summary: Routes risk interpretation questions without restating data or code.
 Decision sequence: observe → confirm source/first availability → classify family/event contagion → compare state and weekly baseline → fire once or remain silent. Risk labels are ordinal and cannot be interpreted as fitted probabilities.
 
 Related: [MOC data](DATA.md), [MOC delivery](DELIVERY.md).
+
+
+## Research-layer interpretation (2026-11-09)
+The [leading research module](../datasets/leading-research.md) supplies dated macro context but **never changes** the [four-family systemic risk gate](../../src/fcews/core.py) or converts an uncalibrated human six-module orange baseline to green. No unsupported score interpolation on missing staffing/China evidence.
