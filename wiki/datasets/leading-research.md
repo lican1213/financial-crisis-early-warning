@@ -1,7 +1,7 @@
 ---
 title: Source-dated Leading Research Registry
 kind: dataset
-status: implementation_in_review
+status: under-review
 updated: 2026-11-09
 summary: US official indicator automation, China and staffing release ledger, data lineage and non-alert gates.
 ---
