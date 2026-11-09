@@ -5,6 +5,7 @@ on:
     paths:
       - 'src/fcews/research.py'
       - 'src/fcews/nbs.py'
+      - 'src/fcews/nbs_property.py'
       - '.github/workflows/research.yml'
       - 'data/research_evidence.json'
   schedule:
@@ -32,6 +33,10 @@ jobs:
         id: nbs
         continue-on-error: true
         run: PYTHONPATH=src python -m fcews.nbs
+      - name: Audit original NBS 70-city price and real estate developer releases
+        id: property
+        continue-on-error: true
+        run: PYTHONPATH=src python -m fcews.nbs_property
       - name: Collect US primary-source leading indicators and validate official release ledger
         id: research
         continue-on-error: true
@@ -47,13 +52,16 @@ jobs:
           if [ -f data/nbs_pmi_context.json ]; then
             git add data/nbs_pmi_context.json
           fi
+          if [ -f data/nbs_property_context.json ]; then
+            git add data/nbs_property_context.json
+          fi
           if ! git diff --cached --quiet; then
             git commit -m 'data: source-dated leading research context'
             git pull --rebase origin main
             git push
           fi
       - name: Refresh ChatGPT read-only feed AFTER successful research persistence
-        if: steps.research.outcome == 'success' && steps.nbs.outcome == 'success'
+        if: steps.research.outcome == 'success' && steps.nbs.outcome == 'success' && steps.property.outcome == 'success'
         run: |
           # Re-read the current main state after the research data commit. This
           # feed is evidence only, never a user alert or crisis authorization.
@@ -66,7 +74,7 @@ jobs:
             git push
           fi
       - name: Do not mistake source failure for calm or crisis
-        if: steps.research.outcome == 'failure' || steps.nbs.outcome == 'failure'
+        if: steps.research.outcome == 'failure' || steps.nbs.outcome == 'failure' || steps.property.outcome == 'failure'
         run: |
           echo "::error::Research sources failed or a release failed validation; no systemic alert generated."
           exit 2
