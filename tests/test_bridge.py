@@ -277,6 +277,7 @@ class ChatGPTBridgeTests(unittest.TestCase):
             "issuer_reports":{
                 k:{"source_url":v["url"],"source_status":"issuer_document_parsed",
                    "demand_measure":v["basis"],"published_date":v["published"],
+                   "period_end":v["period_end"],
                    "value_pct":(-3 if k=="HAYS" else 3)}
                 for k,v in RELEASES.items()}
         }
@@ -300,6 +301,7 @@ class ChatGPTBridgeTests(unittest.TestCase):
             "issuer_reports":{
                 k:{"source_url":v["url"],"source_status":"issuer_document_parsed",
                    "demand_measure":v["basis"],"published_date":v["published"],
+                   "period_end":v["period_end"],
                    "value_pct":(-3 if k=="HAYS" else 3)}
                 for k,v in RELEASES.items()}
         }
