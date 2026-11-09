@@ -54,12 +54,6 @@ PATTERNS={
     "HAYS":[r"Group net fees down\s+(\d+(?:\.\d+)?)%\s+with Temp"],
     "PAGEGROUP":[r"Group gross profit of\s*£190\.5m,\s*\+(\d+(?:\.\d+)?)%\s+vs\.\s*Q3\s*2025"],
 }
-COMPANY_RESULTS={
-    "HAYS":{"temporary_like_for_like_yoy_pct":-1.0,"permanent_like_for_like_yoy_pct":-7.0},
-    "KORN_FERRY":{"signed_contract_backlog_yoy_pct":14.0},
-    "PAGEGROUP":{"employer_temporary_gross_profit_yoy_pct":2.6,
-                 "permanent_gross_profit_yoy_pct":1.1},
-}
 PUBLISHED_TOKENS={
     "RANDSTAD":("21 October 2026",),
     "MANPOWERGROUP":("Oct. 15, 2026","October 15, 2026"),
