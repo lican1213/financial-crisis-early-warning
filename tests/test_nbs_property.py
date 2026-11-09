@@ -2,10 +2,11 @@
 import re
 import unittest
 from datetime import date, datetime, timezone
+from unittest.mock import patch
 
 from fcews.nbs_property import (
     CITIES, INDEX, SEEDS, collect, discover, parse_prices,
-    parse_market, official_page, signed_change,
+    parse_market, official_page, signed_change, read_large_nbs_page,
 )
 
 TODAY=date(2026,11,9)
@@ -122,6 +123,32 @@ class CensusTests(unittest.TestCase):
         self.assertEqual(got["directional_signals"]["residential_sales_cumulative_yoy_pp_change"],-0.8)
         self.assertFalse(got["housing_turning_point_confirmed"])
         self.assertIsNone(got["china_recovery_breadth_score"])
+
+
+    def test_large_original_html_above_generic_FRED_limit_is_bounded(self):
+        class FakeResponse:
+            def __init__(self,url,data):
+                self.url,self.data=url,data
+            def __enter__(self):return self
+            def __exit__(self,*args):return False
+            def geturl(self):return self.url
+            def read(self,n):return self.data[:n]
+        legit=b"a"*1_000_100
+        with patch("fcews.nbs_property.urlopen",return_value=FakeResponse(P09,legit)):
+            self.assertEqual(len(read_large_nbs_page(P09)),1_000_100)
+        with patch("fcews.nbs_property.urlopen",return_value=FakeResponse(P09,b"a"*12_000_001)):
+            with self.assertRaises(ValueError):
+                read_large_nbs_page(P09)
+
+    def test_official_nbs_http_redirect_cannot_escape_allowed_host(self):
+        class Redirect:
+            def __enter__(self):return self
+            def __exit__(self,*args):return False
+            def geturl(self):return "https://www.stats.gov.cn.evil.test/sj/zxfb/202610/t20261019_1965609.html"
+            def read(self,n):return b""
+        with patch("fcews.nbs_property.urlopen",return_value=Redirect()):
+            with self.assertRaises(ValueError):
+                read_large_nbs_page(P09)
 
     def test_index_only_future_or_spoofed_discarded(self):
         html="<a href='https://www.stats.gov.cn.evil.test/sj/zxfb/202611/t20261109_123.html'>2026年11月份70个大中城市商品住宅销售价格变动情况</a>"
