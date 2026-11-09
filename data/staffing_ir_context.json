@@ -1,0 +1,81 @@
+{
+  "as_of_date_utc": "2026-11-09",
+  "breadth_definition": "simple 5-issuer positive comparable direction share, NOT demand-volume weighting or forecast-calibrated",
+  "errors": {
+    "MANPOWERGROUP": "HTTPError: HTTP Error 403: Forbidden",
+    "PAGEGROUP": "ValueError: missing/invalid employer demand growth rate"
+  },
+  "issuer_reports": {
+    "HAYS": {
+      "company": "HAYS",
+      "demand_measure": "like_for_like_net_fees_yoy_pct",
+      "effects_to_review": {
+        "cost_reductions": true,
+        "currency": false,
+        "m_and_a": false
+      },
+      "historical_vintage_status": "current_issuer_snapshot_not_original_asof_archive",
+      "measurement_label": "like-for-like net fees",
+      "notification_authorized": false,
+      "origin": "issuer_IR_or_primary_exchange_RNS",
+      "other_reported_demand_measures": "not_extracted_unverified",
+      "period_end": "2026-09-30",
+      "publication_date_in_document": false,
+      "published_date": "2026-10-12",
+      "source_status": "issuer_document_parsed",
+      "source_url": "https://www.haysplc.com/investors/results-centre",
+      "value_pct": -3.0
+    },
+    "KORN_FERRY": {
+      "company": "KORN_FERRY",
+      "demand_measure": "constant_currency_fee_revenue_yoy_pct",
+      "effects_to_review": {
+        "cost_reductions": true,
+        "currency": true,
+        "m_and_a": true
+      },
+      "historical_vintage_status": "current_issuer_snapshot_not_original_asof_archive",
+      "measurement_label": "constant currency fee revenue",
+      "notification_authorized": false,
+      "origin": "issuer_IR_or_primary_exchange_RNS",
+      "other_reported_demand_measures": "not_extracted_unverified",
+      "period_end": "2026-07-31",
+      "publication_date_in_document": true,
+      "published_date": "2026-09-09",
+      "source_status": "issuer_document_parsed",
+      "source_url": "https://ir.kornferry.com/news-events/press-releases/detail/733/korn-ferry-announces-first-quarter-fiscal-2027-results-of-operations",
+      "value_pct": 7.0
+    },
+    "RANDSTAD": {
+      "company": "RANDSTAD",
+      "demand_measure": "organic_revenue_yoy_pct",
+      "effects_to_review": {
+        "cost_reductions": false,
+        "currency": false,
+        "m_and_a": true
+      },
+      "historical_vintage_status": "current_issuer_snapshot_not_original_asof_archive",
+      "measurement_label": "organic revenue",
+      "notification_authorized": false,
+      "origin": "issuer_IR_or_primary_exchange_RNS",
+      "other_reported_demand_measures": "not_extracted_unverified",
+      "period_end": "2026-09-30",
+      "publication_date_in_document": true,
+      "published_date": "2026-10-21",
+      "source_status": "issuer_document_parsed",
+      "source_url": "https://www.randstad.com/press/2026/q3-2026-continued-top-line-momentum-drives-double-digit-profit-growth/",
+      "value_pct": 3.9
+    }
+  },
+  "missing": [
+    "MANPOWERGROUP",
+    "PAGEGROUP"
+  ],
+  "notification_authorized": false,
+  "positive_fee_revenue_direction_breadth_pct": null,
+  "risk_alert_role": "context_only",
+  "schema": "fcews.staffing_official_ir.v1",
+  "staffing_global_score": null,
+  "staffing_global_score_status": "not_calibrated",
+  "status": "partial"
+}
