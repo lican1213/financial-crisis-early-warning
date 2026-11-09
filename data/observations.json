@@ -81,10 +81,10 @@
   },
   "VIXCLS": {
     "available_at_utc": null,
-    "date": "2026-11-05",
-    "retrieved_utc": "2026-11-06T15:56:38.714553+00:00",
+    "date": "2026-11-06",
+    "retrieved_utc": "2026-11-09T21:05:38.000205+00:00",
     "series": "VIXCLS",
     "source": "https://fred.stlouisfed.org/series/VIXCLS",
-    "value": 28.18
+    "value": 25.64
   }
 }
