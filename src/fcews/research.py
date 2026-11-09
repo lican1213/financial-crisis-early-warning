@@ -150,14 +150,17 @@ def evaluate_releases(records: list[dict], today: date) -> dict:
     if duplicates:
         rejected.append({"reason": "duplicate observation/revision requires adjudication",
                          "pairs": duplicates})
+    # Never allow a contested revision into a turning-point determination.
+    contested = {(d["series"], d["period_end"]) for d in duplicates}
+    admissible = [row for row in accepted if (row["series"], row["period_end"]) not in contested]
     latest = {}
-    for row in accepted:
+    for row in admissible:
         code = row["series"]
         if code not in latest or row["period_end"] > latest[code]["period_end"]:
             latest[code] = row
     # The decision is unknown unless independent evidence groups can be matched
     # on an identical observation period and comparison basis.
-    home = housing_turning_point(accepted, today)
+    home = housing_turning_point(admissible, today)
     return {
         "status": "needs_review" if rejected else ("partial" if not accepted else "valid"),
         "accepted_count": len(accepted), "rejected": rejected,
@@ -165,6 +168,7 @@ def evaluate_releases(records: list[dict], today: date) -> dict:
         "china_recovery_breadth_score": None,
         "staffing_global_score": None,
         "score_status": "not_calibrated_missing_component_coverage",
+        "release_authority_status": "hostname_and_schema_checked_not_live_document_readback",
         "risk_alert_role": "context_only_no_automatic_systemic_alert",
     }
 
@@ -195,7 +199,7 @@ def housing_turning_point(records: list[dict], today: date) -> dict:
     # cumulative YOY and monthly YOY cannot masquerade as like-for-like.
     demands = [changes.get(c) for c in codes[:3]]
     valid_demand = [d for d in demands if d is not None]
-    matching = len(valid_demand) == 3 and len({d[1] for d in valid_demand}) == 1
+    matching = len(valid_demand) >= 2 and len({d[1] for d in valid_demand}) == 1
     inventory = changes.get(codes[3])
     inventory_ok = inventory is not None and matching and inventory[1] == valid_demand[0][1] and inventory[0] <= 0
     improving = sum(d[0] > 0 for d in valid_demand) if matching else 0
@@ -218,10 +222,13 @@ def collect_us(fetcher=fetch_fred, today: date | None = None) -> dict:
             code = tasks[future]
             try:
                 obs = future.result()
-                if obs.series != code or not math.isfinite(obs.value):
-                    raise ValueError("wrong series or nonfinite value")
+                if (obs.series != code or not math.isfinite(obs.value)
+                    or obs.source != "https://fred.stlouisfed.org/series/" + code):
+                    raise ValueError("wrong series, source or nonfinite value")
                 observed = date.fromisoformat(obs.date)
                 freq = US_SERIES[code][2]
+                if freq == "monthly" and observed.day != 1:
+                    raise ValueError("monthly series must use first day of observation month")
                 if not 0 <= (today-observed).days <= MAX_AGE[freq]:
                     raise ValueError("future or stale observation")
                 rows[code] = {
