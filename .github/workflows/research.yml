@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Execute first-principles source and causality red-team tests
-        run: PYTHONPATH=src python -m unittest tests.test_research -v
+        run: PYTHONPATH=src python -m unittest discover -s tests -p 'test_research.py' -v
       - name: Collect US primary-source leading indicators and validate official release ledger
         id: research
         continue-on-error: true
