@@ -52,6 +52,19 @@ jobs:
             git pull --rebase origin main
             git push
           fi
+      - name: Refresh ChatGPT read-only feed AFTER successful research persistence
+        if: steps.research.outcome == 'success' && steps.nbs.outcome == 'success'
+        run: |
+          # Re-read the current main state after the research data commit. This
+          # feed is evidence only, never a user alert or crisis authorization.
+          git pull --ff-only origin main
+          PYTHONPATH=src python -m fcews.bridge
+          git add data/chatgpt_feed.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: refresh non-alert research provenance in ChatGPT feed'
+            git pull --rebase origin main
+            git push
+          fi
       - name: Do not mistake source failure for calm or crisis
         if: steps.research.outcome == 'failure' || steps.nbs.outcome == 'failure'
         run: |
