@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'src/fcews/research.py'
+      - 'src/fcews/nbs.py'
       - '.github/workflows/research.yml'
       - 'data/research_evidence.json'
   schedule:
@@ -27,6 +28,10 @@ jobs:
           python-version: '3.12'
       - name: Execute first-principles source and causality red-team tests
         run: PYTHONPATH=src python -m unittest discover -s tests -p 'test_research.py' -v
+      - name: Parse official NBS manufacturing PMI release (fail-closed)
+        id: nbs
+        continue-on-error: true
+        run: PYTHONPATH=src python -m fcews.nbs
       - name: Collect US primary-source leading indicators and validate official release ledger
         id: research
         continue-on-error: true
@@ -38,14 +43,17 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           if [ -f data/research_context.json ]; then
             git add data/research_context.json
-            if ! git diff --cached --quiet; then
-              git commit -m 'data: source-dated leading research context'
-              git pull --rebase origin main
-              git push
-            fi
+          fi
+          if [ -f data/nbs_pmi_context.json ]; then
+            git add data/nbs_pmi_context.json
+          fi
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: source-dated leading research context'
+            git pull --rebase origin main
+            git push
           fi
       - name: Do not mistake source failure for calm or crisis
-        if: steps.research.outcome == 'failure'
+        if: steps.research.outcome == 'failure' || steps.nbs.outcome == 'failure'
         run: |
           echo "::error::Research sources failed or a release failed validation; no systemic alert generated."
           exit 2
