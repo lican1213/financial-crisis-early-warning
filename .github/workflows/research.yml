@@ -1,0 +1,51 @@
+name: Daily official leading-indicator research (no crisis alert)
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/fcews/research.py'
+      - '.github/workflows/research.yml'
+      - 'data/research_evidence.json'
+  schedule:
+    # 09:39 Beijing; best-effort GitHub cron, not an exact-time SLA.
+    - cron: '39 1 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: fcews-leading-research
+  cancel-in-progress: false
+jobs:
+  official-research:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Execute first-principles source and causality red-team tests
+        run: PYTHONPATH=src python -m unittest tests.test_research -v
+      - name: Collect US primary-source leading indicators and validate official release ledger
+        id: research
+        continue-on-error: true
+        run: PYTHONPATH=src python -m fcews.research
+      - name: Persist source-dated research context (never personal portfolio data)
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if [ -f data/research_context.json ]; then
+            git add data/research_context.json
+            if ! git diff --cached --quiet; then
+              git commit -m 'data: source-dated leading research context'
+              git pull --rebase origin main
+              git push
+            fi
+          fi
+      - name: Do not mistake source failure for calm or crisis
+        if: steps.research.outcome == 'failure'
+        run: |
+          echo "::error::Research sources failed or a release failed validation; no systemic alert generated."
+          exit 2
