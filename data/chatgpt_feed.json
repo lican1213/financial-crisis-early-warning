@@ -10,7 +10,7 @@
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "4dc80afa2ffb3dbda049b7bf97036b7c8ef8b8729a005d0bc99d2b9e3a1f75f4",
+  "fingerprint_sha256": "5019d04cc15dab8aeead7421590fe29879e5f594d5218439eec3393fe173d52d",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-10-30",
@@ -79,16 +79,19 @@
   "notification_decision": "ChatGPT_independent_primary_source_and_four_gate_review_required",
   "pboc_credit_research": {
     "china_recovery_breadth_score": null,
-    "government_bond_share_tsf_pct": null,
-    "household_mlt_ytd_flow_100m_cny": null,
+    "government_bond_share_tsf_pct": 37.51,
+    "household_mlt_ytd_flow_100m_cny": 1062.0,
     "housing_turning_point_confirmed": false,
-    "mortgage_balance_yoy_pct": null,
-    "mortgage_ytd_net_change_trillion_cny": null,
+    "mortgage_balance_yoy_pct": -4.1,
+    "mortgage_ytd_net_change_trillion_cny": -1.1,
     "original_first_published_at": null,
-    "report_period": null,
+    "report_period": "2026-09-30",
     "risk_alert_authorized": false,
-    "source_urls": {},
-    "status": "missing_or_stale"
+    "source_urls": {
+      "financing": "https://jrj.sh.gov.cn/SCGK194/20261015/24a15f78c09947de9eb58a48c2fdb451.html",
+      "mortgage": "https://jrj.sh.gov.cn/SCDT197/20261029/ef0635afddcd4b73a684a2c1e10ec846.html"
+    },
+    "status": "official_government_republication_not_original_vintage"
   },
   "schema": "fcews.chatgpt.readonly.v1",
   "should_send_user_notification": false,
@@ -97,7 +100,6 @@
     "available_issuers": [
       "HAYS",
       "KORN_FERRY",
-      "MANPOWERGROUP",
       "PAGEGROUP",
       "RANDSTAD"
     ],
@@ -114,12 +116,6 @@
         "period_end": "2026-07-31",
         "source_url": "https://ir.kornferry.com/news-events/press-releases/detail/733/korn-ferry-announces-first-quarter-fiscal-2027-results-of-operations"
       },
-      "MANPOWERGROUP": {
-        "basis": "organic_constant_currency_revenue_yoy_pct",
-        "direction": "positive",
-        "period_end": "2026-09-30",
-        "source_url": "https://www.manpowergroup.com/en/news-releases/news/manpowergroup-reports-3rd-quarter-2026-results"
-      },
       "PAGEGROUP": {
         "basis": "constant_currency_gross_profit_yoy_pct",
         "direction": "positive",
@@ -133,11 +129,13 @@
         "source_url": "https://www.randstad.com/press/2026/q3-2026-continued-top-line-momentum-drives-double-digit-profit-growth/"
       }
     },
-    "missing_issuers": [],
-    "positive_fee_breadth_pct": 80.0,
+    "missing_issuers": [
+      "MANPOWERGROUP"
+    ],
+    "positive_fee_breadth_pct": null,
     "risk_alert_authorized": false,
     "staffing_global_score": null,
-    "status": "complete"
+    "status": "partial"
   },
   "technical_model_comparable_to_weekly": false,
   "transport": "ChatGPT_hourly_poll_not_GitHub_webhook",
