@@ -1,15 +1,16 @@
 # FCEWS — Monitoring and audit cadence
 
-Updated 2026-11-06. Unless otherwise specified, times are **Beijing (UTC+8)**. GitHub Actions cron is best-effort; execution records and official observation dates, not scheduled time, determine actual data freshness.
+Updated 2026-11-09. Unless otherwise specified, times are **Beijing (UTC+8)**. GitHub Actions cron is best-effort; execution records and official observation dates, not scheduled time, determine actual data freshness.
 
 | Frequency | Beijing time | Executor / code | Output / acceptance test |
 | --- | --- | --- | --- |
-| Hourly | Minute **13** | [GitHub official-source check](../../.github/workflows/check.yml) | Official OFR/FRED/NY Fed four-family decision, source-health and deduped GitHub candidate Issue; regenerated [read-only ChatGPT feed](../../data/chatgpt_feed.json). No new qualifying stress = no user notification |
+| Hourly, two best-effort windows | Minute **13** and **43** | [GitHub official-source check](../../.github/workflows/check.yml) | Official OFR/FRED/NY Fed four-family decision, source-health and deduped GitHub candidate Issue; regenerated [read-only ChatGPT feed](../../data/chatgpt_feed.json). No new qualifying stress = no user notification |
 | Hourly | Independent existing ChatGPT `金融风险预警` condition-watch schedule | ChatGPT automation | Reads the GitHub feed and independently verifies primary regulatory evidence. Sends a user-visible warning **only** for the user’s four trigger conditions; no material change = truly silent. **Not a GitHub push webhook.** |
 | Daily | **08:25** | [Test and MOC audit](../../.github/workflows/daily-audit.yml) | Code/adversarial regressions, MOC broken-link and provenance audit **plus** a 24-hour GitHub hourly-run-gap check, even if preceding unit tests fail |
 | Daily | **08:32** | [Funding and institutional context](../../.github/workflows/context.yml) | Official OFR repo/STFM, ECB CISS and FDIC review-only registry; avoid auto-promoting context to independent trigger |
 | Weekdays | **08:45** | [Cboe volatility / Treasury context](../../.github/workflows/volatility.yml) | Official VIX9D/VIX/VIX3M/VIX6M, CFE real monthly VX front/second, 20-day Treasury yield realized vol. ICE MOVE remains an unlicensed **separate** series, not an alias |
-| Sunday | **10:00** | Existing ChatGPT `金融危机周报` | Six-module macro watch grade, original sources, 3/6/12-month scenarios; sync verified weekly report metadata to [weekly baseline](../../data/weekly_baseline.json). No false conversion of six-module orange to four-family green |
+| Daily | **09:39** | [Gated official research context](../../.github/workflows/research.yml) | [US staffing/claims/JOLTS, yield curves and IG OAS](../../src/fcews/research.py); [China/firm release ledger](../../data/research_evidence.json) (currently unpopulated); writes `data/research_context.json` only after collection. **No crisis alert or uncited scores** |
+| Disabled | Former Sunday 10:00 | Paused ChatGPT `金融危机周报` | **No weekly notification or scheduled baseline update.** Last human six-module grade remains a dated, uncalibrated historical reference in [weekly baseline](../../data/weekly_baseline.json) |
 | Monday | **09:00** | Manual/Agent maintenance per [AGENTS](../../AGENTS.md) | Inspect last source success, incident/failure issue queue, test receipts, MOC handoff and missed-event evidence. **This row is not an automated task.** |
 | Monthly | Day **2, 10:10** | [ALFRED historical vintage check](../../.github/workflows/alfred-public.yml) | Public ALFRED as-of snapshots, exact requested vintage header, strict no-future data; coverage and missing epochs separate from model false-negative. A full run is **under validation**; failures must not be labelled zero alerts or forecasting success |
 | Manual, when authorized | Explicit dispatch | [ALFRED key-based exporter](../../src/fcews/pit_export.py) | Requires authorized `FRED_API_KEY` in environment/Actions Secret; never commit credentials. Date-level vintages cannot certify original intraday publisher timestamp |
@@ -17,10 +18,17 @@ Updated 2026-11-06. Unless otherwise specified, times are **Beijing (UTC+8)**. G
 | Event driven | On official validated bank/fund/sovereign/repo/payment crisis | [Event validator](../../src/fcews/events.py) / GitHub outbox | Human-reviewed official document checksum and cross-market contagion mechanism; new candidate not automatically a ChatGPT user warning |
 
 ## Delivery boundary
+The research workflow is context-only and never increases independent systemic stress families or sends ChatGPT notifications. Official-host acceptance of a manually entered China/company release is not proof of the numeric statistic; verify underlying tables before claims. See [leading research gate](../../wiki/datasets/leading-research.md).
+
 The [ChatGPT feed](../../data/chatgpt_feed.json) is **poll-only**, not a push event or confirmed end-user receipt. [GitHub Issue canary #11](https://github.com/lican1213/financial-crisis-early-warning/issues/11) verifies GitHub create/read/close only; ChatGPT cannot emit an exact-once acknowledgement to the repository. The hourly ChatGPT task remains enabled. We deliberately keep user-visible responses silent without one of the four qualifying systemic changes.
 
 ## Data quality gates
 A GitHub Action run marked success is not sufficient evidence of market source coverage; inspect `data/health.json`. **degraded** means fewer than three fresh live independent risk families, an operational incident, not calm markets. Context-only Cboe/MOVE substitutes do not independently increase family counts until calibration. No private holdings, credentials or user-specific assets are committed to the currently public GitHub repository.
+
+### 2026-11-09 paused-report and schedule mitigation
+- The former weekly report automation is disabled at the user's request. Do not reactivate it or automatically fabricate weekly scores. Leave the saved 2026-11-08 subjective orange/70 baseline intact and technically incomparable.
+- A second `check.yml` GitHub scheduled slot at minute 43 mitigates long gaps but shares the same platform failure domain; no hard per-hour guarantee. The independent ChatGPT condition-watch still obtains official evidence when the repository feed is stale; **true silence** unless one of the original user alert conditions is independently met. An external heartbeat/scheduler is still an open P0.
+- Research source context and provisional China/company records remain **non-alert** data. No incomplete release coverage may be called score zero.
 
 ### 2026-11-06 operational guardrails
 - A **healthy** collection needs all four actual live families (system, credit, volatility, funding), no unresolved collection errors and no unusually old official source dates. Three live families, or an overdue series, are **partial**; fewer than three are **degraded**. Missing live evidence is not filled by cached observations. An FRED SOFR/TGCR request may fail while the same series is successfully collected from the independent official NY Fed endpoint (and vice versa); the original error is retained under `recovered_source_errors`, not confused with unavailable data.
