@@ -223,6 +223,52 @@ class ChatGPTBridgeTests(unittest.TestCase):
         self.assertEqual(feed["current_technical_severity"],"green")
         self.assertEqual(feed["weekly_human_grade"],"orange")
 
+
+    def test_pboc_mortgage_is_different_from_household_mlt_and_nbs_developer_funds(self):
+        from fcews.pboc_credit import FINANCIAL,CREDIT
+        provenance="official_shanghai_government_republication_of_PBOC_not_original_vintage"
+        ctx={
+            "schema":"fcews.pboc_official_republication.v1","status":"complete",
+            "as_of_date_utc":"2026-10-29","period_end":"2026-09-30",
+            "financial_statistics":{"period_end":"2026-09-30","source_url":FINANCIAL,
+                                   "publication_provenance":provenance,
+                                   "household_medium_long_ytd_flow_100m_cny":1062,
+                                   "gov_bond_fraction_of_tsf_pct":37.51},
+            "loan_allocation":{"period_end":"2026-09-30","source_url":CREDIT,
+                               "publication_provenance":provenance,
+                               "individual_mortgage_balance_yoy_pct":-4.1,
+                               "individual_mortgage_ytd_net_change_trillion_cny":-1.10},
+            "china_recovery_breadth_score":100,
+            "housing_turning_point_confirmed":True,
+        }
+        (self.root/"data/pboc_credit_context.json").write_text(json.dumps(ctx))
+        feed=build_feed(self.root,NOW)
+        got=feed["pboc_credit_research"]
+        self.assertEqual(got["household_mlt_ytd_flow_100m_cny"],1062)
+        self.assertEqual(got["mortgage_balance_yoy_pct"],-4.1)
+        self.assertEqual(got["mortgage_ytd_net_change_trillion_cny"],-1.10)
+        self.assertEqual(got["government_bond_share_tsf_pct"],37.51)
+        self.assertIsNone(got["original_first_published_at"])
+        self.assertFalse(got["housing_turning_point_confirmed"])
+        self.assertFalse(got["risk_alert_authorized"])
+        self.assertIsNone(got["china_recovery_breadth_score"])
+        self.assertFalse(feed["should_send_user_notification"])
+
+    def test_forged_pboc_source_or_stale_record_is_not_live_evidence(self):
+        from fcews.pboc_credit import FINANCIAL,CREDIT
+        p="official_shanghai_government_republication_of_PBOC_not_original_vintage"
+        ctx={"schema":"fcews.pboc_official_republication.v1","status":"complete",
+             "as_of_date_utc":"2026-10-29","period_end":"2026-09-30",
+             "financial_statistics":{"period_end":"2026-09-30","source_url":FINANCIAL,
+                                    "publication_provenance":p},
+             "loan_allocation":{"period_end":"2026-09-30",
+                                "source_url":CREDIT.replace("jrj.sh.gov.cn","jrj.sh.gov.cn.evil.test"),
+                                "publication_provenance":p}}
+        (self.root/"data/pboc_credit_context.json").write_text(json.dumps(ctx))
+        x=build_feed(self.root,NOW)
+        self.assertEqual(x["pboc_credit_research"]["status"],"missing_or_stale")
+        self.assertFalse(x["should_send_user_notification"])
+
     def test_no_webhook_claim_in_contract(self):
         feed=build_feed(self.root,NOW)
         self.assertEqual(feed["transport"],"ChatGPT_hourly_poll_not_GitHub_webhook")

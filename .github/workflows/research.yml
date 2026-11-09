@@ -7,6 +7,7 @@ on:
       - 'src/fcews/nbs.py'
       - 'src/fcews/nbs_property.py'
       - 'src/fcews/staffing_ir.py'
+      - 'src/fcews/pboc_credit.py'
       - '.github/workflows/research.yml'
       - 'data/research_evidence.json'
   schedule:
@@ -44,6 +45,10 @@ jobs:
         id: staffing
         continue-on-error: true
         run: PYTHONPATH=src python -m fcews.staffing_ir
+      - name: Parse PBOC original-statistics official government republications
+        id: pboc
+        continue-on-error: true
+        run: PYTHONPATH=src python -m fcews.pboc_credit
       - name: Collect US primary-source leading indicators and validate official release ledger
         id: research
         continue-on-error: true
@@ -65,6 +70,9 @@ jobs:
           if [ -f data/staffing_ir_context.json ]; then
             git add data/staffing_ir_context.json
           fi
+          if [ -f data/pboc_credit_context.json ]; then
+            git add data/pboc_credit_context.json
+          fi
           if ! git diff --cached --quiet; then
             git commit -m 'data: source-dated leading research context'
             git pull --rebase origin main
@@ -84,7 +92,7 @@ jobs:
             git push
           fi
       - name: Do not mistake source failure for calm or crisis
-        if: steps.research.outcome == 'failure' || steps.nbs.outcome == 'failure' || steps.property.outcome == 'failure' || steps.staffing.outcome == 'failure'
+        if: steps.research.outcome == 'failure' || steps.nbs.outcome == 'failure' || steps.property.outcome == 'failure' || steps.staffing.outcome == 'failure' || steps.pboc.outcome == 'failure'
         run: |
           echo "::error::Research sources failed or a release failed validation; no systemic alert generated."
           exit 2

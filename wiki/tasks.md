@@ -97,3 +97,6 @@ For project rationale read [engineering MOC](mocs/ENGINEERING.md).
 
 ## 2026-11-09 recruiting-source closeout candidate
 - [#14](https://github.com/lican1213/financial-crisis-early-warning/issues/14): four firm official sources + full NBS 70-city price/sales/developer funds already in production. Michael Page fifth source now an original corporate PDF [issuer Q3 2026 PDF](https://investors.michaelpage.com/~/media/Files/P/page-v2/ir/result-reports/2026/q3-2026-trading-statement.pdf); CI and live main readback required before 5/5 is accepted. Pending: PBOC mortgage direct source, complete empirical hiring volumes, quantitative breadth calibration, PIT original vintage, independent scheduling.
+
+## 2026-11-09 PBOC loan allocation and financing pulse candidate
+- [#14](https://github.com/lican1213/financial-crisis-early-warning/issues/14): real PBOC original-agency Q3 household mortgage stock and Jan–Sep government/private credit YTD mix parser built from government official republications, not PBOC's first original API. CI and live readback gate **pending**; do not replace missing historical consumption long-term flow or prepayment stats with zero, and keep private credit impulse and recovery breadth score null.

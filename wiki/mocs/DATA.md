@@ -32,3 +32,6 @@ Related: [MOC risk](RISK.md), [MOC engineering](ENGINEERING.md).
 
 ### Source coverage expansion — NBS housing + issuer staffing (2026-11-09)
 See [leading-research interface](../datasets/leading-research.md), [70-city full-table parser](../../src/fcews/nbs_property.py), [issuer IR adapter](../../src/fcews/staffing_ir.py) and [red-team regression](../../tests/test_nbs_property.py). Grain is city×month×price-type, YTD sales/unsold/developer funding by month-end report, or issuer×quarter×measure, **not** an interchangeable single weekly datapoint. Missing PBOC original mortgage credit and genuine corporate hiring volume still prevent calibrated national-turning-point or global Staffing Pulse claims.
+
+### PBOC personal mortgage vs medium-long flow and TSF (2026-11-09)
+[Official-government PBOC report parser](../../src/fcews/pboc_credit.py) now distinguishes *original agency*, *government redistribution*, *publication*, *reporting period*, *loan stock*, *YTD flow*, *government share in total TSF* and *not yet validated PIT original vintage*. [Full contract](../datasets/leading-research.md) and [falsification tests](../../tests/test_pboc_credit.py). No substitution of NBS developer receipts for PBOC personal mortgage balances.
