@@ -1,7 +1,7 @@
 ---
 title: Source-dated Leading Research Registry
 kind: dataset
-status: under-review
+status: active
 updated: 2026-11-09
 summary: US official indicator automation, China and staffing release ledger, data lineage and non-alert gates.
 ---
@@ -15,7 +15,7 @@ summary: US official indicator automation, China and staffing release ledger, da
 - [Official research workflow](../../.github/workflows/research.yml) at Beijing 09:39 daily, best-effort.
 - [Unpopulated official release ledger](../../data/research_evidence.json) contains **no invented observations**.
 - [Adversarial tests](../../tests/test_research.py).
-- Output on a successfully executing main workflow: `data/research_context.json` (generated, not evidence of a live run until Actions readback).
+- Output on a successful main workflow: [data/research_context.json](../../data/research_context.json). Live [Actions run 42547475174](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42547475174) independently read back six current official-source observations with no missing codes. The [monitoring run 42547475263](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42547475263) showed healthy financial coverage with no candidate alerts. The [ChatGPT bridge](../../src/fcews/bridge.py) now forwards only snapshot dates and freshness, not risk approvals.
 
 ## Automated US official indicators
 
