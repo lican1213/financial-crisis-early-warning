@@ -1,8 +1,9 @@
 """Issuer IR adversarial tests: measure definition, quarter and spoofed source."""
 import unittest
+from unittest.mock import patch
 from datetime import date, datetime,timezone
 
-from fcews.staffing_ir import RELEASES, collect,extract,official_host
+from fcews.staffing_ir import RELEASES, collect,extract,official_host,fetch_official_pdf
 
 NOW=date(2026,11,9)
 
@@ -87,6 +88,60 @@ class StaffingIRTests(unittest.TestCase):
         self.assertEqual(got["positive_fee_revenue_direction_breadth_pct"],80)
         self.assertIsNone(got["staffing_global_score"])
         self.assertIn("NOT",got["breadth_definition"])
+
+
+    def test_verified_pdf_url_is_primary_issuer_not_lse_shell(self):
+        url=RELEASES["PAGEGROUP"]["url"]
+        self.assertTrue(url.startswith("https://investors.michaelpage.com/"))
+        self.assertTrue(url.endswith(".pdf"))
+        self.assertEqual(RELEASES["PAGEGROUP"]["basis"],"constant_currency_gross_profit_yoy_pct")
+
+    def test_pdf_is_bounded_and_original_redirect_must_not_escape(self):
+        url=RELEASES["PAGEGROUP"]["url"]
+        class Response:
+            def __init__(self,payload,final_url=None):
+                self.payload,self.final_url=payload,final_url or url
+            def __enter__(self):return self
+            def __exit__(self,*args):return False
+            def geturl(self):return self.final_url
+            def read(self,n):return self.payload[:n]
+        text="13 October 2026\nTHIRD QUARTER 2026 TRADING UPDATE\nGroup gross profit of £190.5m, +1.5% vs. Q3 2025" + (" official issuer evidence "*10)
+        class Page:
+            def extract_text(self):return text
+        class Reader:
+            is_encrypted=False
+            pages=[Page()]
+        with patch("fcews.staffing_ir.urlopen",return_value=Response(b"%PDF-fake-proof")):
+            with patch("pypdf.PdfReader",return_value=Reader()):
+                extracted,sha=fetch_official_pdf(url)
+        self.assertIn("Group gross profit of £190.5m",extracted)
+        self.assertEqual(len(sha),64)
+        self.assertEqual(extract("PAGEGROUP",extracted,NOW,source_sha256=sha)["value_pct"],1.5)
+        for payload,redirect in ((b"<html>fake</html>",None),
+                                 (b"%PDF-" + b"x"*2_000_000,None),
+                                 (b"%PDF-fake","https://investors.michaelpage.com.evil.test/report.pdf")):
+            with patch("fcews.staffing_ir.urlopen",return_value=Response(payload,redirect)):
+                with self.assertRaises(ValueError):
+                    fetch_official_pdf(url)
+
+    def test_unreadable_pdf_is_operational_source_error(self):
+        url=RELEASES["PAGEGROUP"]["url"]
+        class Response:
+            def __enter__(self):return self
+            def __exit__(self,*args):return False
+            def geturl(self):return url
+            def read(self,n):return b"%PDF-1.0\nInvalid document"
+        with patch("fcews.staffing_ir.urlopen",return_value=Response()):
+            with self.assertRaises(ValueError):
+                fetch_official_pdf(url)
+
+    def test_issuer_pdf_not_relabelled_as_a_hiring_volume(self):
+        text="13 October 2026 THIRD QUARTER 2026 TRADING UPDATE Group gross profit of £190.5m, +1.5% vs. Q3 2025; Permanent 70% +1.1%, Temporary 30% +2.6%. "*3
+        result=extract("PAGEGROUP",text,NOW,source_sha256="a"*64)
+        self.assertEqual(result["demand_measure"],"constant_currency_gross_profit_yoy_pct")
+        self.assertEqual(result["value_pct"],1.5)
+        self.assertEqual(result["origin"],"original_issuer_IR_pdf")
+        self.assertNotIn("hiring_volume",result["demand_measure"])
 
     def test_earnings_only_cannot_pass(self):
         raw="<html>13 October 2026 THIRD QUARTER 2026 TRADING UPDATE "
