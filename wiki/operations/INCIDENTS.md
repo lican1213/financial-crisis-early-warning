@@ -2,7 +2,7 @@
 title: Adversarial Incident and Failure Register
 kind: operations
 status: active
-updated: 2026-11-06
+updated: 2026-11-09
 summary: Failed assumptions, reproducible counterexamples, live deployment gaps and accountable issue links.
 ---
 
@@ -69,3 +69,10 @@ Observed [CI #40719452896](https://github.com/lican1213/financial-crisis-early-w
 - **FAIL-036 — dated but late data could still look healthy.** The old live-family gate checked stale-vs-model maximum age, but not reasonable publisher cadence. Added [quality diagnostics](../../src/fcews/quality.py) with >3 weekday daily / >8 weekday weekly overdue bounds and weekend/future-date negative tests. These operational grace windows are **not official release calendars**, and must not turn into financial crisis triggers.
 - **FAIL-037 — authority host coverage and spoofing.** Previously several national central bank hostnames could not be attached to human-reviewed official event records. Added explicit regulator roots and [host-spoof tests](../../tests/test_events.py); reviewer identity, SHA and contagion evidence are still mandatory. New domain allowance alone is not an authenticated event, and #7 remains open for real source readback.
 - **FAIL-038 — production push trigger wrote runtime files on feature branches.** The initial GitHub-hosted repair branch invoked `check.yml` automatically and acquired `data/health.json`, `data/latest_check.json` and `data/chatgpt_feed.json` bot commits unrelated to source changes. The workflow formerly accepted `push` on any branch and committed `data/` unconditionally. Restrict both push dispatch and the `monitor` job to `refs/heads/main`; [workflow regression](../../tests/test_workflows.py) ensures that branch protection cannot silently disappear. Restore the three data files to the main branch's tracked versions in PR #13; source collection on `main` remains unchanged.
+
+
+## 2026-11-09 — research migration and operational red team
+- **FAIL-039 — paused Sunday report still listed as active**: The ChatGPT `金融危机周报` automation is actually disabled. Retired Sunday report from [cadence](../../docs/operations/CADENCE.md). Historical [weekly baseline](../../data/weekly_baseline.json) remains an uncalibrated human reference, not a live six-factor forecast.
+- **FAIL-040 — official source appearance is not a verified statistic**: Invalid/off-host, future and conflicting releases cannot become live macro scores. [Research module](../../src/fcews/research.py) validates schema, source hostname and timing. It does **not** certify actual numeric content within a source page. China and staffing firm ledger remains initially empty; numerical claims require independent document readback. See [red-team tests](../../tests/test_research.py) and [interface specification](../datasets/leading-research.md).
+- **FAIL-041 — strong equity selloff is not automatically system contagion**: Do not promote US staffing, China property or IG spread to the existing four stress families without separate calibration. Missing remains null, prior weekly subjective scores are not live data. Housing price breadth alone cannot prove a national inflection; reject worsening or missing inventories and unverified mortgage proxies.
+- **FAIL-042 — GitHub dual cron is not a hard SLA**: Second minute-43 check and existing day-gap audit reduce blind spots but are still scheduled on the same best-effort GitHub platform. Even successful Actions are not proof of independent hourly coverage. [Issue #1](https://github.com/lican1213/financial-crisis-early-warning/issues/1) stays open for a genuinely independent heartbeat/external scheduler. GitHub docs warn runs may be delayed or dropped.

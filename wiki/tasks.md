@@ -2,7 +2,7 @@
 title: FCEWS Task Dashboard
 kind: taskboard
 status: active
-updated: 2026-11-06
+updated: 2026-11-09
 summary: Navigational work queue; live GitHub Issues are authoritative for status and acceptance.
 ---
 
@@ -12,6 +12,7 @@ This page is a **dated view** (2026-10-28), not a second source of status. Open 
 
 | Priority | Task | Completion proof |
 | --- | --- | --- |
+| P0 | [#14 Source-gated leading research and cron mitigation](https://github.com/lican1213/financial-crisis-early-warning/issues/14) | PR CI + live Actions readback, source-document gates; external heartbeat remains open |
 | P0 | [#1 Verify hourly Action end-to-end](https://github.com/lican1213/financial-crisis-early-warning/issues/1) | Successful Actions run, evidence commit, intentional silent run |
 | P0 | [#3 Point-in-time historical backtest](https://github.com/lican1213/financial-crisis-early-warning/issues/3) | Timestamped vintage data, untouched chronological holdout, missed/false alerts |
 | P1 | [#2 Official OFR/MOVE/repo/Treasury sources](https://github.com/lican1213/financial-crisis-early-warning/issues/2) | Sources, adapter tests, normalized units, lags |

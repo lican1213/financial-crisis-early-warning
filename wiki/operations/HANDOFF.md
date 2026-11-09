@@ -2,7 +2,7 @@
 title: FCEWS Agent Handoff — Current Verified State
 kind: operations
 status: active
-updated: 2026-11-06
+updated: 2026-11-09
 summary: Short restart checkpoint with precise version, outstanding validation, risks and next tasks.
 ---
 
@@ -83,3 +83,11 @@ Latest evidence: [partial ALFRED public as-of smoke](https://github.com/lican121
 - [PR CI 42183639758](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42183639758) and [main CI 42183769730](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42183769730) succeeded; PR job logs explicitly show **151 tests** and **29-page wiki lint PASS**.
 - [Main actual market-source Action 42183769689](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42183769689) succeeded. The committed [health record](../../data/health.json) read back `healthy`, four *live* risk families, zero missing required families, `FRED:TGCR` recovered through the official NY Fed fallback and zero unresolved errors. [ChatGPT read-only feed](../../data/chatgpt_feed.json) remained `candidate_count=0`, `should_send_user_notification=false`, human weekly `orange`, `technical_model_comparable_to_weekly=false`.
 - **Residual live acceptance:** this successful production run was `push`-triggered, **not** evidence of reliable hourly cron. Operational schedule Issue #1 stays open. An incomplete original-vintage PIT database, licensed MOVE data and ChatGPT receipt also remain open. Do not send a user-facing systemic-risk warning for this deployment.
+
+
+### 2026-11-09 — research migration checkpoint (VERIFY CI BEFORE PROMOTION)
+- Task [#14](https://github.com/lican1213/financial-crisis-early-warning/issues/14): branch `feature/monitor-research-gates-20261109`; new [source-dated research module](../../src/fcews/research.py), [adversarial tests](../../tests/test_research.py), [daily scheduled workflow](../../.github/workflows/research.yml), [data/decision MOC](../datasets/leading-research.md). No ChatGPT weekly notifications; existing independent hourly condition-watch stays enabled.
+- The repository's former Sunday report row was stale after user paused the task on 2026-11-09. Historial subjective six-module orange/70 stored in [weekly baseline](../../data/weekly_baseline.json) is deliberately unmodified. Technical severity remains unknown/not calibrated for cross-model mapping.
+- Operational mitigation is a second best-effort minute-43 GitHub schedule alongside minute-13, plus safer pull/rebase before data pushes. GitHub may drop *both*; independent external scheduler and actual sustained run verification remain Issue #1. Do not claim hourly SLA.
+- US context uses official TEMPHELPS, JTSJOL, ICSA, T10Y3M, T10Y2Y and BAMLC0A0CM through FRED; original vintage missing. CN/issuer structured ledger initially has no rows; source-host checks do NOT validate source-page numerical content. Staffing/China broad scores must be null until primary original documents and reproducible method exist.
+- Next gate: [PR source diff and test Actions](https://github.com/lican1213/financial-crisis-early-warning/pulls); if passing, merge and inspect real research workflow run and daily research_context.json. Record exact run/commit/test counts; leave unmet gate open rather than guessing.

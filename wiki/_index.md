@@ -2,7 +2,7 @@
 title: FCEWS Wiki Master Index
 kind: index
 status: active
-updated: 2026-11-06
+updated: 2026-11-09
 summary: Entry point for the financial crisis early-warning knowledge base and operational memory.
 ---
 
@@ -39,6 +39,7 @@ summary: Entry point for the financial crisis early-warning knowledge base and o
 ## Operational memory and decisions
 - [Decision ADR-0001: GitHub/wiki truth boundaries](decisions/ADR-0001.md)
 - [Decision ADR-0002: Alert gate and incident discipline](decisions/ADR-0002.md)
+- [Decision ADR-0003: Retire weekly pushes; integrate source-gated research](decisions/ADR-0003.md)
 - [Maintenance routine](operations/MAINTENANCE.md)
 - [Event and failure register](operations/INCIDENTS.md)
 - [Current handoff](operations/HANDOFF.md)

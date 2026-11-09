@@ -8,6 +8,8 @@ on:
       - '.github/workflows/check.yml'
   schedule:
     - cron: '13 * * * *'
+    # Secondary best-effort slot reduces but does NOT eliminate missed GitHub cron.
+    - cron: '43 * * * *'
   workflow_dispatch:
 permissions:
   contents: write
@@ -39,6 +41,7 @@ jobs:
           git add -A data
           if ! git diff --cached --quiet; then
             git commit -m 'data: source-dated FCEWS state or health transition'
+            git pull --rebase origin main
             git push
           fi
       - name: Idempotent candidate issue delivery and source health incident
@@ -52,6 +55,7 @@ jobs:
           git add -A data
           if ! git diff --cached --quiet; then
             git commit -m 'data: acknowledge GitHub candidate issue receipt'
+            git pull --rebase origin main
             git push
           fi
       - name: Treat loss of monitor coverage as operational failure

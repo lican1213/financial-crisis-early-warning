@@ -2,7 +2,7 @@
 title: MOC — Engineering and Validation
 kind: moc
 status: active
-updated: 2026-11-06
+updated: 2026-11-09
 summary: Guides development, tests, failures and evidence-backed completion.
 ---
 
@@ -15,6 +15,8 @@ summary: Guides development, tests, failures and evidence-backed completion.
 - [Maintenance and quality checklist](../operations/MAINTENANCE.md).
 - [ADR-0001](../decisions/ADR-0001.md): avoid competing status databases.
 - [ADR-0002](../decisions/ADR-0002.md): alert operational boundaries.
+- [ADR-0003](../decisions/ADR-0003.md): paused weekly report, official research as a gated context layer.
+- [Research adversarial gates](../../tests/test_research.py): spoofed primary URLs, fake loan equivalence, missing data, stale releases, housing reversal.
 - [Historical test protocol](../../docs/moc/BACKTEST.md); [tests](../../tests/test_core.py).
 - [External implementation lessons](../sources/reference-projects.md).
 
