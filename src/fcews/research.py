@@ -162,7 +162,7 @@ def evaluate_releases(records: list[dict], today: date) -> dict:
     # on an identical observation period and comparison basis.
     home = housing_turning_point(admissible, today)
     return {
-        "status": "needs_review" if rejected else ("partial" if not accepted else "valid"),
+        "status": "needs_review" if rejected else ("partial" if not accepted else "schema_valid_pending_source_readback"),
         "accepted_count": len(accepted), "rejected": rejected,
         "latest": latest, "housing_turning_point": home,
         "china_recovery_breadth_score": None,
@@ -203,9 +203,13 @@ def housing_turning_point(records: list[dict], today: date) -> dict:
     inventory = changes.get(codes[3])
     inventory_ok = inventory is not None and matching and inventory[1] == valid_demand[0][1] and inventory[0] <= 0
     improving = sum(d[0] > 0 for d in valid_demand) if matching else 0
-    confirmed = bool(matching and inventory_ok and improving >= 2)
+    pattern = bool(matching and inventory_ok and improving >= 2)
+    # A proper-looking official URL is not proof the number appears in its table.
+    # Without an independent source-document readback, never promote the pattern
+    # from a mathematical screen into a confirmed national turning point.
     return {
-        "confirmed": confirmed, "status": "confirmed" if confirmed else "unverified",
+        "confirmed": False, "directional_rule_satisfied": pattern,
+        "status": "pending_source_readback" if pattern else "unverified",
         "improving_groups": improving if matching else None,
         "inventory_not_deteriorating": inventory_ok if inventory else None,
         "basis": "strict_same_period_two_of_three_plus_inventory_no_worsening",
