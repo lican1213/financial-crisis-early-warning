@@ -19,7 +19,20 @@ class WorkflowSafetyTests(unittest.TestCase):
         self.assertIn("branches: [main]", content)
         self.assertIn("continue-on-error: true", content)
         self.assertNotIn("fcews.delivery", content)
-        self.assertNotIn("fcews.bridge", content)
+        # Bridge is allowed only to publish a read-only freshness snapshot.
+        # It does not deliver an Issue or user-facing crisis notification.
+        self.assertIn("PYTHONPATH=src python -m fcews.bridge", content)
+        self.assertIn("git add data/chatgpt_feed.json", content)
+        self.assertIn("git pull --ff-only origin main", content)
+        self.assertLess(
+            content.index("git add data/nbs_pmi_context.json"),
+            content.index("PYTHONPATH=src python -m fcews.bridge"),
+        )
+        self.assertLess(
+            content.index("PYTHONPATH=src python -m fcews.bridge"),
+            content.index("git add data/chatgpt_feed.json"),
+        )
+        self.assertIn("if: steps.research.outcome == 'success' && steps.nbs.outcome == 'success'", content)
 
     def test_dual_hourly_slots_are_only_best_effort(self):
         content = (ROOT / ".github/workflows/check.yml").read_text(encoding="utf-8")

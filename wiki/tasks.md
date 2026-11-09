@@ -79,3 +79,7 @@ For project rationale read [engineering MOC](mocs/ENGINEERING.md).
 
 ## 2026-11-09 NBS first live source candidate
 [Issue #14](https://github.com/lican1213/financial-crisis-early-warning/issues/14): NBS manufacturing PMI/new orders/small-firm adapter under gate; must be verified by main Actions after merge. Other China/firm original releases and the actual national recovery breadth scoring method remain open.
+
+
+## 2026-11-09 NBS source adapter production evidence
+- [PR #17 / commit 709c589](https://github.com/lican1213/financial-crisis-early-warning/pull/17) shipped: genuine NBS manufacturing PMI, new-order and small-firm PMI [source-dated official snapshot](../data/nbs_pmi_context.json) via [successful main research Action 42548838233](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42548838233); 186 tests and MOC PASS. Source feed refresh ordering requires the follow-up FAIL-045 fix before its acceptance gate.

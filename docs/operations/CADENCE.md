@@ -18,6 +18,8 @@ Updated 2026-11-09. Unless otherwise specified, times are **Beijing (UTC+8)**. G
 | Event driven | On official validated bank/fund/sovereign/repo/payment crisis | [Event validator](../../src/fcews/events.py) / GitHub outbox | Human-reviewed official document checksum and cross-market contagion mechanism; new candidate not automatically a ChatGPT user warning |
 
 ## Delivery boundary
+The daily research workflow publishes its official observations **before** rebuilding and committing the read-only ChatGPT feed. An initially stale feed after NBS succeeded revealed a real ordering defect (FAIL-045). The bridge refresh is a separate post-persistence step; GitHub can still produce concurrent update conflicts, which must fail visibly rather than be interpreted as a market crisis. [Run and audit evidence](../../wiki/operations/INCIDENTS.md).
+
 The [read-only ChatGPT bridge](../../src/fcews/bridge.py) exposes only research snapshot freshness, source observation dates, and null China/company scores. Even a fabricated `notification_authorized=true` field in a research file cannot authorize an alert; [bridge regression tests](../../tests/test_bridge.py) prove the separation.
 
 The research workflow is context-only and never increases independent systemic stress families or sends ChatGPT notifications. Official-host acceptance of a manually entered China/company release is not proof of the numeric statistic; verify underlying tables before claims. See [leading research gate](../../wiki/datasets/leading-research.md).
