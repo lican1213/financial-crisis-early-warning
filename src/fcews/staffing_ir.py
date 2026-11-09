@@ -145,10 +145,10 @@ def extract(code: str,html: str,today: date,url: str|None=None,source_sha256: st
     hits=[]
     for pattern in PATTERNS[code]:
         matches=re.findall(pattern,text,re.I)
-        if len(matches)==1:
+        if matches:
+            if len({float(v) for v in matches})>1:
+                raise ValueError("ambiguous demand growth rate in issuer original")
             hits.append(float(matches[0]))
-        elif len(matches)>1 and len(set(matches))>1:
-            raise ValueError("ambiguous demand growth rate in issuer original")
     if not hits or any(abs(v)>100 for v in hits):
         if code=="PAGEGROUP":
             k=text.lower().find("gross profit")
