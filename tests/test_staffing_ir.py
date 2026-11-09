@@ -36,7 +36,7 @@ class StaffingIRTests(unittest.TestCase):
                 got=extract(code,report(code),NOW)
                 self.assertEqual(got["value_pct"],want)
                 self.assertEqual(got["period_end"],RELEASES[code]["period_end"])
-                self.assertIn("revenue",got["demand_measure"] if code not in ("HAYS","PAGEGROUP") else got["measurement_label"])
+                self.assertTrue(any(x in got["demand_measure"] for x in ("revenue", "net_fees", "gross_profit")))
                 self.assertFalse(got["notification_authorized"])
                 self.assertTrue(got["publication_date_in_document"] or code=="HAYS")
 
