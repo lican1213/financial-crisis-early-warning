@@ -96,10 +96,14 @@ def fetch_official_pdf(url: str, timeout: float = 12) -> tuple[str, str]:
     if not raw.startswith(b"%PDF-") or len(raw)>2_000_000:
         raise ValueError("invalid/oversized original issuer PDF")
     from pypdf import PdfReader
-    pdf=PdfReader(io.BytesIO(raw))
-    if pdf.is_encrypted or not 1<=len(pdf.pages)<=10:
-        raise ValueError("encrypted/unexpected issuer PDF page count")
-    text="\n".join((page.extract_text() or "") for page in pdf.pages)
+    from pypdf.errors import PdfReadError
+    try:
+        pdf=PdfReader(io.BytesIO(raw))
+        if pdf.is_encrypted or not 1<=len(pdf.pages)<=10:
+            raise ValueError("encrypted/unexpected issuer PDF page count")
+        text="\n".join((page.extract_text() or "") for page in pdf.pages)
+    except (PdfReadError,IndexError,KeyError,TypeError) as exc:
+        raise ValueError("original issuer PDF unreadable") from exc
     if len(text)<150:
         raise ValueError("issuer PDF contains no accessible text")
     return text, hashlib.sha256(raw).hexdigest()
