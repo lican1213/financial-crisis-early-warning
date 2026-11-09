@@ -117,8 +117,9 @@ def parse_pmi(article_html: str, url: str, year: int, month: int, today: date) -
     if not period_end <= pub <= today:
         raise ValueError("release was unavailable as of run date")
     compact = re.sub(r"\s+", "", raw)
-    if not TITLE.search(compact):
-        raise ValueError("article does not match official PMI title")
+    title = TITLE.search(compact)
+    if (not title or int(title.group(1)) != year or int(title.group(2)) != month):
+        raise ValueError("article title month differs from discovered release")
     # Restrict extraction to the manufacturing section. The nonmanufacturing
     # section contains another 'new orders' value that MUST NOT be mixed in.
     start = compact.find("一、中国制造业采购经理指数运行情况")
