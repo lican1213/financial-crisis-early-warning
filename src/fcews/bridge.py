@@ -55,6 +55,36 @@ def research_summary(context: dict, now: datetime) -> dict:
     }
 
 
+
+def nbs_pmi_summary(context: dict, now: datetime) -> dict:
+    """Display source dates only; numeric claims still require original-source review."""
+    from .nbs import valid_article
+    try:
+        if not isinstance(context, dict):
+            raise ValueError("invalid NBS snapshot")
+        url = context.get("source_url", "")
+        pub = datetime.fromisoformat(context["released_at_date"]).date()
+        if (context.get("schema") != "fcews.nbs_official_pmi.v1"
+            or not valid_article(url) or not 0 <= (now.date()-pub).days <= 75):
+            raise ValueError("missing, stale or non-primary NBS snapshot")
+        return {
+            "status": "source_snapshot_available_not_independent_vintage",
+            "published_date": pub.isoformat(), "source_url": url,
+            "observation_periods": {k:v.get("period_end") for k,v in
+                                    context.get("observations", {}).items()
+                                    if isinstance(v, dict)},
+            "authorizes_notification": False,
+            "china_recovery_breadth_score": None,
+        }
+    except (KeyError, ValueError, TypeError):
+        return {
+            "status": "missing_or_stale",
+            "published_date": None, "source_url": None, "observation_periods": {},
+            "authorizes_notification": False,
+            "china_recovery_breadth_score": None,
+        }
+
+
 def build_feed(root: Path, now: datetime | None = None) -> dict:
     now = now or datetime.now(timezone.utc)
     if now.tzinfo is None:
@@ -65,6 +95,7 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
     state = read_json(root/"data/state.json", {})
     weekly = read_json(root/"data/weekly_baseline.json", {})
     research = read_json(root/"data/research_context.json", {})
+    nbs_pmi = read_json(root/"data/nbs_pmi_context.json", {})
     outbox = read_json(root/"data/outbox.json", {"pending":[],"delivered":[]})
     candidates = []
     seen = set()
@@ -118,6 +149,7 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
         "weekly_human_report_date": weekly.get("weekly_report",{}).get("report_date"),
         "weekly_human_grade_is_historical_paused": True,
         "leading_research": research_summary(research, now),
+        "nbs_pmi_research": nbs_pmi_summary(nbs_pmi, now),
         "last_evidence_observation_dates": {k:v["date"] for k,v in source_summary.items() if v.get("date")},
         "source_url": "https://github.com/"+PROJECT,
         "contract": {
