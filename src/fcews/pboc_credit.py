@@ -41,7 +41,7 @@ def compact(raw: str)->str:
 
 def strict_one(text:str,pattern:str)->float:
     matches=re.findall(pattern,text)
-    if len(matches)!=1:
+    if not matches or len({float(v) for v in matches})!=1:
         raise ValueError("PBOC metric missing or ambiguous: "+pattern[:80])
     return float(matches[0])
 
