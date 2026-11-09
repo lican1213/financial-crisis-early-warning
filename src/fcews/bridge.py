@@ -27,6 +27,34 @@ def utc(value: str) -> datetime:
     return dt.astimezone(timezone.utc)
 
 
+
+def research_summary(context: dict, now: datetime) -> dict:
+    """Read-only research context; no numerical score or alert permission imported."""
+    try:
+        day = datetime.fromisoformat(context["as_of_date_utc"]).date()
+        age = (now.date() - day).days
+        if not 0 <= age <= 3:
+            raise ValueError("research snapshot stale or future dated")
+        fresh = True
+    except (KeyError, ValueError, TypeError):
+        fresh, day = False, None
+    us = context.get("us_labor_rates_credit", {}) if fresh else {}
+    rows = us.get("observations", {}) if isinstance(us, dict) else {}
+    dates = {k: v.get("observation_date") for k, v in rows.items()
+             if isinstance(v, dict) and isinstance(v.get("observation_date"), str)}
+    return {
+        "status": "fresh" if fresh else ("stale" if context else "missing"),
+        "source_snapshot_date": day.isoformat() if day else context.get("as_of_date_utc"),
+        "us_source_status": us.get("status", "unknown") if isinstance(us, dict) else "unknown",
+        "us_observation_dates": dict(sorted(dates.items())),
+        "china_source_status": "independent_original_document_verification_required",
+        "staffing_firm_source_status": "independent_original_document_verification_required",
+        "china_recovery_breadth_score": None,
+        "staffing_global_score": None,
+        "authorizes_notification": False,
+    }
+
+
 def build_feed(root: Path, now: datetime | None = None) -> dict:
     now = now or datetime.now(timezone.utc)
     if now.tzinfo is None:
@@ -36,6 +64,7 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
     check = read_json(root/"data/latest_check.json", {})
     state = read_json(root/"data/state.json", {})
     weekly = read_json(root/"data/weekly_baseline.json", {})
+    research = read_json(root/"data/research_context.json", {})
     outbox = read_json(root/"data/outbox.json", {"pending":[],"delivered":[]})
     candidates = []
     seen = set()
@@ -86,6 +115,9 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
         "current_technical_severity": state.get("severity","unknown"),
         "technical_model_comparable_to_weekly": weekly.get("model_comparability","not_calibrated")=="calibrated",
         "weekly_human_grade": weekly.get("weekly_report",{}).get("global_risk_grade"),
+        "weekly_human_report_date": weekly.get("weekly_report",{}).get("report_date"),
+        "weekly_human_grade_is_historical_paused": True,
+        "leading_research": research_summary(research, now),
         "last_evidence_observation_dates": {k:v["date"] for k,v in source_summary.items() if v.get("date")},
         "source_url": "https://github.com/"+PROJECT,
         "contract": {
@@ -93,6 +125,7 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
             "no_change": "true_silence",
             "verified_candidate_issue_is_not_sufficient_evidence": True,
             "never_conflate_data_health_with_financial_crisis": True,
+            "research_context_cannot_authorize_crisis_notification": True,
             "no_exactly_once_chatgpt_receipt_without_chatgpt_writeback": True,
         },
     }
