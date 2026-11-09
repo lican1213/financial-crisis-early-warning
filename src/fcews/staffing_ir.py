@@ -11,6 +11,7 @@ import io
 import json
 import math
 import re
+from urllib.error import HTTPError
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -181,6 +182,28 @@ def extract(code: str,html: str,today: date,url: str|None=None,source_sha256: st
     }
 
 
+def fetch_with_bounded_retry(code: str, fetcher=read_url):
+    """Retry at most twice on a transient network fault; never retry HTTP 403.
+
+    Last verified quarterly issuer data are stored separately, so even if both
+    attempts fail we preserve the true operational failure for this run.
+    """
+    url=RELEASES[code]["url"]
+    for attempt in range(2):
+        try:
+            if code=="PAGEGROUP" and fetcher is read_url:
+                return fetch_official_pdf(url,12)
+            return fetcher(url,12)
+        except HTTPError as error:
+            if attempt==0 and error.code in (429,500,502,503,504):
+                continue
+            raise
+        except (TimeoutError, ConnectionError):
+            if attempt==0:
+                continue
+            raise
+
+
 def collect(now:datetime|None=None,fetcher=read_url)->dict:
     now=now or datetime.now(timezone.utc)
     if now.tzinfo is None:
@@ -188,16 +211,7 @@ def collect(now:datetime|None=None,fetcher=read_url)->dict:
     today=now.astimezone(timezone.utc).date()
     accepted,errors={},{}
     with ThreadPoolExecutor(max_workers=5) as pool:
-        futures={}
-        for code in RELEASES:
-            url=RELEASES[code]["url"]
-            # In tests, a supplied fake fetcher acts as the controlled HTML/text
-            # fixture. Production fetches the one actual issuer PDF.
-            if code=="PAGEGROUP" and fetcher is read_url:
-                future=pool.submit(fetch_official_pdf,url,12)
-            else:
-                future=pool.submit(fetcher,url,12)
-            futures[future]=code
+        futures={pool.submit(fetch_with_bounded_retry,code,fetcher):code for code in RELEASES}
         for fut in as_completed(futures):
             code=futures[fut]
             try:
@@ -226,12 +240,24 @@ def collect(now:datetime|None=None,fetcher=read_url)->dict:
     }
 
 
+def publish(root:Path=ROOT,now:datetime|None=None,fetcher=read_url)->dict:
+    """Preserve last fully verified five-issuer original source snapshot.
+
+    A failed NEW fetch cannot erase a prior verified quarterly release. The
+    current attempt is still marked partial and must fail the source gate.
+    """
+    result=collect(now,fetcher)
+    write_if_changed(root/"data/staffing_ir_context.json",result)
+    if result["status"]=="complete":
+        write_if_changed(root/"data/staffing_last_verified.json",result)
+    return result
+
+
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--root",type=Path,default=ROOT)
     args=p.parse_args()
-    output=collect()
-    write_if_changed(args.root/"data/staffing_ir_context.json",output)
+    output=publish(args.root)
     print(json.dumps({"status":output["status"],"available":list(output["issuer_reports"]),
                       "missing":output["missing"],"errors":output["errors"],
                       "breadth_pct":output["positive_fee_revenue_direction_breadth_pct"],
@@ -239,7 +265,7 @@ def main():
     # Keep partial real evidence without falsifying five-of-five coverage.
     # Research workflow can still process other sources; missing IR is an
     # operational data-quality incident, not a systemic crisis.
-    if not output["issuer_reports"]:
+    if output["status"]!="complete":
         raise SystemExit(2)
 
 
