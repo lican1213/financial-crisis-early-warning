@@ -144,6 +144,85 @@ class ChatGPTBridgeTests(unittest.TestCase):
         self.assertEqual(x["nbs_pmi_research"]["status"],"missing_or_stale")
         self.assertFalse(x["should_send_user_notification"])
 
+    def test_property_nbs_data_never_replaces_absent_pbc_mortgage_with_developer_cash(self):
+        import json
+        from datetime import date
+        ctx={
+            "schema":"fcews.nbs_property.v1","status":"complete",
+            "as_of_date_utc":"2026-10-29",
+            "latest_prices":{
+                "period_end":"2026-09-30","source_url":"https://www.stats.gov.cn/sj/zxfb/202610/t20261019_1965609.html",
+                "new":{"city_count":70,"mom_rising":17},
+                "used":{"city_count":70,"mom_rising":9}},
+            "latest_market":{
+                "period_end":"2026-09-30","source_url":"https://www.stats.gov.cn/sj/zxfb/202610/t20261019_1965615.html",
+                "developer_funding":{"developer_received_mortgages":{"cumulative_yoy_pct":100.0}}},
+            "housing_turning_point_confirmed":True,
+            "china_recovery_breadth_score":100,
+            "directional_signals":{"used_price_rising_city_count_change":6},
+        }
+        (self.root/"data/nbs_property_context.json").write_text(json.dumps(ctx))
+        feed=build_feed(self.root,NOW)
+        got=feed["nbs_property_research"]
+        self.assertEqual(got["used_city_rising_count"],9)
+        self.assertTrue(got["needs_independent_pboc_mortgage_crosscheck"])
+        self.assertFalse(got["turning_point_confirmed"])
+        self.assertFalse(got["risk_alert_authorized"])
+        self.assertIsNone(got["china_recovery_breadth_score"])
+        self.assertFalse(feed["should_send_user_notification"])
+
+    def test_stale_property_or_wrong_city_count_fail_closed(self):
+        import json
+        ctx={"schema":"fcews.nbs_property.v1","status":"complete",
+             "as_of_date_utc":"2026-10-20",
+             "latest_prices":{"period_end":"2026-09-30","new":{"city_count":69},
+                              "used":{"city_count":70}},
+             "latest_market":{"period_end":"2026-09-30"}}
+        (self.root/"data/nbs_property_context.json").write_text(json.dumps(ctx))
+        self.assertEqual(build_feed(self.root,NOW)["nbs_property_research"]["status"],"missing_or_stale")
+
+
+    def test_stale_or_spoofed_staffing_does_not_invent_global_pulse(self):
+        from fcews.staffing_ir import RELEASES
+        reports={
+            code:{"source_status":"issuer_document_parsed",
+                  "published_date":v["published"],"period_end":v["period_end"],
+                  "source_url":v["url"],"demand_measure":v["basis"],"value_pct":5}
+            for code,v in RELEASES.items()}
+        reports["HAYS"]["source_url"]="https://haysplc.com.evil.test/fake"
+        research={"schema":"fcews.staffing_official_ir.v1",
+                  "as_of_date_utc":"2026-10-29",
+                  "issuer_reports":reports,
+                  "positive_fee_revenue_direction_breadth_pct":100,
+                  "staffing_global_score":100,"notification_authorized":True}
+        (self.root/"data/staffing_ir_context.json").write_text(json.dumps(research))
+        feed=build_feed(self.root,NOW)
+        got=feed["staffing_issuer_research"]
+        self.assertEqual(got["status"],"partial")
+        self.assertIn("HAYS",got["missing_issuers"])
+        self.assertIsNone(got["positive_fee_breadth_pct"])
+        self.assertIsNone(got["staffing_global_score"])
+        self.assertFalse(got["risk_alert_authorized"])
+        self.assertFalse(feed["should_send_user_notification"])
+
+    def test_complete_five_issuer_directions_not_equal_systemic_stress(self):
+        from fcews.staffing_ir import RELEASES
+        reports={
+            code:{"source_status":"issuer_document_parsed",
+                  "published_date":v["published"],"period_end":v["period_end"],
+                  "source_url":v["url"],"demand_measure":v["basis"],
+                  "value_pct":(-2 if code=="HAYS" else 3)}
+            for code,v in RELEASES.items()}
+        (self.root/"data/staffing_ir_context.json").write_text(json.dumps({
+            "schema":"fcews.staffing_official_ir.v1",
+            "as_of_date_utc":"2026-10-29", "issuer_reports":reports}))
+        feed=build_feed(self.root,NOW)
+        self.assertEqual(feed["staffing_issuer_research"]["status"],"complete")
+        self.assertEqual(feed["staffing_issuer_research"]["positive_fee_breadth_pct"],80)
+        self.assertFalse(feed["should_send_user_notification"])
+        self.assertEqual(feed["current_technical_severity"],"green")
+        self.assertEqual(feed["weekly_human_grade"],"orange")
+
     def test_no_webhook_claim_in_contract(self):
         feed=build_feed(self.root,NOW)
         self.assertEqual(feed["transport"],"ChatGPT_hourly_poll_not_GitHub_webhook")

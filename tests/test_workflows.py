@@ -32,7 +32,13 @@ class WorkflowSafetyTests(unittest.TestCase):
             content.index("PYTHONPATH=src python -m fcews.bridge"),
             content.index("git add data/chatgpt_feed.json"),
         )
-        self.assertIn("if: steps.research.outcome == 'success' && steps.nbs.outcome == 'success'", content)
+        self.assertIn("id: property", content)
+        self.assertIn("id: staffing", content)
+        self.assertIn("if: always()", content)
+        self.assertIn("steps.property.outcome == 'failure'", content)
+        self.assertIn("steps.staffing.outcome == 'failure'", content)
+        self.assertLess(content.index("git add data/staffing_ir_context.json"),
+                        content.index("PYTHONPATH=src python -m fcews.bridge"))
 
     def test_dual_hourly_slots_are_only_best_effort(self):
         content = (ROOT / ".github/workflows/check.yml").read_text(encoding="utf-8")

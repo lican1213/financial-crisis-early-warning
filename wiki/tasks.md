@@ -88,3 +88,7 @@ For project rationale read [engineering MOC](mocs/ENGINEERING.md).
 ## 2026-11-09 final production source delivery checkpoint
 - FAIL-045 source-to-feed race addressed: [PR #18](https://github.com/lican1213/financial-crisis-early-warning/pull/18), [main research run 42549320848](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42549320848), [main CI 42549320850](https://github.com/lican1213/financial-crisis-early-warning/actions/runs/42549320850): 186 unit+adversarial tests and 31-page wiki PASS. Read-only feed now has official NBS source dates, US research dates, no new crisis alerts and no made-up global staffing/China breadth scores.
 - Do not mark whole Issue #14 complete: staffed-company filings, full property/credit evidence and formal recovery breadth scores remain missing. Do not close #1 without independent cadence owner or #3 without original-vintage data and holdout.
+
+
+## 2026-11-09 property/IR expansion acceptance
+- [#14](https://github.com/lican1213/financial-crisis-early-warning/issues/14): 70-city table coverage, NBS developer sales/funding and five issuer IR original-source automation staged. CI fixture pass is **not** source-live acceptance. Missing PBOC personal mortgage lending, China lending/private-credit impulse, complete staffing actual hiring/contract volume and index scoring remain as explicit acceptance gaps. Keep issue OPEN until verified.

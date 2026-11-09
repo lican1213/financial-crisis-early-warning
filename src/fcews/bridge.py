@@ -85,6 +85,92 @@ def nbs_pmi_summary(context: dict, now: datetime) -> dict:
         }
 
 
+
+def property_summary(context: dict, now: datetime) -> dict:
+    """Expose source/grain/breadth only; never blend developer receipts with PBOC lending."""
+    unknown = {
+        "status": "missing_or_stale", "source_period": None,
+        "used_city_rising_count": None, "new_city_rising_count": None,
+        "directional_signals": None, "turning_point_confirmed": False,
+        "needs_independent_pboc_mortgage_crosscheck": True,
+        "risk_alert_authorized": False, "china_recovery_breadth_score": None,
+    }
+    try:
+        if not isinstance(context, dict) or context.get("schema") != "fcews.nbs_property.v1":
+            return unknown
+        price = context["latest_prices"]
+        market = context["latest_market"]
+        period = datetime.fromisoformat(price["period_end"]).date()
+        asof = datetime.fromisoformat(context["as_of_date_utc"]).date()
+        if (context.get("status") != "complete" or market["period_end"] != price["period_end"]
+            or not 0 <= (now.date()-asof).days <= 3
+            or not 0 <= (now.date()-period).days <= 80
+            or price["new"]["city_count"] != 70 or price["used"]["city_count"] != 70):
+            return unknown
+        return {
+            "status":"source_snapshot_available_not_original_vintage",
+            "source_period":period.isoformat(),
+            "new_city_rising_count":price["new"]["mom_rising"],
+            "used_city_rising_count":price["used"]["mom_rising"],
+            "new_price_source":price["source_url"], "developer_source":market["source_url"],
+            "directional_signals":context.get("directional_signals"),
+            "turning_point_confirmed":False,
+            "needs_independent_pboc_mortgage_crosscheck":True,
+            "risk_alert_authorized":False, "china_recovery_breadth_score":None,
+        }
+    except (KeyError, TypeError, ValueError):
+        return unknown
+
+
+
+def staffing_summary(context: dict, now: datetime) -> dict:
+    """Only official issuer demand directions, never profits or uncalibrated scores."""
+    from .staffing_ir import RELEASES
+    empty = {
+        "status":"missing_or_stale", "available_issuers":[], "missing_issuers":[],
+        "demand_directions":{}, "positive_fee_breadth_pct":None,
+        "staffing_global_score":None, "risk_alert_authorized":False,
+    }
+    if not isinstance(context,dict) or context.get("schema")!="fcews.staffing_official_ir.v1":
+        return empty
+    try:
+        asof=datetime.fromisoformat(context["as_of_date_utc"]).date()
+        if not 0<=(now.date()-asof).days<=3:
+            return empty
+        reports=context["issuer_reports"]
+        if not isinstance(reports,dict):
+            return empty
+        allowed={"RANDSTAD","MANPOWERGROUP","KORN_FERRY","HAYS","PAGEGROUP"}
+        verified={}
+        for company,row in reports.items():
+            if (company not in allowed or not isinstance(row,dict)
+                or row.get("source_status")!="issuer_document_parsed"
+                or row.get("source_url")!=RELEASES[company]["url"]
+                or row.get("demand_measure")!=RELEASES[company]["basis"]):
+                continue
+            reported=datetime.fromisoformat(row["published_date"]).date()
+            if not 0<=(now.date()-reported).days<=120:
+                continue
+            val=float(row["value_pct"])
+            if val!=val or not -100<=val<=100:
+                continue
+            verified[company]={"basis":row["demand_measure"],
+                               "direction":"positive" if val>0 else "negative" if val<0 else "flat",
+                               "period_end":row["period_end"],"source_url":row["source_url"]}
+        breadth=round(100*sum(v["direction"]=="positive" for v in verified.values())/5,2) if len(verified)==5 else None
+        return {
+            "status":"complete" if len(verified)==5 else "partial",
+            "available_issuers":sorted(verified),
+            "missing_issuers":sorted(allowed-set(verified)),
+            "demand_directions":verified,
+            "positive_fee_breadth_pct":breadth,
+            "staffing_global_score":None,
+            "risk_alert_authorized":False,
+        }
+    except (KeyError,TypeError,ValueError,OverflowError):
+        return empty
+
+
 def build_feed(root: Path, now: datetime | None = None) -> dict:
     now = now or datetime.now(timezone.utc)
     if now.tzinfo is None:
@@ -96,6 +182,8 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
     weekly = read_json(root/"data/weekly_baseline.json", {})
     research = read_json(root/"data/research_context.json", {})
     nbs_pmi = read_json(root/"data/nbs_pmi_context.json", {})
+    nbs_property = read_json(root/"data/nbs_property_context.json", {})
+    staffing_ir = read_json(root/"data/staffing_ir_context.json", {})
     outbox = read_json(root/"data/outbox.json", {"pending":[],"delivered":[]})
     candidates = []
     seen = set()
@@ -150,6 +238,8 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
         "weekly_human_grade_is_historical_paused": True,
         "leading_research": research_summary(research, now),
         "nbs_pmi_research": nbs_pmi_summary(nbs_pmi, now),
+        "nbs_property_research": property_summary(nbs_property, now),
+        "staffing_issuer_research": staffing_summary(staffing_ir, now),
         "last_evidence_observation_dates": {k:v["date"] for k,v in source_summary.items() if v.get("date")},
         "source_url": "https://github.com/"+PROJECT,
         "contract": {
