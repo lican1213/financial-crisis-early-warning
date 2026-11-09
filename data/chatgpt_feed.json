@@ -10,7 +10,7 @@
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "0a23380e07a3b8a96a6fd71fd500ea8cb05bd1e6d9cdfacc31015192c37d4f9d",
+  "fingerprint_sha256": "ffd352092c5083402721bf84230930763d1732eb872d65aa682da077f98345dc",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-10-30",
@@ -57,10 +57,30 @@
     "source_url": "https://www.stats.gov.cn/sj/zxfbhjd/202610/t20261031_1965718.html",
     "status": "source_snapshot_available_not_independent_vintage"
   },
+  "nbs_property_research": {
+    "china_recovery_breadth_score": null,
+    "directional_signals": null,
+    "needs_independent_pboc_mortgage_crosscheck": true,
+    "new_city_rising_count": null,
+    "risk_alert_authorized": false,
+    "source_period": null,
+    "status": "missing_or_stale",
+    "turning_point_confirmed": false,
+    "used_city_rising_count": null
+  },
   "notification_decision": "ChatGPT_independent_primary_source_and_four_gate_review_required",
   "schema": "fcews.chatgpt.readonly.v1",
   "should_send_user_notification": false,
   "source_url": "https://github.com/lican1213/financial-crisis-early-warning",
+  "staffing_issuer_research": {
+    "available_issuers": [],
+    "demand_directions": {},
+    "missing_issuers": [],
+    "positive_fee_breadth_pct": null,
+    "risk_alert_authorized": false,
+    "staffing_global_score": null,
+    "status": "missing_or_stale"
+  },
   "technical_model_comparable_to_weekly": false,
   "transport": "ChatGPT_hourly_poll_not_GitHub_webhook",
   "weekly_human_grade": "orange",
