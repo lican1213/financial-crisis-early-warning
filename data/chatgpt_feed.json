@@ -10,7 +10,7 @@
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "86cb4968a896015c79bed43fa9cd6187e310315df21ea121a4e2760f44ec2b11",
+  "fingerprint_sha256": "4b29451e1e3e020e0be5764c1b9c866fcfb2d6e3f2537760dd36cab777e393a5",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-10-30",
@@ -30,16 +30,16 @@
     "authorizes_notification": false,
     "china_recovery_breadth_score": null,
     "china_source_status": "independent_original_document_verification_required",
-    "source_snapshot_date": "2026-11-09",
+    "source_snapshot_date": "2026-11-10",
     "staffing_firm_source_status": "independent_original_document_verification_required",
     "staffing_global_score": null,
     "status": "fresh",
     "us_observation_dates": {
-      "BAMLC0A0CM": "2026-11-05",
+      "BAMLC0A0CM": "2026-11-06",
       "ICSA": "2026-10-31",
       "JTSJOL": "2026-09-01",
-      "T10Y2Y": "2026-11-06",
-      "T10Y3M": "2026-11-06",
+      "T10Y2Y": "2026-11-09",
+      "T10Y3M": "2026-11-09",
       "TEMPHELPS": "2026-10-01"
     },
     "us_source_status": "complete"
@@ -100,6 +100,7 @@
     "available_issuers": [
       "HAYS",
       "KORN_FERRY",
+      "MANPOWERGROUP",
       "PAGEGROUP",
       "RANDSTAD"
     ],
@@ -116,6 +117,12 @@
         "period_end": "2026-07-31",
         "source_url": "https://ir.kornferry.com/news-events/press-releases/detail/733/korn-ferry-announces-first-quarter-fiscal-2027-results-of-operations"
       },
+      "MANPOWERGROUP": {
+        "basis": "organic_constant_currency_revenue_yoy_pct",
+        "direction": "positive",
+        "period_end": "2026-09-30",
+        "source_url": "https://www.manpowergroup.com/en/news-releases/news/manpowergroup-reports-3rd-quarter-2026-results"
+      },
       "PAGEGROUP": {
         "basis": "constant_currency_gross_profit_yoy_pct",
         "direction": "positive",
@@ -129,13 +136,11 @@
         "source_url": "https://www.randstad.com/press/2026/q3-2026-continued-top-line-momentum-drives-double-digit-profit-growth/"
       }
     },
-    "missing_issuers": [
-      "MANPOWERGROUP"
-    ],
-    "positive_fee_breadth_pct": null,
+    "missing_issuers": [],
+    "positive_fee_breadth_pct": 80.0,
     "risk_alert_authorized": false,
     "staffing_global_score": null,
-    "status": "partial"
+    "status": "complete"
   },
   "technical_model_comparable_to_weekly": false,
   "transport": "ChatGPT_hourly_poll_not_GitHub_webhook",
