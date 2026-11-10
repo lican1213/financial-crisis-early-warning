@@ -63,3 +63,5 @@
 {"first_seen_utc": "2026-11-09T18:50:26.278523+00:00", "observation_date": "2026-11-06", "previous_value": null, "series": "TGCR", "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr", "value": 3.86}
 {"first_seen_utc": "2026-11-09T18:50:26.278523+00:00", "observation_date": "2026-11-06", "previous_value": null, "series": "BGCR", "source": "https://www.newyorkfed.org/markets/reference-rates/bgcr", "value": 3.87}
 {"first_seen_utc": "2026-11-09T21:05:37.998067+00:00", "observation_date": "2026-11-06", "previous_value": null, "series": "VIXCLS", "source": "https://fred.stlouisfed.org/series/VIXCLS", "value": 25.64}
+{"first_seen_utc": "2026-11-10T02:10:04.627595+00:00", "observation_date": "2026-11-06", "previous_value": null, "series": "DGS10", "source": "https://fred.stlouisfed.org/series/DGS10", "value": 4.86}
+{"first_seen_utc": "2026-11-10T02:10:04.627595+00:00", "observation_date": "2026-11-06", "previous_value": null, "series": "DGS30", "source": "https://fred.stlouisfed.org/series/DGS30", "value": 5.26}
