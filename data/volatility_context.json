@@ -1,38 +1,38 @@
 {
   "alert_role": "context_only_no_independent_family_or_notification_gate",
-  "as_of_date_utc": "2026-11-09",
+  "as_of_date_utc": "2026-11-10",
   "context": {
     "equity_vol_index_term_structure": {
-      "equity_index_spread_vix9d_minus_vix3m": 2.58,
-      "equity_index_spread_vix_minus_vix3m": 1.04,
+      "equity_index_spread_vix9d_minus_vix3m": -0.97,
+      "equity_index_spread_vix_minus_vix3m": -0.93,
       "instrument": "CBOE_EQUITY_IMPLIED_VOL_INDICES_NOT_VIX_FUTURES",
-      "near_term_equity_implied_vol_higher": true,
-      "observation_date": "2026-11-06"
+      "near_term_equity_implied_vol_higher": false,
+      "observation_date": "2026-11-09"
     },
     "indexes": {
       "VIX": {
-        "date": "2026-11-06",
+        "date": "2026-11-09",
         "source_url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv",
         "tenor_days": 30,
-        "value": 25.64
+        "value": 19.92
       },
       "VIX3M": {
-        "date": "2026-11-06",
+        "date": "2026-11-09",
         "source_url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX3M_History.csv",
         "tenor_days": 90,
-        "value": 24.6
+        "value": 20.85
       },
       "VIX6M": {
-        "date": "2026-11-06",
+        "date": "2026-11-09",
         "source_url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX6M_History.csv",
         "tenor_days": 180,
-        "value": 24.7
+        "value": 22.22
       },
       "VIX9D": {
-        "date": "2026-11-06",
+        "date": "2026-11-09",
         "source_url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX9D_History.csv",
         "tenor_days": 9,
-        "value": 27.18
+        "value": 19.88
       }
     },
     "move": {
@@ -44,41 +44,41 @@
     },
     "treasury_realized_yield_volatility": {
       "DGS10": {
-        "observation_date": "2026-11-05",
+        "observation_date": "2026-11-06",
         "std_daily_yield_change_bp_20d": 5.51171,
         "window": 20
       },
       "DGS2": {
-        "observation_date": "2026-11-05",
-        "std_daily_yield_change_bp_20d": 5.40443,
+        "observation_date": "2026-11-06",
+        "std_daily_yield_change_bp_20d": 5.59699,
         "window": 20
       },
       "DGS30": {
-        "observation_date": "2026-11-05",
-        "std_daily_yield_change_bp_20d": 4.86556,
+        "observation_date": "2026-11-06",
+        "std_daily_yield_change_bp_20d": 4.76942,
         "window": 20
       },
       "DGS5": {
-        "observation_date": "2026-11-05",
-        "std_daily_yield_change_bp_20d": 5.64381,
+        "observation_date": "2026-11-06",
+        "std_daily_yield_change_bp_20d": 5.84785,
         "window": 20
       }
     },
     "vx_futures": {
       "backwardation": true,
       "contract_basis": "STANDARD_MONTHLY_VX_FUTURES",
-      "f2_minus_f1": -1.5108,
+      "f2_minus_f1": -0.5146,
       "front": {
         "expiration_date": "2026-11-18",
-        "settlement": 23.6945,
+        "settlement": 20.0091,
         "symbol": "VX/X6"
       },
       "second": {
         "expiration_date": "2026-12-16",
-        "settlement": 22.1837,
+        "settlement": 19.4945,
         "symbol": "VX/Z6"
       },
-      "settlement_date": "2026-11-06",
+      "settlement_date": "2026-11-09",
       "source_url": "https://www.cboe.com/markets/us/futures/market-statistics/settlement/futures/daily"
     }
   },
