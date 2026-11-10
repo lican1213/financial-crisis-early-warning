@@ -9,19 +9,19 @@
   },
   "BAMLH0A0HYM2": {
     "available_at_utc": null,
-    "date": "2026-11-06",
-    "retrieved_utc": "2026-11-09T18:50:26.280015+00:00",
+    "date": "2026-11-09",
+    "retrieved_utc": "2026-11-10T17:52:12.031000+00:00",
     "series": "BAMLH0A0HYM2",
     "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
-    "value": 3.42
+    "value": 3.34
   },
   "BGCR": {
     "available_at_utc": null,
-    "date": "2026-11-06",
-    "retrieved_utc": "2026-11-09T18:50:26.810837+00:00",
+    "date": "2026-11-09",
+    "retrieved_utc": "2026-11-10T17:52:12.596269+00:00",
     "series": "BGCR",
     "source": "https://www.newyorkfed.org/markets/reference-rates/bgcr",
-    "value": 3.87
+    "value": 3.86
   },
   "DGS10": {
     "available_at_utc": null,
@@ -49,19 +49,19 @@
   },
   "OFR_FSI": {
     "available_at_utc": null,
-    "date": "2026-11-05",
-    "retrieved_utc": "2026-11-09T18:50:27.015788+00:00",
+    "date": "2026-11-06",
+    "retrieved_utc": "2026-11-10T17:52:12.891010+00:00",
     "series": "OFR_FSI",
     "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv",
-    "value": -1.388
+    "value": -1.079
   },
   "SOFR": {
     "available_at_utc": null,
-    "date": "2026-11-06",
-    "retrieved_utc": "2026-11-09T18:50:26.789847+00:00",
+    "date": "2026-11-09",
+    "retrieved_utc": "2026-11-10T17:52:12.500763+00:00",
     "series": "SOFR",
     "source": "https://www.newyorkfed.org/markets/reference-rates/sofr",
-    "value": 3.89
+    "value": 3.88
   },
   "STLFSI4": {
     "available_at_utc": null,
@@ -73,18 +73,18 @@
   },
   "TGCR": {
     "available_at_utc": null,
-    "date": "2026-11-06",
-    "retrieved_utc": "2026-11-09T18:50:26.796317+00:00",
+    "date": "2026-11-09",
+    "retrieved_utc": "2026-11-10T17:52:12.570055+00:00",
     "series": "TGCR",
     "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr",
     "value": 3.86
   },
   "VIXCLS": {
     "available_at_utc": null,
-    "date": "2026-11-06",
-    "retrieved_utc": "2026-11-09T21:05:38.000205+00:00",
+    "date": "2026-11-09",
+    "retrieved_utc": "2026-11-10T17:52:12.031572+00:00",
     "series": "VIXCLS",
     "source": "https://fred.stlouisfed.org/series/VIXCLS",
-    "value": 25.64
+    "value": 19.92
   }
 }
