@@ -10,22 +10,22 @@
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "4b29451e1e3e020e0be5764c1b9c866fcfb2d6e3f2537760dd36cab777e393a5",
+  "fingerprint_sha256": "c014caef1cfba02682a0309cae5944291aca7a2dd3e4e5197e8f436f81c6cdf6",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-10-30",
-    "BAMLH0A0HYM2": "2026-11-06",
-    "BGCR": "2026-11-06",
+    "BAMLH0A0HYM2": "2026-11-09",
+    "BGCR": "2026-11-09",
     "DGS10": "2026-11-06",
     "DGS30": "2026-11-06",
     "NFCI": "2026-10-30",
-    "OFR_FSI": "2026-11-05",
-    "SOFR": "2026-11-06",
+    "OFR_FSI": "2026-11-06",
+    "SOFR": "2026-11-09",
     "STLFSI4": "2026-10-30",
-    "TGCR": "2026-11-06",
-    "VIXCLS": "2026-11-06"
+    "TGCR": "2026-11-09",
+    "VIXCLS": "2026-11-09"
   },
-  "latest_evidence_sha256": "ae34aca7dc2ee7ed08e19558e05c1230a6c36ebc6159c8c853df6851fc99823e",
+  "latest_evidence_sha256": "0f4082a4302695eb8b9208c3cc138d069c26b882e0471cac4403f0ee7202b04d",
   "leading_research": {
     "authorizes_notification": false,
     "china_recovery_breadth_score": null,
