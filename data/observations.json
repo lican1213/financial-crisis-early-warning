@@ -49,11 +49,11 @@
   },
   "OFR_FSI": {
     "available_at_utc": null,
-    "date": "2026-11-06",
-    "retrieved_utc": "2026-11-10T17:52:12.891010+00:00",
+    "date": "2026-11-09",
+    "retrieved_utc": "2026-11-11T15:14:35.648383+00:00",
     "series": "OFR_FSI",
     "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv",
-    "value": -1.079
+    "value": -1.56
   },
   "SOFR": {
     "available_at_utc": null,
@@ -81,10 +81,10 @@
   },
   "VIXCLS": {
     "available_at_utc": null,
-    "date": "2026-11-09",
-    "retrieved_utc": "2026-11-10T17:52:12.031572+00:00",
+    "date": "2026-11-10",
+    "retrieved_utc": "2026-11-11T15:14:34.881617+00:00",
     "series": "VIXCLS",
     "source": "https://fred.stlouisfed.org/series/VIXCLS",
-    "value": 19.92
+    "value": 19.46
   }
 }
