@@ -1,14 +1,14 @@
 {
-  "checked_utc_date": "2026-11-11",
+  "checked_utc_date": "2026-11-12",
   "observation": {
     "code": "ECB_NEW_CISS_EUROAREA",
-    "date": "2026-11-09",
+    "date": "2026-11-10",
     "family": "system_context",
     "purpose": "cross_region_context_only",
-    "retrieved_utc": "2026-11-11T06:57:39.328752+00:00",
+    "retrieved_utc": "2026-11-12T07:34:15.695121+00:00",
     "source_url": "https://data.ecb.europa.eu/data/datasets/CISS",
     "unit": "index_0_to_1",
-    "value": 0.00575020047452717
+    "value": 0.005840864166773019
   },
   "status": "ok"
 }
