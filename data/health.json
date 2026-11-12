@@ -1,7 +1,11 @@
 {
   "event_validation_errors": {},
   "freshness_basis": "business-day grace heuristic; no holiday or publisher release-time attestation",
-  "lagging_live_observations_business_days": {},
+  "lagging_live_observations_business_days": {
+    "ANFCI": 9,
+    "NFCI": 9,
+    "STLFSI4": 9
+  },
   "last_observation_dates": {
     "ANFCI": "2026-10-30",
     "BAMLH0A0HYM2": "2026-11-09",
@@ -36,6 +40,6 @@
   "source_error_types": {
     "FRED:TGCR": "HTTPError"
   },
-  "status": "healthy",
+  "status": "partial",
   "unresolved_source_errors": []
 }

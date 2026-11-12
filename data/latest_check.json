@@ -1,8 +1,8 @@
 {
   "alert_candidate": false,
   "critical_families": [],
-  "evidence_sha256": "6a356e2c23a9409f6c2c126416c68f3b78ecebf6eea1a862dfcb120cae65a603",
-  "first_recorded_utc": "2026-11-11T15:14:34.875782+00:00",
+  "evidence_sha256": "d73c9318f5dd01c2ce4048b968fe68ec80a019572ab88aed5451909bb3d38691",
+  "first_recorded_utc": "2026-11-12T03:49:08.436667+00:00",
   "observations": {
     "ANFCI": {
       "date": "2026-10-30",
@@ -70,5 +70,5 @@
   "source_errors": {
     "FRED:TGCR": "HTTPError"
   },
-  "status": "healthy"
+  "status": "partial"
 }
