@@ -1,23 +1,19 @@
 {
   "event_validation_errors": {},
   "freshness_basis": "business-day grace heuristic; no holiday or publisher release-time attestation",
-  "lagging_live_observations_business_days": {
-    "ANFCI": 9,
-    "NFCI": 9,
-    "STLFSI4": 9
-  },
+  "lagging_live_observations_business_days": {},
   "last_observation_dates": {
-    "ANFCI": "2026-10-30",
-    "BAMLH0A0HYM2": "2026-11-09",
+    "ANFCI": "2026-11-06",
+    "BAMLH0A0HYM2": "2026-11-11",
     "BGCR": "2026-11-10",
     "DGS10": "2026-11-09",
     "DGS30": "2026-11-09",
-    "NFCI": "2026-10-30",
-    "OFR_FSI": "2026-11-09",
+    "NFCI": "2026-11-06",
+    "OFR_FSI": "2026-11-10",
     "SOFR": "2026-11-10",
-    "STLFSI4": "2026-10-30",
+    "STLFSI4": "2026-11-06",
     "TGCR": "2026-11-10",
-    "VIXCLS": "2026-11-10"
+    "VIXCLS": "2026-11-11"
   },
   "last_successful_data": true,
   "live_families": [
@@ -40,6 +36,6 @@
   "source_error_types": {
     "FRED:TGCR": "HTTPError"
   },
-  "status": "partial",
+  "status": "healthy",
   "unresolved_source_errors": []
 }

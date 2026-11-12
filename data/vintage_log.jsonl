@@ -78,3 +78,9 @@
 {"first_seen_utc": "2026-11-12T13:16:21.930060+00:00", "observation_date": "2026-11-10", "previous_value": null, "series": "SOFR", "source": "https://www.newyorkfed.org/markets/reference-rates/sofr", "value": 3.89}
 {"first_seen_utc": "2026-11-12T13:16:21.930060+00:00", "observation_date": "2026-11-10", "previous_value": null, "series": "TGCR", "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr", "value": 3.87}
 {"first_seen_utc": "2026-11-12T13:16:21.930060+00:00", "observation_date": "2026-11-10", "previous_value": null, "series": "BGCR", "source": "https://www.newyorkfed.org/markets/reference-rates/bgcr", "value": 3.87}
+{"first_seen_utc": "2026-11-12T20:49:51.811547+00:00", "observation_date": "2026-11-06", "previous_value": null, "series": "STLFSI4", "source": "https://fred.stlouisfed.org/series/STLFSI4", "value": -0.4918}
+{"first_seen_utc": "2026-11-12T20:49:51.811547+00:00", "observation_date": "2026-11-06", "previous_value": null, "series": "NFCI", "source": "https://fred.stlouisfed.org/series/NFCI", "value": -0.462}
+{"first_seen_utc": "2026-11-12T20:49:51.811547+00:00", "observation_date": "2026-11-06", "previous_value": null, "series": "ANFCI", "source": "https://fred.stlouisfed.org/series/ANFCI", "value": -0.477}
+{"first_seen_utc": "2026-11-12T20:49:51.811547+00:00", "observation_date": "2026-11-11", "previous_value": null, "series": "BAMLH0A0HYM2", "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2", "value": 3.3}
+{"first_seen_utc": "2026-11-12T20:49:51.811547+00:00", "observation_date": "2026-11-11", "previous_value": null, "series": "VIXCLS", "source": "https://fred.stlouisfed.org/series/VIXCLS", "value": 17.49}
+{"first_seen_utc": "2026-11-12T20:49:51.811547+00:00", "observation_date": "2026-11-10", "previous_value": null, "series": "OFR_FSI", "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv", "value": -1.834}
