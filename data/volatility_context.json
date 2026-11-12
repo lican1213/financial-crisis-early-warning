@@ -1,38 +1,38 @@
 {
   "alert_role": "context_only_no_independent_family_or_notification_gate",
-  "as_of_date_utc": "2026-11-11",
+  "as_of_date_utc": "2026-11-12",
   "context": {
     "equity_vol_index_term_structure": {
-      "equity_index_spread_vix9d_minus_vix3m": -2.1,
-      "equity_index_spread_vix_minus_vix3m": -1.18,
+      "equity_index_spread_vix9d_minus_vix3m": -3.2,
+      "equity_index_spread_vix_minus_vix3m": -1.75,
       "instrument": "CBOE_EQUITY_IMPLIED_VOL_INDICES_NOT_VIX_FUTURES",
       "near_term_equity_implied_vol_higher": false,
-      "observation_date": "2026-11-10"
+      "observation_date": "2026-11-11"
     },
     "indexes": {
       "VIX": {
-        "date": "2026-11-10",
+        "date": "2026-11-11",
         "source_url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv",
         "tenor_days": 30,
-        "value": 19.46
+        "value": 17.49
       },
       "VIX3M": {
-        "date": "2026-11-10",
+        "date": "2026-11-11",
         "source_url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX3M_History.csv",
         "tenor_days": 90,
-        "value": 20.64
+        "value": 19.24
       },
       "VIX6M": {
-        "date": "2026-11-10",
+        "date": "2026-11-11",
         "source_url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX6M_History.csv",
         "tenor_days": 180,
-        "value": 21.99
+        "value": 21.08
       },
       "VIX9D": {
-        "date": "2026-11-10",
+        "date": "2026-11-11",
         "source_url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX9D_History.csv",
         "tenor_days": 9,
-        "value": 18.54
+        "value": 16.04
       }
     },
     "move": {
@@ -65,20 +65,20 @@
       }
     },
     "vx_futures": {
-      "backwardation": true,
+      "backwardation": false,
       "contract_basis": "STANDARD_MONTHLY_VX_FUTURES",
-      "f2_minus_f1": -0.3942,
+      "f2_minus_f1": 0.3523,
       "front": {
         "expiration_date": "2026-11-18",
-        "settlement": 19.9067,
+        "settlement": 18.0519,
         "symbol": "VX/X6"
       },
       "second": {
         "expiration_date": "2026-12-16",
-        "settlement": 19.5125,
+        "settlement": 18.4042,
         "symbol": "VX/Z6"
       },
-      "settlement_date": "2026-11-10",
+      "settlement_date": "2026-11-11",
       "source_url": "https://www.cboe.com/markets/us/futures/market-statistics/settlement/futures/daily"
     }
   },
