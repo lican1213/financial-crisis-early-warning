@@ -7,7 +7,7 @@ import json
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-from .core import DIRECT_CODES, Observation, decide, fresh
+from .core import DIRECT_CODES, Observation, advance_state, decide, fresh
 
 
 def utc(value: str) -> datetime:
@@ -73,11 +73,14 @@ def replay(features: list[dict], decisions: list[dict], events: list[dict],
     for point in decision_list:
         observed, history = published_snapshot(features, point)
         outcome = decide(observed, state, weekly, [], point.date(), history=history)
-        state = outcome["next_state"]
+        # Replay models as-published availability, not actual historical network outages.
+        state = advance_state(state, outcome, len(outcome["present_families"]) >= 3)
         if outcome["alert"]:
             match = [name for name, left, right, start in windows if left <= point <= right]
             record = {"decision_at_utc": point.isoformat(), "severity": outcome["severity"],
-                      "reasons": outcome["reasons"], "matched_events": match}
+                      "reasons": outcome["reasons"], "matched_events": match,
+                      "confirmation_matches": outcome["confirmation_matches"],
+                      "newly_confirmed_families": outcome["newly_confirmed_families"]}
             alerts.append(record)
             if not match:
                 false_alerts.append(record)

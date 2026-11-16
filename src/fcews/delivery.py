@@ -79,9 +79,12 @@ def deliver_candidates(root: Path, client: GitHubClient) -> int:
             raise RuntimeError("GitHub issue readback failed; leave item pending")
         if any(item["id"] == key for item in outbox.get("delivered", [])):
             outbox["pending"] = [p for p in outbox["pending"] if p["id"] != key]
+            write_if_changed(outbox_path, outbox)
             continue
         outbox.setdefault("delivered", []).append({
             "id": key, "issue_number": int(confirmed["number"]),
+            "created_at_utc": candidate.get("created_at_utc"),
+            "evidence": candidate.get("evidence"),
             "issue_url": confirmed["html_url"],
             "delivered_at_utc": datetime.now(timezone.utc).isoformat(),
         })

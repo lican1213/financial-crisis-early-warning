@@ -142,6 +142,9 @@ def decide(
             qualifying[day] = matched
     confirmation_date = max(qualifying, default=None)
     confirmation_evidence = qualifying.get(confirmation_date, {})
+    # The latest matched day is a display field, not the full decision set.
+    # Retain exact-date groups; never represent their union as a same-day triple.
+    channel_dates = {f: day for day, match in qualifying.items() for f in match}
     confirming = sorted(confirmation_evidence)
 
     # Migration preserves a previously confirmed episode, without inventing
@@ -158,9 +161,10 @@ def decide(
     for family in list(active):
         if last_normal.get(family, "") > active[family]:
             del active[family]
-    new_confirmation = len(confirming) >= 2 and bool(set(confirming) - set(active))
-    for family in confirming:
-        active[family] = max(active.get(family, ""), confirmation_date)
+    newly_confirmed = sorted(set(channel_dates) - set(active))
+    new_confirmation = bool(newly_confirmed)
+    for family, day in channel_dates.items():
+        active[family] = max(active.get(family, ""), day)
     active_date = max(active.values(), default="")
     new_events = sorted(verified_event_ids(events) - set(previous.get("seen_events", [])))
 
@@ -247,6 +251,20 @@ def decide(
         "present_families": present, "critical_families": stressed,
         "confirming_families": confirming, "confirmation_date": confirmation_date,
         "confirmation_evidence": confirmation_evidence,
+        "confirmation_matches": qualifying,
+        "newly_confirmed_families": newly_confirmed,
         "indicators": metrics, "events": new_events,
         "reasons": reasons, "alert": bool(reasons), "next_state": state,
     }
+
+
+def advance_state(previous: dict, outcome: dict, usable: bool) -> dict:
+    """Shared live/replay transition: missing coverage must not erase an episode."""
+    if usable or outcome["alert"] or outcome["events"]:
+        return outcome["next_state"]
+    if not previous:
+        return previous
+    state = dict(previous)
+    for key in ("active_confirmation_families", "active_confirmation_date", "active_confirmation_dates"):
+        state[key] = outcome["next_state"][key]
+    return state

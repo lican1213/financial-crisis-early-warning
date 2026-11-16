@@ -15,7 +15,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from .cli import ROOT, read_json, write_if_changed
+from .cli import ROOT, fingerprint, read_json, write_if_changed
 
 PROJECT = "lican1213/financial-crisis-early-warning"
 MAX_AGE_HOURS = 72
@@ -228,37 +228,53 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
     staffing_ir = read_json(root/"data/staffing_ir_context.json", {})
     pboc_credit = read_json(root/"data/pboc_credit_context.json", {})
     outbox = read_json(root/"data/outbox.json", {"pending":[],"delivered":[]})
-    candidates = []
-    seen = set()
-    for item in outbox.get("delivered", []):
-        candidate_id = str(item.get("id",""))
-        link = str(item.get("issue_url",""))
-        timestamp = item.get("delivered_at_utc")
-        if not timestamp or not candidate_id or candidate_id in seen:
-            continue
-        try:
-            when = utc(timestamp)
-            if not timedelta(0) <= now-when <= timedelta(hours=MAX_AGE_HOURS):
+    # The durable outbox is the source of truth, not successful Issue creation.
+    # Retain a single stable identity across pending -> Issue acknowledgement.
+    candidates = {}
+    for stage in ("pending", "delivered"):
+        for item in outbox.get(stage, []):
+            if not isinstance(item, dict):
                 continue
-            path = urlsplit(link)
-            prefix = "/"+PROJECT+"/issues/"
-            if path.scheme!="https" or path.netloc!="github.com" or not path.path.startswith(prefix):
+            candidate_id = str(item.get("id", ""))
+            evidence = item.get("evidence")
+            stamp = item.get("created_at_utc") or (item.get("delivered_at_utc") if stage == "delivered" and evidence is None else None)
+            try:
+                if not stamp or not candidate_id:
+                    continue
+                when = utc(stamp)
+                if not timedelta(0) <= now - when <= timedelta(hours=MAX_AGE_HOURS):
+                    continue
+                if evidence is not None and (not isinstance(evidence, dict) or fingerprint(evidence)[:20] != candidate_id):
+                    continue
+                link, number, delivered = None, None, None
+                if stage == "pending":
+                    if evidence is None and "<!-- FCEWS-FP:" + candidate_id + " -->" not in str(item.get("body", "")):
+                        continue
+                else:
+                    delivered = utc(item["delivered_at_utc"])
+                    if not when <= delivered <= now:
+                        continue
+                    link = item["issue_url"]
+                    path = urlsplit(link)
+                    prefix = "/" + PROJECT + "/issues/"
+                    if path.scheme != "https" or path.netloc != "github.com" or not path.path.startswith(prefix):
+                        continue
+                    number = int(path.path[len(prefix):])
+                    if number < 1 or number != int(item.get("issue_number", 0)):
+                        continue
+            except (KeyError, AttributeError, TypeError, ValueError):
                 continue
-            number = int(path.path[len(prefix):])
-            if number < 1 or number != int(item.get("issue_number",0)):
-                continue
-        except (TypeError,ValueError):
-            continue
-        seen.add(candidate_id)
-        candidates.append({
-            "candidate_id": candidate_id,
-            "issue_url": link,
-            "github_issue_number": number,
-            "first_delivered_utc": when.isoformat(),
-            "review_state": "needs_independent_primary_verification",
-            "user_alert_authorized": False,
-        })
-    candidates.sort(key=lambda r: (r["first_delivered_utc"],r["candidate_id"]))
+            candidates[candidate_id] = {
+                "candidate_id": candidate_id,
+                "created_at_utc": when.isoformat(),
+                "issue_url": link, "github_issue_number": number,
+                "first_delivered_utc": delivered.isoformat() if delivered else None,
+                "github_issue_status": "acknowledged" if delivered else "pending",
+                "evidence": evidence,
+                "review_state": "needs_independent_primary_verification",
+                "user_alert_authorized": False,
+            }
+    candidates = sorted(candidates.values(), key=lambda r: (r["created_at_utc"], r["candidate_id"]))
     latest_sources = check.get("observations",{})
     source_summary = {
         key: {"date": info.get("date"), "source": info.get("source")}
@@ -274,7 +290,8 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
         "monitor_health": health.get("status","unknown"),
         "health_not_financial_crisis": True,
         "latest_evidence_sha256": check.get("evidence_sha256"),
-        "current_technical_severity": state.get("severity","unknown"),
+        "current_technical_severity": check.get("severity", state.get("severity","unknown")),
+        "persisted_regime_severity": state.get("severity","unknown"),
         "technical_model_comparable_to_weekly": weekly.get("model_comparability","not_calibrated")=="calibrated",
         "weekly_human_grade": weekly.get("weekly_report",{}).get("global_risk_grade"),
         "weekly_human_report_date": weekly.get("weekly_report",{}).get("report_date"),
@@ -290,6 +307,8 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
             "notify_only_on_four_user_conditions": True,
             "no_change": "true_silence",
             "verified_candidate_issue_is_not_sufficient_evidence": True,
+            "pending_outbox_candidates_visible_without_issue": True,
+            "candidate_age_from_creation_not_issue_retry": True,
             "no_github_candidate_does_not_veto_independent_official_evidence": True,
             "composite_indices_are_not_independent_confirmation_channels": True,
             "never_conflate_data_health_with_financial_crisis": True,
@@ -297,8 +316,8 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
             "no_exactly_once_chatgpt_receipt_without_chatgpt_writeback": True,
         },
     }
-    fingerprint=hashlib.sha256(json.dumps(payload,sort_keys=True).encode()).hexdigest()
-    return {"fingerprint_sha256":fingerprint, **payload}
+    feed_fingerprint=hashlib.sha256(json.dumps(payload,sort_keys=True).encode()).hexdigest()
+    return {"fingerprint_sha256":feed_fingerprint, **payload}
 
 
 def publish(root: Path = ROOT, now: datetime | None = None) -> dict:
