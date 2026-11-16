@@ -2,7 +2,8 @@
 
 The existing ChatGPT hourly condition-watch task may READ this public JSON.
 It must independently verify any candidate against official primary sources and
-the user's four strict conditions. No candidate => absolutely no notification.
+the user's four strict conditions. An empty candidate list does not veto newly
+verified independent official evidence; it only means no GitHub candidate.
 The feed is stable across identical hourly polls and never contains user holdings.
 """
 from __future__ import annotations
@@ -289,6 +290,8 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
             "notify_only_on_four_user_conditions": True,
             "no_change": "true_silence",
             "verified_candidate_issue_is_not_sufficient_evidence": True,
+            "no_github_candidate_does_not_veto_independent_official_evidence": True,
+            "composite_indices_are_not_independent_confirmation_channels": True,
             "never_conflate_data_health_with_financial_crisis": True,
             "research_context_cannot_authorize_crisis_notification": True,
             "no_exactly_once_chatgpt_receipt_without_chatgpt_writeback": True,
