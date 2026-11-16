@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
 
-from fcews.backtest import as_published, replay, utc
+from fcews.backtest import as_published, published_snapshot, replay, utc
 from fcews.cli import read_json, run
 from fcews.collect import (
     collect_all, parse_fred_csv, parse_fred_json, parse_nyfed_json, parse_ofr_csv,
@@ -29,6 +29,10 @@ class CollectorTests(unittest.TestCase):
         ]}
         got = parse_fred_json("DGS10", json.dumps(data), "now")
         self.assertEqual((got.date, got.value), ("2026-10-27", 4.92))
+
+    def test_direct_csv_preserves_real_recent_values(self):
+        r=parse_fred_csv("VIXCLS","DATE,VIXCLS\n2026-10-15,55\n2026-10-27,38\n2026-10-28,40\n","now")
+        self.assertEqual([(o.date,o.value) for o in r.recent],[("2026-10-27",38),("2026-10-28",40)])
 
     def test_nyfed_official_schema(self):
         sample = {"refRates": [
@@ -98,6 +102,16 @@ class MonitorTests(unittest.TestCase):
         self.assertFalse(second["alert_candidate"])
         self.assertEqual(len(read_json(self.root / "data/outbox.json", {})["pending"]), 1)
         self.assertEqual(second["families"], ["credit", "volatility"])
+
+    def test_source_release_alignment_live_pipeline(self):
+        v=parse_fred_csv("VIXCLS","DATE,VIXCLS\n2026-10-27,38\n2026-10-28,40\n",self.now.isoformat())
+        rows={"VIXCLS":v,"BAMLH0A0HYM2":ob("BAMLH0A0HYM2",7,"2026-10-27")}
+        result=run(self.root,lambda:(rows,{}),self.now)
+        self.assertTrue(result["alert_candidate"])
+        snapshot=read_json(self.root/"data/latest_check.json",{})
+        self.assertEqual(snapshot["confirmation_date"],"2026-10-27")
+        self.assertEqual(snapshot["confirmation_evidence"]["volatility"]["value"],38)
+        self.assertFalse(run(self.root,lambda:(rows,{}),self.now)["alert_candidate"])
 
     def test_identical_hourly_poll_preserves_original_retrieval_and_vintage(self):
         rows = {"STLFSI4": ob("STLFSI4", -0.5), "VIXCLS": ob("VIXCLS", 18),
@@ -310,6 +324,20 @@ class HistoricalTests(unittest.TestCase):
         ]
         self.assertEqual(as_published(features, utc("2026-10-29T00:00:00Z"))["VIXCLS"].value, 20)
         self.assertEqual(as_published(features, utc("2026-10-31T00:00:00Z"))["VIXCLS"].value, 55)
+
+    def test_replay_joins_only_released_common_date_not_future_revision(self):
+        def row(s,d,v,t):
+            return {"series":s,"observation_date":d,"value":v,"first_available_at_utc":t,"source_url":"https://fred.stlouisfed.org/"}
+        features=[row("VIXCLS","2026-10-27",38,"2026-10-28T09:00:00Z"),
+                  row("VIXCLS","2026-10-28",40,"2026-10-28T23:00:00Z"),
+                  row("BAMLH0A0HYM2","2026-10-27",7,"2026-10-29T09:00:00Z"),
+                  row("VIXCLS","2026-10-27",10,"2026-10-30T09:00:00Z")]
+        points=[{"decision_at_utc":"2026-10-29T08:00:00Z"},{"decision_at_utc":"2026-10-29T10:00:00Z"}]
+        summary=replay(features,points,[])
+        self.assertEqual(summary["alerts"],1)
+        self.assertEqual(summary["alerts_detail"][0]["decision_at_utc"],"2026-10-29T10:00:00+00:00")
+        _,history=published_snapshot(features,utc("2026-10-29T10:00:00Z"))
+        self.assertEqual(history["2026-10-27"]["VIXCLS"].value,38)
 
     def test_before_first_publication_has_no_data(self):
         features = [{"series": "VIXCLS", "observation_date": "2026-10-28",
