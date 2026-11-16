@@ -7,7 +7,7 @@ import json
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-from .core import Observation, decide
+from .core import DIRECT_CODES, Observation, decide, fresh
 
 
 def utc(value: str) -> datetime:
@@ -22,9 +22,10 @@ def load_csv(path: Path) -> list[dict]:
         return list(csv.DictReader(handle))
 
 
-def as_published(rows: list[dict], decision_at: datetime) -> dict[str, Observation]:
+def published_snapshot(rows: list[dict], decision_at: datetime):
     """Select the last revision actually public at decision time; never look ahead."""
     selected: dict[str, tuple[datetime, Observation]] = {}
+    dated: dict[tuple[str, str], tuple[datetime, Observation]] = {}
     for row in rows:
         release = utc(row["first_available_at_utc"])
         period = date.fromisoformat(row["observation_date"])
@@ -37,11 +38,22 @@ def as_published(rows: list[dict], decision_at: datetime) -> dict[str, Observati
             row["source_url"], decision_at.isoformat(),
             release.isoformat(),
         )
+        if code in DIRECT_CODES and fresh(candidate, decision_at.date()):
+            key = (candidate.date, code)
+            if key not in dated or release > dated[key][0]:
+                dated[key] = (release, candidate)
         current = selected.get(code)
         score = (period, release)
         if current is None or score > (date.fromisoformat(current[1].date), current[0]):
             selected[code] = (release, candidate)
-    return {key: value[1] for key, value in selected.items()}
+    history = {}
+    for (day, code), (_, ob) in sorted(dated.items()):
+        history.setdefault(day, {})[code] = ob
+    return {key: value[1] for key, value in selected.items()}, history
+
+
+def as_published(rows: list[dict], decision_at: datetime) -> dict[str, Observation]:
+    return published_snapshot(rows, decision_at)[0]
 
 
 def replay(features: list[dict], decisions: list[dict], events: list[dict],
@@ -59,8 +71,8 @@ def replay(features: list[dict], decisions: list[dict], events: list[dict],
     alerts = []
     false_alerts = []
     for point in decision_list:
-        observed = as_published(features, point)
-        outcome = decide(observed, state, weekly, [], point.date())
+        observed, history = published_snapshot(features, point)
+        outcome = decide(observed, state, weekly, [], point.date(), history=history)
         state = outcome["next_state"]
         if outcome["alert"]:
             match = [name for name, left, right, start in windows if left <= point <= right]
