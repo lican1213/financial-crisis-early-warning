@@ -2,15 +2,17 @@
   "candidate_count": 0,
   "candidates": [],
   "contract": {
+    "composite_indices_are_not_independent_confirmation_channels": true,
     "never_conflate_data_health_with_financial_crisis": true,
     "no_change": "true_silence",
     "no_exactly_once_chatgpt_receipt_without_chatgpt_writeback": true,
+    "no_github_candidate_does_not_veto_independent_official_evidence": true,
     "notify_only_on_four_user_conditions": true,
     "research_context_cannot_authorize_crisis_notification": true,
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "ae491f52561262e61a8ede85c9a0adfaeed2a73f14b1e83ef08459178cfa72b0",
+  "fingerprint_sha256": "05ec88c941994f4ddcc7a9a4f83967b54f7a53e8f6b49873eba84c0efb07fd0d",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-11-06",
@@ -25,7 +27,7 @@
     "TGCR": "2026-11-12",
     "VIXCLS": "2026-11-12"
   },
-  "latest_evidence_sha256": "e93077a4b0846928d36a4c542ac78a466615543a9f9759c85308759a0949991f",
+  "latest_evidence_sha256": "c1fa14f5aab08229176e03a1b827e89b9ac2d49f630cad65b1262d32e7aa3cff",
   "leading_research": {
     "authorizes_notification": false,
     "china_recovery_breadth_score": null,
