@@ -65,6 +65,34 @@ class AuditTests(unittest.TestCase):
         weekly={"severity":"green","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/","model_comparability":"not_calibrated"}
         self.assertFalse(decide({**calm(),"VIXCLS":obs("VIXCLS",40)},BASE,weekly,[],DAY)["alert"])
 
+    def test_data_gap_does_not_rearm_stress_episode(self):
+        risk={"VIXCLS":obs("VIXCLS",40),"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7)}
+        first=decide(risk,BASE,{},[],DAY)
+        outage=decide({"VIXCLS":obs("VIXCLS",40)},first["next_state"],{},[],DAY)
+        self.assertEqual(outage["confirming_families"],[])
+        self.assertEqual(outage["next_state"]["active_confirmation_families"],["credit","volatility"])
+        self.assertFalse(decide(risk,outage["next_state"],{},[],DAY)["alert"])
+
+    def test_third_direct_channel_is_new_material_candidate_once(self):
+        pair={"VIXCLS":obs("VIXCLS",40),"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7)}
+        first=decide(pair,BASE,{},[],DAY)
+        triple={**pair,"SOFR":obs("SOFR",4.1),"TGCR":obs("TGCR",3.8)}
+        second=decide(triple,first["next_state"],{},[],DAY)
+        self.assertIn("independent_stress_families",second["reasons"])
+        self.assertFalse(decide(triple,second["next_state"],{},[],DAY)["alert"])
+
+    def test_only_aligned_new_normal_evidence_rearms_episode(self):
+        pair={"VIXCLS":obs("VIXCLS",40),"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7)}
+        first=decide(pair,BASE,{},[],DAY)
+        mixed={"VIXCLS":obs("VIXCLS",20,"2026-10-28"),"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7)}
+        pending=decide(mixed,first["next_state"],{},[],DAY)
+        self.assertEqual(pending["next_state"]["active_confirmation_families"],["credit","volatility"])
+        normal={"VIXCLS":obs("VIXCLS",20,"2026-10-28"),"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",3,"2026-10-28")}
+        reset=decide(normal,pending["next_state"],{},[],DAY)
+        self.assertEqual(reset["next_state"]["active_confirmation_families"],[])
+        rerisk={"VIXCLS":obs("VIXCLS",40,"2026-10-29"),"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7,"2026-10-29")}
+        self.assertTrue(decide(rerisk,reset["next_state"],{},[],date(2026,10,29))["alert"])
+
     def test_calm_silent(self):
         self.assertFalse(decide(calm(),BASE,{"severity":"green","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"},[],DAY)["alert"])
     def test_single_family_cannot_trigger_weekly(self):
