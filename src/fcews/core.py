@@ -115,13 +115,17 @@ def decide(
     # decision. A later normal reading invalidates an older breach for that channel.
     dated = {day: dict(items) for day, items in (history or {}).items()}
     for code, row in rows.items():
-        if code in DIRECT_CODES and fresh(row, now):
+        if (code in DIRECT_CODES or (registry or {}).get(code, ("", 0))[0] in DIRECT_CONFIRMATION_FAMILIES) and fresh(row, now):
             dated.setdefault(row.date, {})[code] = row
     direct_by_date: dict[str, dict[str, dict]] = {}
     for day, items in sorted(dated.items()):
         daily = indicators({k: v for k, v in items.items() if v.date == day}, now, registry=registry)
-        direct_by_date[day] = {v["family"]: dict(v, series=k) for k, v in daily.items()
-                               if v["family"] in DIRECT_CONFIRMATION_FAMILIES}
+        direct_by_date[day] = {
+            v["family"]: dict(v, series=k, sources={
+                code: items[code].source for code in
+                (("SOFR", "TGCR") if k == "SOFR_TGCR_SPREAD" else (k,))
+            }) for k, v in daily.items() if v["family"] in DIRECT_CONFIRMATION_FAMILIES
+        }
     direct_metrics = {}
     for daily in direct_by_date.values():
         direct_metrics.update(daily)
