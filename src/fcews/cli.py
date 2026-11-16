@@ -14,6 +14,7 @@ from .collect import collect_all
 from .core import Observation, decide, fresh, indicators
 from .events import verify_events
 from .quality import late_source_dates
+from .history import recent_history, serialize
 
 ROOT = Path(__file__).resolve().parents[2]
 REQUIRED_FAMILIES = frozenset({"system", "credit", "volatility", "funding"})
@@ -87,6 +88,9 @@ def report_body(outcome: dict, rows: dict[str, Observation], now: datetime) -> s
         "New reviewed events: " + ", ".join(outcome["events"]), "",
         "## Observation-date and origin evidence",
     ]
+    for family, item in sorted(outcome["confirmation_evidence"].items()):
+        parts.append(f"- Matched {family}: {item['series']} {item['value']} on {item['date']}; "
+                     f"threshold {item['threshold']}; sources {item.get('sources', {})}")
     for code, item in sorted(outcome["indicators"].items()):
         observation = rows.get(code)
         src = (observation.source if observation else "paired NYFed/FRED source")
@@ -156,7 +160,10 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
         {key: item.as_dict() for key, item in sorted(merged.items())},
     )
 
-    outcome = decide(merged, old_state, weekly, checked_events, now.date())
+    direct_history = recent_history(read_json(root / "data/direct_history.json", {}),
+                                    fetched, cached, now.date())
+    write_if_changed(root / "data/direct_history.json", serialize(direct_history))
+    outcome = decide(merged, old_state, weekly, checked_events, now.date(), history=direct_history)
     present = outcome["present_families"]
     # A recent cache supports continuity of risk analysis but CANNOT prove the
     # current polling run is healthy if the official endpoints all failed.
@@ -191,6 +198,8 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
             "reasons": sorted(outcome["reasons"]),
             "family_days": sorted((v["family"], v["date"], v["value"]) for v in outcome["indicators"].values() if v["critical"]),
             "events": outcome["events"],
+            "confirmation_date": outcome["confirmation_date"],
+            "confirmation_evidence": outcome["confirmation_evidence"],
             "baseline": weekly.get("as_of", ""),
         }
         key = fingerprint(evidence)[:20]
@@ -209,12 +218,20 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
     if usable or outcome["alert"] or outcome["events"]:
         write_if_changed(root / "data/state.json", outcome["next_state"])
 
+    elif old_state and "active_confirmation_dates" in outcome["next_state"]:
+        # Verified channel resolution can be retained even when other sources fail.
+        state = dict(old_state)
+        for key in ("active_confirmation_families", "active_confirmation_date", "active_confirmation_dates"):
+            state[key] = outcome["next_state"][key]
+        write_if_changed(root / "data/state.json", state)
+
     stable_snapshot = {
         "status": health_status, "severity": outcome["severity"],
         "present_families": present,
         "critical_families": outcome["critical_families"],
         "confirming_families": outcome["confirming_families"],
         "confirmation_date": outcome["confirmation_date"],
+        "confirmation_evidence": outcome["confirmation_evidence"],
         "source_errors": health["source_error_types"],
         "observations": {
             key: {"date": ob.date, "value": float(ob.value), "source": ob.source}
