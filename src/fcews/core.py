@@ -121,6 +121,25 @@ def decide(
     previous_confirming = previous.get("confirming_families")
     if previous_confirming is None:
         previous_confirming = sorted(set(previous.get("critical_families", [])) & DIRECT_CONFIRMATION_FAMILIES)
+    # A data gap is not recovery. Keep the last confirmed episode latched until
+    # all of its direct channels have newer, aligned observations showing fewer
+    # than two stressed. A newly confirmed channel is material escalation.
+    active = set(previous.get("active_confirmation_families", previous_confirming))
+    active_date = previous.get("active_confirmation_date") or ""
+    direct_metrics = {v["family"]: v for v in metrics.values()
+                      if v["family"] in DIRECT_CONFIRMATION_FAMILIES}
+    active_rows = [direct_metrics[f] for f in sorted(active) if f in direct_metrics]
+    observed_dates = {v["date"] for v in active_rows}
+    if (len(active) >= 2 and len(active_rows) == len(active)
+            and len(observed_dates) == 1 and min(observed_dates) > active_date
+            and sum(v["critical"] for v in active_rows) < 2):
+        active, active_date = set(), ""
+    new_confirmation = len(confirming) >= 2 and (
+        len(active) < 2 or bool(set(confirming) - active)
+    )
+    if confirming:
+        active.update(confirming)
+        active_date = max(active_date, confirmation_date)
     new_events = sorted(verified_event_ids(events) - set(previous.get("seen_events", [])))
 
     if len(stressed) >= 3:
@@ -172,7 +191,7 @@ def decide(
         recovery_count, recovery_date, recovery_family_dates = 0, "", {}
 
     reasons: list[str] = []
-    if len(confirming) >= 2 and len(previous_confirming) < 2:
+    if new_confirmation:
         reasons.append("independent_stress_families")
     if (
         base != "unknown" and severity != "unknown"
@@ -190,6 +209,8 @@ def decide(
         "severity": severity,
         "critical_families": stressed,
         "confirming_families": confirming,
+        "active_confirmation_families": sorted(active),
+        "active_confirmation_date": active_date or None,
         "seen_events": sorted(set(previous.get("seen_events", [])) | verified_event_ids(events)),
         "recovery_count": recovery_count,
         "last_recovery_date": recovery_date,
