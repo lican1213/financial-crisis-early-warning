@@ -26,6 +26,7 @@ CONTEXT_CODES = {"DGS10", "DGS30", "BGCR"}
 # Keep the legacy diagnostic grade for historical comparability; require distinct
 # direct channels on the same observation date for the automatic two-family gate.
 DIRECT_CONFIRMATION_FAMILIES = frozenset({"credit", "volatility", "funding"})
+DIRECT_CODES = frozenset({"BAMLH0A0HYM2", "VIXCLS", "SOFR", "TGCR"})
 MAX_FUTURE_SECONDS = 300
 
 
@@ -37,6 +38,7 @@ class Observation:
     source: str
     retrieved_utc: str
     available_at_utc: str | None = None
+    recent: tuple[Observation, ...] = ()  # transport-only; as_dict remains one dated value
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -104,42 +106,58 @@ def verified_event_ids(events: list[dict[str, Any]]) -> set[str]:
 def decide(
     rows: dict[str, Observation], previous: dict[str, Any],
     weekly: dict[str, Any], events: list[dict[str, Any]], now: date,
-    registry=None,
+    registry=None, history: dict[str, dict[str, Observation]] | None = None,
 ) -> dict[str, Any]:
     metrics = indicators(rows, now, registry=registry)
     present = sorted({v["family"] for v in metrics.values()})
     stressed = sorted({v["family"] for v in metrics.values() if v["critical"]})
-    direct_by_date: dict[str, set[str]] = {}
-    for v in metrics.values():
-        if v["critical"] and v["family"] in DIRECT_CONFIRMATION_FAMILIES:
-            direct_by_date.setdefault(v["date"], set()).add(v["family"])
-    qualifying_dates = [day for day, families in direct_by_date.items() if len(families) >= 2]
-    confirmation_date = max(qualifying_dates, default=None)
-    confirming = sorted(direct_by_date[confirmation_date]) if confirmation_date else []
-    # Legacy state predates the new field. Do not suppress a first non-overlapping
-    # pair merely because a composite plus a single direct channel was stressed.
-    previous_confirming = previous.get("confirming_families")
-    if previous_confirming is None:
-        previous_confirming = sorted(set(previous.get("critical_families", [])) & DIRECT_CONFIRMATION_FAMILIES)
-    # A data gap is not recovery. Keep the last confirmed episode latched until
-    # all of its direct channels have newer, aligned observations showing fewer
-    # than two stressed. A newly confirmed channel is material escalation.
-    active = set(previous.get("active_confirmation_families", previous_confirming))
-    active_date = previous.get("active_confirmation_date") or ""
-    direct_metrics = {v["family"]: v for v in metrics.values()
-                      if v["family"] in DIRECT_CONFIRMATION_FAMILIES}
-    active_rows = [direct_metrics[f] for f in sorted(active) if f in direct_metrics]
-    observed_dates = {v["date"] for v in active_rows}
-    if (len(active) >= 2 and len(active_rows) == len(active)
-            and len(observed_dates) == 1 and min(observed_dates) > active_date
-            and sum(v["critical"] for v in active_rows) < 2):
-        active, active_date = set(), ""
-    new_confirmation = len(confirming) >= 2 and (
-        len(active) < 2 or bool(set(confirming) - active)
-    )
-    if confirming:
-        active.update(confirming)
-        active_date = max(active_date, confirmation_date)
+    # Inner join by exact observation date, using only data available to this
+    # decision. A later normal reading invalidates an older breach for that channel.
+    dated = {day: dict(items) for day, items in (history or {}).items()}
+    for code, row in rows.items():
+        if code in DIRECT_CODES and fresh(row, now):
+            dated.setdefault(row.date, {})[code] = row
+    direct_by_date: dict[str, dict[str, dict]] = {}
+    for day, items in sorted(dated.items()):
+        daily = indicators({k: v for k, v in items.items() if v.date == day}, now, registry=registry)
+        direct_by_date[day] = {v["family"]: dict(v, series=k) for k, v in daily.items()
+                               if v["family"] in DIRECT_CONFIRMATION_FAMILIES}
+    direct_metrics = {}
+    for daily in direct_by_date.values():
+        direct_metrics.update(daily)
+    last_normal = {}
+    for day, daily in direct_by_date.items():
+        for family, metric in daily.items():
+            if not metric["critical"]:
+                last_normal[family] = day
+    qualifying = {}
+    for day, daily in direct_by_date.items():
+        matched = {f: v for f, v in daily.items() if v["critical"]
+                   and direct_metrics[f]["critical"] and day > last_normal.get(f, "")}
+        if len(matched) >= 2:
+            qualifying[day] = matched
+    confirmation_date = max(qualifying, default=None)
+    confirmation_evidence = qualifying.get(confirmation_date, {})
+    confirming = sorted(confirmation_evidence)
+
+    # Migration preserves a previously confirmed episode, without inventing
+    # per-channel resolution history. Missing data is not a normal observation.
+    prior = previous.get("active_confirmation_families")
+    if prior is None:
+        prior = previous.get("confirming_families")
+    if prior is None:
+        prior = sorted(set(previous.get("critical_families", [])) & DIRECT_CONFIRMATION_FAMILIES)
+        if len(prior) < 2:
+            prior = []
+    active = dict(previous.get("active_confirmation_dates") or
+                  {f: previous.get("active_confirmation_date") or "" for f in prior})
+    for family in list(active):
+        if last_normal.get(family, "") > active[family]:
+            del active[family]
+    new_confirmation = len(confirming) >= 2 and bool(set(confirming) - set(active))
+    for family in confirming:
+        active[family] = max(active.get(family, ""), confirmation_date)
+    active_date = max(active.values(), default="")
     new_events = sorted(verified_event_ids(events) - set(previous.get("seen_events", [])))
 
     if len(stressed) >= 3:
@@ -210,6 +228,7 @@ def decide(
         "critical_families": stressed,
         "confirming_families": confirming,
         "active_confirmation_families": sorted(active),
+        "active_confirmation_dates": active,
         "active_confirmation_date": active_date or None,
         "seen_events": sorted(set(previous.get("seen_events", [])) | verified_event_ids(events)),
         "recovery_count": recovery_count,
@@ -223,6 +242,7 @@ def decide(
         "confidence": "moderate" if len(present) >= 3 else "limited",
         "present_families": present, "critical_families": stressed,
         "confirming_families": confirming, "confirmation_date": confirmation_date,
+        "confirmation_evidence": confirmation_evidence,
         "indicators": metrics, "events": new_events,
         "reasons": reasons, "alert": bool(reasons), "next_state": state,
     }
