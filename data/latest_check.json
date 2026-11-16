@@ -1,10 +1,11 @@
 {
   "alert_candidate": false,
   "confirmation_date": null,
+  "confirmation_evidence": {},
   "confirming_families": [],
   "critical_families": [],
-  "evidence_sha256": "c1fa14f5aab08229176e03a1b827e89b9ac2d49f630cad65b1262d32e7aa3cff",
-  "first_recorded_utc": "2026-11-16T11:27:32.642862+00:00",
+  "evidence_sha256": "e3067cff1c7501521fc9be0e4a3a2677a31f25f5b6a9e5315dc0cdf7c86032ee",
+  "first_recorded_utc": "2026-11-16T11:54:54.071016+00:00",
   "observations": {
     "ANFCI": {
       "date": "2026-11-06",
