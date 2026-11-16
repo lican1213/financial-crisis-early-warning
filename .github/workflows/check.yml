@@ -34,6 +34,7 @@ jobs:
         continue-on-error: true
         run: PYTHONPATH=src python -m fcews.cli --require-healthy
       - name: Persist source observations, candidate outbox, and health diagnostics
+        id: persist
         if: always()
         run: |
           git config user.name 'github-actions[bot]'
@@ -45,6 +46,7 @@ jobs:
             git push
           fi
       - name: Idempotent candidate issue delivery and source health incident
+        id: bridge
         if: always()
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -55,6 +57,20 @@ jobs:
           git add -A data
           if ! git diff --cached --quiet; then
             git commit -m 'data: acknowledge GitHub candidate issue receipt'
+            git pull --rebase origin main
+            git push
+          fi
+      - name: Publish operational poll receipt independently of evidence changes
+        if: always() && !cancelled() && steps.collect.outcome != ''
+        env:
+          FCEWS_COLLECT: ${{ steps.collect.outcome }}
+          FCEWS_PERSIST: ${{ steps.persist.outcome }}
+          FCEWS_BRIDGE: ${{ steps.bridge.outcome }}
+        run: |
+          PYTHONPATH=src python -m fcews.heartbeat
+          git add data/poll_heartbeat.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'ops: record poll heartbeat (not market evidence)'
             git pull --rebase origin main
             git push
           fi
