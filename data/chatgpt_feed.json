@@ -2,17 +2,19 @@
   "candidate_count": 0,
   "candidates": [],
   "contract": {
+    "candidate_age_from_creation_not_issue_retry": true,
     "composite_indices_are_not_independent_confirmation_channels": true,
     "never_conflate_data_health_with_financial_crisis": true,
     "no_change": "true_silence",
     "no_exactly_once_chatgpt_receipt_without_chatgpt_writeback": true,
     "no_github_candidate_does_not_veto_independent_official_evidence": true,
     "notify_only_on_four_user_conditions": true,
+    "pending_outbox_candidates_visible_without_issue": true,
     "research_context_cannot_authorize_crisis_notification": true,
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "0fa1d02eb6dba2c5e15a92872f902f3b6d237ad6fa1f5ac6414e80dffcbd338e",
+  "fingerprint_sha256": "3775d3a67319c797cfef70d816879924f16f8076ce9b3bfb08fd8548ff4dcc4a",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-11-06",
@@ -27,7 +29,7 @@
     "TGCR": "2026-11-12",
     "VIXCLS": "2026-11-12"
   },
-  "latest_evidence_sha256": "e3067cff1c7501521fc9be0e4a3a2677a31f25f5b6a9e5315dc0cdf7c86032ee",
+  "latest_evidence_sha256": "25be5d3fd047f34b3b21d113edf8edb321ed2facedbb41696fa8fc2e0bc2b2d6",
   "leading_research": {
     "authorizes_notification": false,
     "china_recovery_breadth_score": null,
@@ -94,6 +96,7 @@
     },
     "status": "official_government_republication_not_original_vintage"
   },
+  "persisted_regime_severity": "green",
   "schema": "fcews.chatgpt.readonly.v1",
   "should_send_user_notification": false,
   "source_url": "https://github.com/lican1213/financial-crisis-early-warning",
