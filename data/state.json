@@ -1,4 +1,6 @@
 {
+  "active_confirmation_date": null,
+  "active_confirmation_families": [],
   "confirming_families": [],
   "critical_families": [],
   "last_alert_severity": null,
