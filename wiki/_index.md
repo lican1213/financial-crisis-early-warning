@@ -78,3 +78,6 @@ Read provenance before answering: publication date vs observation date vs first 
 ## Latest 2026-11-06 reliability cross-links
 - [Operational schedule/freshness specification](../docs/operations/CADENCE.md), [FAIL-033–037](operations/INCIDENTS.md) and [verified project comparables](sources/reference-projects.md).
 - [Engineering tests](../tests/test_integration.py), [run-gap tests](../tests/test_schedule_health.py), [weekdays-age tests](../tests/test_quality.py), and [latest deployment handoff](operations/HANDOFF.md).
+
+## Development and acceptance contract
+- [Three-stage Loop/Gate maintenance protocol](../docs/operations/DEVELOPMENT.md) — agent prompt, stage contracts, adversarial end-to-end acceptance and research roadmap. [Cross-stage tests](../tests/test_cross_stage.py), [latest handoff](operations/HANDOFF.md).
