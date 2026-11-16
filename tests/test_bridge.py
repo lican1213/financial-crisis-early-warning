@@ -23,10 +23,12 @@ class ChatGPTBridgeTests(unittest.TestCase):
             '{"severity":"unknown","model_comparability":"not_calibrated",'
             '"weekly_report":{"global_risk_grade":"orange"}}')
 
-    def test_no_alert_when_no_candidates_even_if_orange_weekly(self):
+    def test_empty_feed_has_no_authority_but_cannot_veto_independent_evidence(self):
         feed=build_feed(self.root,NOW)
         self.assertEqual(feed["candidate_count"],0)
         self.assertFalse(feed["should_send_user_notification"])
+        self.assertTrue(feed["contract"]["no_github_candidate_does_not_veto_independent_official_evidence"])
+        self.assertTrue(feed["contract"]["composite_indices_are_not_independent_confirmation_channels"])
         self.assertEqual(feed["weekly_human_grade"],"orange")
         self.assertEqual(feed["current_technical_severity"],"green")
         self.assertFalse(feed["technical_model_comparable_to_weekly"])
