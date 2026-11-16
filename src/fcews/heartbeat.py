@@ -12,7 +12,7 @@ SCHEMA = "fcews.poll_heartbeat.v1"
 
 def receipt(previous: dict, *, now: datetime, event: str, run_id: str,
             run_attempt: str, results: dict, health: str, evidence_sha: str | None) -> dict:
-    if now.tzinfo is None or not run_id.isdigit() or not run_attempt.isdigit():
+    if now.tzinfo is None or not run_id.isdigit() or not run_attempt.isdigit() or int(run_attempt) < 1:
         raise ValueError("invalid poll receipt identity")
     if event not in {"schedule", "push", "workflow_dispatch"}:
         raise ValueError("unexpected poll trigger")
@@ -22,14 +22,17 @@ def receipt(previous: dict, *, now: datetime, event: str, run_id: str,
                   and health in {"healthy", "partial"} and bool(evidence_sha))
     # A non-scheduled or failed poll cannot move the scheduled-success clock.
     last_poll = previous.get("last_successful_poll_utc")
-    last_schedule = previous.get("last_successful_scheduled_poll_utc")
+    last_schedule = (previous.get("last_successful_scheduled_poll_utc")
+                     if previous.get("natural_schedule_only") is True else None)
+    natural = event == "schedule" and run_attempt == "1"
     if successful:
         last_poll = stamp
-        if event == "schedule":
+        if natural:
             last_schedule = stamp
     return {
         "schema": SCHEMA, "recorded_at_utc": stamp, "trigger": event,
         "run_id": run_id, "run_attempt": run_attempt,
+        "natural_schedule_only": True, "natural_schedule_attempt": natural,
         "evidence_stages_completed": successful, "stage_outcomes": results,
         "monitor_health": health, "evidence_sha256": evidence_sha,
         "last_successful_poll_utc": last_poll,

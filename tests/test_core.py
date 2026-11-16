@@ -86,12 +86,49 @@ class AuditTests(unittest.TestCase):
         first=decide(pair,BASE,{},[],DAY)
         mixed={"VIXCLS":obs("VIXCLS",20,"2026-10-28"),"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7)}
         pending=decide(mixed,first["next_state"],{},[],DAY)
-        self.assertEqual(pending["next_state"]["active_confirmation_families"],["credit","volatility"])
+        self.assertEqual(pending["next_state"]["active_confirmation_families"],["credit"])
         normal={"VIXCLS":obs("VIXCLS",20,"2026-10-28"),"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",3,"2026-10-28")}
         reset=decide(normal,pending["next_state"],{},[],DAY)
         self.assertEqual(reset["next_state"]["active_confirmation_families"],[])
         rerisk={"VIXCLS":obs("VIXCLS",40,"2026-10-29"),"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7,"2026-10-29")}
         self.assertTrue(decide(rerisk,reset["next_state"],{},[],date(2026,10,29))["alert"])
+
+    def test_third_channel_resolves_and_returns_while_pair_still_active(self):
+        def triple(day, rate):
+            return {"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7,day),
+                    "VIXCLS":obs("VIXCLS",40,day),
+                    "SOFR":obs("SOFR",rate,day),"TGCR":obs("TGCR",3.8,day)}
+        first=decide(triple("2026-10-26",4.1),BASE,{},[],DAY)
+        second=decide(triple("2026-10-27",3.81),first["next_state"],{},[],DAY)
+        self.assertFalse(second["alert"])
+        self.assertEqual(second["next_state"]["active_confirmation_families"],["credit","volatility"])
+        third=decide(triple("2026-10-28",4.1),second["next_state"],{},[],DAY)
+        self.assertTrue(third["alert"])
+        self.assertFalse(decide(triple("2026-10-28",4.1),third["next_state"],{},[],DAY)["alert"])
+
+    def test_asynchronous_latest_matches_real_common_observation(self):
+        rows={"VIXCLS":obs("VIXCLS",40,"2026-10-28"),
+              "BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7,"2026-10-27")}
+        hist={"2026-10-27":{"VIXCLS":obs("VIXCLS",38,"2026-10-27")}}
+        outcome=decide(rows,BASE,{},[],DAY,history=hist)
+        self.assertTrue(outcome["alert"])
+        self.assertEqual(outcome["confirmation_date"],"2026-10-27")
+        self.assertEqual(outcome["confirmation_evidence"]["volatility"]["value"],38)
+        self.assertFalse(decide(rows,outcome["next_state"],{},[],DAY,history=hist)["alert"])
+        # A newer normal reading blocks retrospective stale stress.
+        rows["VIXCLS"]=obs("VIXCLS",20,"2026-10-28")
+        self.assertFalse(decide(rows,BASE,{},[],DAY,history=hist)["alert"])
+
+    def test_funding_pair_uses_same_historical_date_and_never_invents_spread(self):
+        rows={"SOFR":obs("SOFR",4.1,"2026-10-28"),
+              "TGCR":obs("TGCR",3.8,"2026-10-27"),
+              "BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7,"2026-10-27")}
+        self.assertFalse(decide(rows,BASE,{},[],DAY)["alert"])
+        h={"2026-10-27":{"SOFR":obs("SOFR",4.1,"2026-10-27")}}
+        r=decide(rows,BASE,{},[],DAY,history=h)
+        self.assertTrue(r["alert"])
+        self.assertAlmostEqual(r["confirmation_evidence"]["funding"]["value"],0.3)
+        self.assertEqual(set(r["confirmation_evidence"]["funding"]["sources"]),{"SOFR","TGCR"})
 
     def test_calm_silent(self):
         self.assertFalse(decide(calm(),BASE,{"severity":"green","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"},[],DAY)["alert"])

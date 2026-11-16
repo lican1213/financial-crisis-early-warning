@@ -8,9 +8,9 @@ from fcews.heartbeat import receipt
 class HeartbeatTests(unittest.TestCase):
     now = datetime(2026, 11, 16, 12, tzinfo=timezone.utc)
 
-    def record(self, previous=None, event="schedule", results=None, health="healthy", now=None, evidence="abc"):
+    def record(self, previous=None, event="schedule", results=None, health="healthy", now=None, evidence="abc", attempt="1"):
         return receipt(previous or {}, now=now or self.now, event=event,
-                       run_id="123", run_attempt="1", health=health, evidence_sha=evidence,
+                       run_id="123", run_attempt=attempt, health=health, evidence_sha=evidence,
                        results=results or dict(collect="success", persist="success", bridge="success"))
 
     def test_unchanged_evidence_still_records_poll(self):
@@ -25,6 +25,18 @@ class HeartbeatTests(unittest.TestCase):
         second=self.record(first,event="push",now=self.now+timedelta(hours=3))
         self.assertEqual(first["last_successful_scheduled_poll_utc"],second["last_successful_scheduled_poll_utc"])
         self.assertNotEqual(first["last_successful_poll_utc"],second["last_successful_poll_utc"])
+
+    def test_retry_cannot_mask_missed_natural_schedule(self):
+        first=self.record()
+        retry=self.record(first,attempt="2",now=self.now+timedelta(hours=4))
+        self.assertTrue(retry["evidence_stages_completed"])
+        self.assertFalse(retry["natural_schedule_attempt"])
+        self.assertEqual(first["last_successful_scheduled_poll_utc"],retry["last_successful_scheduled_poll_utc"])
+        self.assertNotEqual(first["last_successful_poll_utc"],retry["last_successful_poll_utc"])
+
+    def test_unattested_legacy_schedule_clock_not_carried_forward(self):
+        previous={"last_successful_scheduled_poll_utc":self.now.isoformat()}
+        self.assertIsNone(self.record(previous,event="push")["last_successful_scheduled_poll_utc"])
 
     def test_failed_stage_does_not_advance_success_clock(self):
         first=self.record()

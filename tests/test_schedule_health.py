@@ -9,9 +9,9 @@ class ScheduleHealthTests(unittest.TestCase):
     def setUp(self):
         self.now = datetime(2026, 11, 6, 12, 0, tzinfo=timezone.utc)
 
-    def run_at(self, minutes_ago, event="schedule", conclusion="success"):
+    def run_at(self, minutes_ago, event="schedule", conclusion="success", attempt=1):
         when = self.now-timedelta(minutes=minutes_ago)
-        return {"created_at": when.isoformat(), "event": event, "conclusion": conclusion}
+        return {"created_at": when.isoformat(), "event": event, "conclusion": conclusion, "run_attempt": attempt}
 
     def test_normal_hourly_cron_within_grace(self):
         runs = [self.run_at(i*60) for i in range(25)]
@@ -39,6 +39,12 @@ class ScheduleHealthTests(unittest.TestCase):
         result = evaluate(runs, self.now)
         self.assertIsNone(result["last_successful_run_utc"])
         self.assertEqual(result["status"], "late")
+
+    def test_retry_and_unknown_attempt_never_certify_first_attempt(self):
+        runs=[self.run_at(1,attempt=2),self.run_at(2,attempt=None),self.run_at(240)]
+        result=evaluate(runs,self.now)
+        self.assertEqual(result["successful_runs_in_window"],1)
+        self.assertEqual(result["status"],"late")
 
     def test_timezone_naive_clock_rejected(self):
         with self.assertRaises(ValueError):

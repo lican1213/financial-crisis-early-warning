@@ -17,6 +17,7 @@ permissions:
 concurrency:
   group: fcews-hourly
   cancel-in-progress: false
+  queue: max
 jobs:
   monitor:
     if: github.ref == 'refs/heads/main'
@@ -26,6 +27,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
+          # Queued/retried jobs must read current persisted state, not their original SHA.
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'

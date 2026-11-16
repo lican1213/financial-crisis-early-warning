@@ -5,12 +5,14 @@ import csv
 import json
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
+from dataclasses import replace
 from io import StringIO
+from math import isfinite
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-from .core import Observation
+from .core import DIRECT_CODES, Observation, fresh
 
 FRED_CODES = (
     "STLFSI4", "NFCI", "ANFCI", "BAMLH0A0HYM2",
@@ -42,32 +44,45 @@ def read_url(url: str, timeout: float = 8.0) -> str:
         return result.decode("utf-8-sig")
 
 
+def latest_with_recent(series: str, rows: list[Observation]) -> Observation:
+    if not rows:
+        raise ValueError("no numeric observation " + series)
+    rows = [row for row in rows if isfinite(row.value)]
+    if not rows:
+        raise ValueError("no finite observation " + series)
+    latest = max(rows, key=lambda row: date.fromisoformat(row.date))
+    if series not in DIRECT_CODES:
+        return latest
+    day = date.fromisoformat(latest.date)
+    recent = tuple(sorted((row for row in rows if fresh(row, day)), key=lambda row: row.date))
+    return replace(latest, recent=recent)
+
+
 def parse_fred_csv(series: str, content: str, retrieved_utc: str) -> Observation:
     reader = csv.DictReader(StringIO(content))
     if not reader.fieldnames or series not in reader.fieldnames:
         raise ValueError("missing FRED column " + series)
-    for row in reversed(list(reader)):
+    rows = []
+    for row in reader:
         value = (row.get(series) or "").strip()
         if value in ("", ".", "NaN"):
             continue
         day = row.get("DATE") or row.get("observation_date")
         if not day:
             raise ValueError("FRED csv missing date")
-        return Observation(series, day, float(value),
-                           "https://fred.stlouisfed.org/series/" + series, retrieved_utc)
-    raise ValueError("no numeric FRED observation " + series)
+        rows.append(Observation(series, day, float(value),
+                                "https://fred.stlouisfed.org/series/" + series, retrieved_utc))
+    return latest_with_recent(series, rows)
 
 
 def parse_fred_json(series: str, content: str, retrieved_utc: str) -> Observation:
     document = json.loads(content)
     if "observations" not in document:
         raise ValueError("missing FRED API observations")
-    for row in document["observations"]:
-        if row.get("value") not in (None, "", "."):
-            return Observation(series, row["date"], float(row["value"]),
-                               "https://fred.stlouisfed.org/series/" + series,
-                               retrieved_utc)
-    raise ValueError("no numeric FRED API observation " + series)
+    rows = [Observation(series, row["date"], float(row["value"]),
+                        "https://fred.stlouisfed.org/series/" + series, retrieved_utc)
+            for row in document["observations"] if row.get("value") not in (None, "", ".")]
+    return latest_with_recent(series, rows)
 
 
 def parse_nyfed_json(series: str, content: str, retrieved_utc: str) -> Observation:
@@ -75,19 +90,16 @@ def parse_nyfed_json(series: str, content: str, retrieved_utc: str) -> Observati
     rates = document.get("refRates")
     if not isinstance(rates, list) or not rates:
         raise ValueError("NY Fed API missing refRates")
-    for row in rates:
-        if row.get("effectiveDate") and row.get("percentRate") not in (None, ""):
-            return Observation(
-                series, row["effectiveDate"], float(row["percentRate"]),
-                "https://www.newyorkfed.org/markets/reference-rates/" + series.lower(),
-                retrieved_utc,
-            )
-    raise ValueError("NY Fed API has no usable reference rate")
+    rows = [Observation(series, row["effectiveDate"], float(row["percentRate"]),
+                        "https://www.newyorkfed.org/markets/reference-rates/" + series.lower(),
+                        retrieved_utc)
+            for row in rates if row.get("effectiveDate") and row.get("percentRate") not in (None, "")]
+    return latest_with_recent(series, rows)
 
 
 def fetch_nyfed(series: str, timeout: float = 8.0) -> Observation:
     retrieved = datetime.now(timezone.utc).isoformat()
-    url = NYFED_BASE + series.lower() + "/last/1.json"
+    url = NYFED_BASE + series.lower() + ("/last/10.json" if series in DIRECT_CODES else "/last/1.json")
     return parse_nyfed_json(series, read_url(url, timeout), retrieved)
 
 

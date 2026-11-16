@@ -31,6 +31,7 @@ def evaluate(runs: list[dict], now: datetime, window_hours: int = WINDOW_HOURS,
     start = now - timedelta(hours=window_hours)
     completed = sorted({utc_timestamp(r["created_at"]) for r in runs
                         if r.get("event") == "schedule" and r.get("conclusion") == "success"
+                        and r.get("run_attempt") == 1
                         and utc_timestamp(r["created_at"]) <= now})
     current = [point for point in completed if point >= start]
     boundaries = [start, *current, now]
@@ -43,6 +44,7 @@ def evaluate(runs: list[dict], now: datetime, window_hours: int = WINDOW_HOURS,
         "window_hours": window_hours,
         "grace_limit_minutes": max_gap_minutes,
         "successful_runs_in_window": len(current),
+        "natural_first_attempt_only": True,
         "last_successful_run_utc": completed[-1].isoformat() if completed else None,
         "max_observed_gap_minutes": round(max(gaps), 1),
         "gaps_over_grace_minutes": overdue,
