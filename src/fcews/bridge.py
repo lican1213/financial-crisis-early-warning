@@ -316,8 +316,8 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
             "no_exactly_once_chatgpt_receipt_without_chatgpt_writeback": True,
         },
     }
-    fingerprint=hashlib.sha256(json.dumps(payload,sort_keys=True).encode()).hexdigest()
-    return {"fingerprint_sha256":fingerprint, **payload}
+    feed_fingerprint=hashlib.sha256(json.dumps(payload,sort_keys=True).encode()).hexdigest()
+    return {"fingerprint_sha256":feed_fingerprint, **payload}
 
 
 def publish(root: Path = ROOT, now: datetime | None = None) -> dict:
