@@ -22,6 +22,10 @@ MAX_AGE_DAYS = {
     "DGS10": 7, "DGS30": 7, "BGCR": 7, "BAA10Y": 7,
 }
 CONTEXT_CODES = {"DGS10", "DGS30", "BGCR"}
+# Composite stress indices reuse underlying credit, volatility and funding measures.
+# Keep the legacy diagnostic grade for historical comparability; require distinct
+# direct channels on the same observation date for the automatic two-family gate.
+DIRECT_CONFIRMATION_FAMILIES = frozenset({"credit", "volatility", "funding"})
 MAX_FUTURE_SECONDS = 300
 
 
@@ -105,6 +109,18 @@ def decide(
     metrics = indicators(rows, now, registry=registry)
     present = sorted({v["family"] for v in metrics.values()})
     stressed = sorted({v["family"] for v in metrics.values() if v["critical"]})
+    direct_by_date: dict[str, set[str]] = {}
+    for v in metrics.values():
+        if v["critical"] and v["family"] in DIRECT_CONFIRMATION_FAMILIES:
+            direct_by_date.setdefault(v["date"], set()).add(v["family"])
+    qualifying_dates = [day for day, families in direct_by_date.items() if len(families) >= 2]
+    confirmation_date = max(qualifying_dates, default=None)
+    confirming = sorted(direct_by_date[confirmation_date]) if confirmation_date else []
+    # Legacy state predates the new field. Do not suppress a first non-overlapping
+    # pair merely because a composite plus a single direct channel was stressed.
+    previous_confirming = previous.get("confirming_families")
+    if previous_confirming is None:
+        previous_confirming = sorted(set(previous.get("critical_families", [])) & DIRECT_CONFIRMATION_FAMILIES)
     new_events = sorted(verified_event_ids(events) - set(previous.get("seen_events", [])))
 
     if len(stressed) >= 3:
@@ -121,6 +137,9 @@ def decide(
     base = weekly.get("severity", "unknown")
     if base not in LEVELS:
         raise ValueError("invalid weekly baseline level: " + str(base))
+    # A baseline explicitly marked uncalibrated is never comparable.
+    if weekly.get("model_comparability") == "not_calibrated":
+        base = "unknown"
     # A baseline without a source and date is intentionally UNKNOWN.
     if base != "unknown" and not (weekly.get("as_of") and weekly.get("source_url", "").startswith("https://")):
         base = "unknown"
@@ -153,7 +172,7 @@ def decide(
         recovery_count, recovery_date, recovery_family_dates = 0, "", {}
 
     reasons: list[str] = []
-    if len(stressed) >= 2 and len(previous.get("critical_families", [])) < 2:
+    if len(confirming) >= 2 and len(previous_confirming) < 2:
         reasons.append("independent_stress_families")
     if (
         base != "unknown" and severity != "unknown"
@@ -170,6 +189,7 @@ def decide(
     state = {
         "severity": severity,
         "critical_families": stressed,
+        "confirming_families": confirming,
         "seen_events": sorted(set(previous.get("seen_events", [])) | verified_event_ids(events)),
         "recovery_count": recovery_count,
         "last_recovery_date": recovery_date,
@@ -181,6 +201,7 @@ def decide(
         "date": now.isoformat(), "severity": severity,
         "confidence": "moderate" if len(present) >= 3 else "limited",
         "present_families": present, "critical_families": stressed,
+        "confirming_families": confirming, "confirmation_date": confirmation_date,
         "indicators": metrics, "events": new_events,
         "reasons": reasons, "alert": bool(reasons), "next_state": state,
     }

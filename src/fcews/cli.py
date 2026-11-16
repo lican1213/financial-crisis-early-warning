@@ -79,9 +79,11 @@ def report_body(outcome: dict, rows: dict[str, Observation], now: datetime) -> s
     parts = [
         "# FCEWS candidate systemic-risk alert", "",
         f"Evaluated UTC: {now.isoformat()}",
-        f"Risk: {outcome['severity']} (confidence: {outcome['confidence']})",
+        f"Legacy technical diagnostic: {outcome['severity']} (coverage confidence: {outcome['confidence']})",
         "Trigger(s): " + ", ".join(outcome["reasons"]),
-        "Stressed independent families: " + ", ".join(outcome["critical_families"]),
+        "Stressed diagnostic groups (may overlap): " + ", ".join(outcome["critical_families"]),
+        "Direct same-date confirming channels: " + ", ".join(outcome["confirming_families"]),
+        "Confirmation observation date: " + str(outcome["confirmation_date"]),
         "New reviewed events: " + ", ".join(outcome["events"]), "",
         "## Observation-date and origin evidence",
     ]
@@ -211,6 +213,8 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
         "status": health_status, "severity": outcome["severity"],
         "present_families": present,
         "critical_families": outcome["critical_families"],
+        "confirming_families": outcome["confirming_families"],
+        "confirmation_date": outcome["confirmation_date"],
         "source_errors": health["source_error_types"],
         "observations": {
             key: {"date": ob.date, "value": float(ob.value), "source": ob.source}

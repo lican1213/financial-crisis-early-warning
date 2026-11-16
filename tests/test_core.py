@@ -33,6 +33,38 @@ class AuditTests(unittest.TestCase):
     def test_system_family_not_double_counted(self):
         r=decide({"STLFSI4":obs("STLFSI4",2),"NFCI":obs("NFCI",2)},BASE,{},[],DAY)
         self.assertNotIn("independent_stress_families",r["reasons"])
+    def test_composite_plus_single_direct_channel_is_not_two_independent_votes(self):
+        for composite in ("OFR_FSI", "STLFSI4", "NFCI", "ANFCI"):
+            for direct, value in (("VIXCLS", 40), ("BAMLH0A0HYM2", 7)):
+                with self.subTest(composite=composite, direct=direct):
+                    r=decide({composite:obs(composite,2),direct:obs(direct,value)},BASE,{},[],DAY)
+                    self.assertEqual(len(r["critical_families"]),2)
+                    self.assertEqual(r["confirming_families"],[])
+                    self.assertFalse(r["alert"])
+
+    def test_composite_does_not_block_first_genuine_direct_pair(self):
+        prior={"critical_families":["system","volatility"]}
+        rows={"OFR_FSI":obs("OFR_FSI",2),"VIXCLS":obs("VIXCLS",40),"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7)}
+        r=decide(rows,prior,{},[],DAY)
+        self.assertEqual(r["confirming_families"],["credit","volatility"])
+        self.assertEqual(r["confirmation_date"],"2026-10-27")
+        self.assertIn("independent_stress_families",r["reasons"])
+        self.assertFalse(decide(rows,r["next_state"],{},[],DAY)["alert"])
+
+    def test_direct_channels_on_different_dates_are_not_automatic_confirmation(self):
+        rows={"VIXCLS":obs("VIXCLS",40,"2026-10-27"),"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7,"2026-10-23")}
+        self.assertFalse(decide(rows,BASE,{},[],DAY)["alert"])
+
+    def test_funding_and_credit_confirm_without_composite(self):
+        rows={"SOFR":obs("SOFR",4.1),"TGCR":obs("TGCR",3.8),"BAMLH0A0HYM2":obs("BAMLH0A0HYM2",7)}
+        r=decide(rows,BASE,{},[],DAY)
+        self.assertEqual(r["confirming_families"],["credit","funding"])
+        self.assertTrue(r["alert"])
+
+    def test_explicitly_uncalibrated_baseline_blocks_legacy_grade_upgrade(self):
+        weekly={"severity":"green","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/","model_comparability":"not_calibrated"}
+        self.assertFalse(decide({**calm(),"VIXCLS":obs("VIXCLS",40)},BASE,weekly,[],DAY)["alert"])
+
     def test_calm_silent(self):
         self.assertFalse(decide(calm(),BASE,{"severity":"green","as_of":"2026-10-25","source_url":"https://www.federalreserve.gov/"},[],DAY)["alert"])
     def test_single_family_cannot_trigger_weekly(self):
