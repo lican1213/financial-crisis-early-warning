@@ -11,7 +11,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from .collect import collect_all
-from .core import Observation, decide, fresh, indicators
+from .core import Observation, advance_state, decide, fresh, indicators
 from .events import verify_events
 from .quality import late_source_dates
 from .history import recent_history, serialize
@@ -88,9 +88,11 @@ def report_body(outcome: dict, rows: dict[str, Observation], now: datetime) -> s
         "New reviewed events: " + ", ".join(outcome["events"]), "",
         "## Observation-date and origin evidence",
     ]
-    for family, item in sorted(outcome["confirmation_evidence"].items()):
-        parts.append(f"- Matched {family}: {item['series']} {item['value']} on {item['date']}; "
-                     f"threshold {item['threshold']}; sources {item.get('sources', {})}")
+    for day, group in sorted(outcome["confirmation_matches"].items()):
+        for family, item in sorted(group.items()):
+            parts.append(f"- Matched {family}: {item['series']} {item['value']} on {day}; "
+                         f"threshold {item['threshold']}; sources {item.get('sources', {})}")
+    parts.append("Newly confirmed channels: " + ", ".join(outcome["newly_confirmed_families"]))
     for code, item in sorted(outcome["indicators"].items()):
         observation = rows.get(code)
         src = (observation.source if observation else "paired NYFed/FRED source")
@@ -200,6 +202,8 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
             "events": outcome["events"],
             "confirmation_date": outcome["confirmation_date"],
             "confirmation_evidence": outcome["confirmation_evidence"],
+            "confirmation_matches": outcome["confirmation_matches"],
+            "newly_confirmed_families": outcome["newly_confirmed_families"],
             "baseline": weekly.get("as_of", ""),
         }
         key = fingerprint(evidence)[:20]
@@ -208,6 +212,7 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
         if key not in existing:
             outbox.setdefault("pending", []).append({
                 "id": key, "created_at_utc": now.isoformat(),
+                "evidence": evidence,
                 "title": f"FCEWS CANDIDATE {key}: {outcome['severity']} ({','.join(outcome['reasons'])})",
                 "body": report_body(outcome, merged, now) + f"\n\n<!-- FCEWS-FP:{key} -->\n",
             })
@@ -215,14 +220,8 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
     # Advance state only if there is usable evidence or a verified candidate event.
     # A transient loss of families must not erase the previous stress regime
     # and cause a repeated escalation issue when feeds recover.
-    if usable or outcome["alert"] or outcome["events"]:
-        write_if_changed(root / "data/state.json", outcome["next_state"])
-
-    elif old_state and "active_confirmation_dates" in outcome["next_state"]:
-        # Verified channel resolution can be retained even when other sources fail.
-        state = dict(old_state)
-        for key in ("active_confirmation_families", "active_confirmation_date", "active_confirmation_dates"):
-            state[key] = outcome["next_state"][key]
+    state = advance_state(old_state, outcome, usable)
+    if state != old_state:
         write_if_changed(root / "data/state.json", state)
 
     stable_snapshot = {
@@ -232,6 +231,7 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
         "confirming_families": outcome["confirming_families"],
         "confirmation_date": outcome["confirmation_date"],
         "confirmation_evidence": outcome["confirmation_evidence"],
+        "confirmation_matches": outcome["confirmation_matches"],
         "source_errors": health["source_error_types"],
         "observations": {
             key: {"date": ob.date, "value": float(ob.value), "source": ob.source}
