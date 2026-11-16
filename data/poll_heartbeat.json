@@ -1,0 +1,19 @@
+{
+  "authorizes_notification": false,
+  "evidence_sha256": "c1fa14f5aab08229176e03a1b827e89b9ac2d49f630cad65b1262d32e7aa3cff",
+  "evidence_stages_completed": true,
+  "last_successful_poll_utc": "2026-11-16T11:41:38.467035+00:00",
+  "last_successful_scheduled_poll_utc": null,
+  "monitor_health": "healthy",
+  "operational_only": true,
+  "recorded_at_utc": "2026-11-16T11:41:38.467035+00:00",
+  "run_attempt": "1",
+  "run_id": "43859954580",
+  "schema": "fcews.poll_heartbeat.v1",
+  "stage_outcomes": {
+    "bridge": "success",
+    "collect": "success",
+    "persist": "success"
+  },
+  "trigger": "push"
+}
