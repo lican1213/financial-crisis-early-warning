@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timezone
 from dataclasses import replace
 from io import StringIO
+from math import isfinite
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -46,7 +47,10 @@ def read_url(url: str, timeout: float = 8.0) -> str:
 def latest_with_recent(series: str, rows: list[Observation]) -> Observation:
     if not rows:
         raise ValueError("no numeric observation " + series)
-    latest = max(rows, key=lambda row: row.date)
+    rows = [row for row in rows if isfinite(row.value)]
+    if not rows:
+        raise ValueError("no finite observation " + series)
+    latest = max(rows, key=lambda row: date.fromisoformat(row.date))
     if series not in DIRECT_CODES:
         return latest
     day = date.fromisoformat(latest.date)
