@@ -42,20 +42,27 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          # Publish the durable pending candidate before any Issue API request.
+          PYTHONPATH=src python -m fcews.bridge
           git add -A data
           if ! git diff --cached --quiet; then
-            git commit -m 'data: source-dated FCEWS state or health transition'
+            git commit -m 'data: source-dated FCEWS state, outbox and read-only feed'
             git pull --rebase origin main
             git push
           fi
       - name: Idempotent candidate issue delivery and source health incident
-        id: bridge
-        if: always()
+        id: delivery
+        if: always() && steps.persist.outcome == 'success'
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           PYTHONPATH=src python -m fcews.delivery
+      - name: Republish durable feed and acknowledge any completed Issue delivery
+        id: bridge
+        if: always() && steps.persist.outcome == 'success'
+        run: |
           PYTHONPATH=src python -m fcews.bridge
           git add -A data
           if ! git diff --cached --quiet; then
@@ -69,6 +76,7 @@ jobs:
           FCEWS_COLLECT: ${{ steps.collect.outcome }}
           FCEWS_PERSIST: ${{ steps.persist.outcome }}
           FCEWS_BRIDGE: ${{ steps.bridge.outcome }}
+          FCEWS_DELIVERY: ${{ steps.delivery.outcome }}
         run: |
           PYTHONPATH=src python -m fcews.heartbeat
           git add data/poll_heartbeat.json
@@ -77,8 +85,8 @@ jobs:
             git pull --rebase origin main
             git push
           fi
-      - name: Treat loss of monitor coverage as operational failure
-        if: steps.collect.outcome == 'failure'
+      - name: Treat loss of monitor coverage or Issue delivery as operational failure
+        if: always() && (steps.collect.outcome == 'failure' || steps.delivery.outcome == 'failure')
         run: |
-          echo "::error::Market data monitoring degraded. See data/health.json and the FCEWS DATA-HEALTH issue."
+          echo "::error::Collection or Issue delivery failed. Check health, outbox and heartbeat; not a financial-crisis alert."
           exit 2
