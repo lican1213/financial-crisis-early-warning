@@ -10,7 +10,7 @@
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "29ecf325ce9bead2bfbaa4ee83915b279725c07544abbe3141bf8b1550802155",
+  "fingerprint_sha256": "ae491f52561262e61a8ede85c9a0adfaeed2a73f14b1e83ef08459178cfa72b0",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-11-06",
@@ -30,19 +30,18 @@
     "authorizes_notification": false,
     "china_recovery_breadth_score": null,
     "china_source_status": "independent_original_document_verification_required",
-    "source_snapshot_date": "2026-11-15",
+    "source_snapshot_date": "2026-11-16",
     "staffing_firm_source_status": "independent_original_document_verification_required",
     "staffing_global_score": null,
     "status": "fresh",
     "us_observation_dates": {
       "BAMLC0A0CM": "2026-11-12",
       "ICSA": "2026-11-07",
-      "JTSJOL": "2026-09-01",
       "T10Y2Y": "2026-11-13",
       "T10Y3M": "2026-11-13",
       "TEMPHELPS": "2026-10-01"
     },
-    "us_source_status": "complete"
+    "us_source_status": "partial"
   },
   "monitor_health": "healthy",
   "nbs_pmi_research": {
@@ -59,22 +58,22 @@
   },
   "nbs_property_research": {
     "china_recovery_breadth_score": null,
-    "developer_source": "https://www.stats.gov.cn/sj/zxfb/202610/t20261019_1965615.html",
+    "developer_source": "https://www.stats.gov.cn/sj/zxfb/202611/t20261116_1965840.html",
     "directional_signals": {
-      "developer_mortgage_receipts_yoy_pp_change": 0.3,
-      "new_price_rising_city_count_change": 2,
-      "residential_sales_cumulative_yoy_pp_change": -0.8,
-      "unsold_area_yoy_pp_change": -0.4,
-      "used_price_rising_city_count_change": 6
+      "developer_mortgage_receipts_yoy_pp_change": 0.0,
+      "new_price_rising_city_count_change": -3,
+      "residential_sales_cumulative_yoy_pp_change": -0.4,
+      "unsold_area_yoy_pp_change": -0.2,
+      "used_price_rising_city_count_change": -2
     },
     "needs_independent_pboc_mortgage_crosscheck": true,
-    "new_city_rising_count": 17,
-    "new_price_source": "https://www.stats.gov.cn/sj/zxfb/202610/t20261019_1965609.html",
+    "new_city_rising_count": 14,
+    "new_price_source": "https://www.stats.gov.cn/sj/zxfb/202611/t20261116_1965836.html",
     "risk_alert_authorized": false,
-    "source_period": "2026-09-30",
+    "source_period": "2026-10-31",
     "status": "source_snapshot_available_not_original_vintage",
     "turning_point_confirmed": false,
-    "used_city_rising_count": 9
+    "used_city_rising_count": 7
   },
   "notification_decision": "ChatGPT_independent_primary_source_and_four_gate_review_required",
   "pboc_credit_research": {
