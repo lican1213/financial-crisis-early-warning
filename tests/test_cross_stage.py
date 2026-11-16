@@ -33,19 +33,20 @@ def pair():
 class IssueClient:
     def __init__(self):
         self.fail = True
-        self.record = None
+        self.records = {}
 
     def find_body_fingerprint(self, key):
-        return self.record if self.record and ("FCEWS-FP:" + key) in self.record["body"] else None
+        return next((row for row in self.records.values() if ("FCEWS-FP:" + key) in row["body"]), None)
 
     def create(self, title, body):
         if self.fail:
             raise TimeoutError("issue transport unavailable")
-        self.record = {"number": 42, "html_url": ISSUE, "body": body}
-        return self.record
+        number = 42 + len(self.records)
+        self.records[number] = {"number": number, "html_url": ISSUE.rsplit("/", 1)[0] + "/" + str(number), "body": body}
+        return self.records[number]
 
     def get(self, number):
-        return self.record
+        return self.records[number]
 
 
 class CrossStageTests(unittest.TestCase):
@@ -88,15 +89,16 @@ class CrossStageTests(unittest.TestCase):
         self.assertFalse(feed["should_send_user_notification"])
         self.assertFalse(visible["user_alert_authorized"])
         self.assertFalse(self.fetch(later, now)["alert_candidate"])
-        # Acknowledge just the second record, simulating a completed prior delivery of first.
-        result["pending"] = [candidate]
-        write_if_changed(self.root/"data/outbox.json", result)
+        # Retry both durable records; no fixture edits between failure and retry.
         client.fail = False
         with patch("fcews.delivery.datetime") as clock:
             clock.now.return_value = now
-            self.assertEqual(deliver_candidates(self.root, client), 1)
+            self.assertEqual(deliver_candidates(self.root, client), 2)
             self.assertEqual(deliver_candidates(self.root, client), 0)
-        acknowledged = build_feed(self.root, now)["candidates"][0]
+        after = build_feed(self.root, now)
+        self.assertEqual(after["candidate_count"], 2)
+        self.assertEqual(len(client.records), 2)
+        acknowledged = next(c for c in after["candidates"] if c["candidate_id"] == key)
         self.assertEqual(acknowledged["candidate_id"], key)
         self.assertEqual(acknowledged["github_issue_status"], "acknowledged")
         self.assertEqual(acknowledged["evidence"], visible["evidence"])
