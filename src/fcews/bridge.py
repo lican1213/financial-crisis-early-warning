@@ -237,7 +237,7 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
                 continue
             candidate_id = str(item.get("id", ""))
             evidence = item.get("evidence")
-            stamp = item.get("created_at_utc") or (item.get("delivered_at_utc") if stage == "delivered" else None)
+            stamp = item.get("created_at_utc") or (item.get("delivered_at_utc") if stage == "delivered" and evidence is None else None)
             try:
                 if not stamp or not candidate_id:
                     continue
@@ -290,7 +290,8 @@ def build_feed(root: Path, now: datetime | None = None) -> dict:
         "monitor_health": health.get("status","unknown"),
         "health_not_financial_crisis": True,
         "latest_evidence_sha256": check.get("evidence_sha256"),
-        "current_technical_severity": state.get("severity","unknown"),
+        "current_technical_severity": check.get("severity", state.get("severity","unknown")),
+        "persisted_regime_severity": state.get("severity","unknown"),
         "technical_model_comparable_to_weekly": weekly.get("model_comparability","not_calibrated")=="calibrated",
         "weekly_human_grade": weekly.get("weekly_report",{}).get("global_risk_grade"),
         "weekly_human_report_date": weekly.get("weekly_report",{}).get("report_date"),
