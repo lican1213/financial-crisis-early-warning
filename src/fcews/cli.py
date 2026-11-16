@@ -200,6 +200,11 @@ def run(root: Path = ROOT, collector=collect_all, now: datetime | None = None):
             "reasons": sorted(outcome["reasons"]),
             "family_days": sorted((v["family"], v["date"], v["value"]) for v in outcome["indicators"].values() if v["critical"]),
             "events": outcome["events"],
+            "reviewed_event_evidence": [
+                {name: event.get(name) for name in ("id", "category", "primary_source_url",
+                 "published_at_utc", "source_sha256", "cross_market_mechanism")}
+                for event in checked_events if event.get("id") in outcome["events"]
+            ],
             "confirmation_date": outcome["confirmation_date"],
             "confirmation_evidence": outcome["confirmation_evidence"],
             "confirmation_matches": outcome["confirmation_matches"],
