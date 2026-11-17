@@ -27,11 +27,12 @@ class AlfredPublicTests(unittest.TestCase):
               "2008-09-16,,42\n"
               "2008-09-19,,39\n")
         rows, checksum = parse_asof_batch(text,"VIXCLS",["2008-09-12","2008-09-19"],"url")
-        self.assertEqual(len(rows),2)
-        self.assertEqual(rows[0]["value"],"30.0")
-        self.assertEqual(rows[1]["value"],"39.0")
-        self.assertEqual(rows[0]["first_available_at_utc"],"2008-09-13T00:00:00Z")
-        self.assertEqual(rows[1]["first_available_at_utc"],"2008-09-20T00:00:00Z")
+        self.assertEqual(len(rows),5)
+        self.assertEqual(rows[1]["value"],"30.0")
+        self.assertEqual(rows[-1]["value"],"39.0")
+        self.assertEqual(rows[1]["first_available_at_utc"],"2008-09-13T00:00:00Z")
+        self.assertEqual(rows[-1]["first_available_at_utc"],"2008-09-20T00:00:00Z")
+        self.assertEqual(rows[2]["value"],"34.0")
         self.assertEqual(rows[0]["availability_basis"], BASIS)
         self.assertEqual(len(checksum),64)
 
@@ -94,6 +95,15 @@ class AlfredPublicTests(unittest.TestCase):
         self.assertEqual(len(rows),2)
         self.assertEqual(stats["STLFSI4"]["snapshots_accepted"],0)
         self.assertEqual(len(stats["STLFSI4"]["errors"]),1)
+
+    def test_multiple_rows_in_one_vintage_count_once(self):
+        def fake(code, days):
+            return parse_asof_batch("DATE,VIXCLS_20261023\n2026-10-22,39\n2026-10-23,42\n",
+                                    code, days, "url")
+        rows, stats = collect(["2026-10-23"], codes=("VIXCLS",), fetch=fake, sleep_seconds=0)
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(stats["VIXCLS"]["snapshots_accepted"], 1)
+        self.assertEqual(stats["VIXCLS"]["missing_vintages"], [])
 
     def test_strict_fail_on_silent_fallback(self):
         with self.assertRaisesRegex(RuntimeError,"ALFRED source failure"):

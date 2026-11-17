@@ -7,7 +7,7 @@ import json
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-from .core import DIRECT_CODES, Observation, advance_state, decide, fresh
+from .core import DIRECT_CODES, DIRECT_CONFIRMATION_FAMILIES, Observation, advance_state, decide, fresh
 
 
 def utc(value: str) -> datetime:
@@ -22,34 +22,41 @@ def load_csv(path: Path) -> list[dict]:
         return list(csv.DictReader(handle))
 
 
-def published_snapshot(rows: list[dict], decision_at: datetime):
-    """Select the last revision actually public at decision time; never look ahead."""
-    selected: dict[str, tuple[datetime, Observation]] = {}
-    dated: dict[tuple[str, str], tuple[datetime, Observation]] = {}
-    for row in rows:
-        release = utc(row["first_available_at_utc"])
-        period = date.fromisoformat(row["observation_date"])
-        if release > decision_at or period > decision_at.date():
-            continue
-        value = float(row["value"])
-        code = row["series"]
-        candidate = Observation(
-            code, row["observation_date"], value,
-            row["source_url"], decision_at.isoformat(),
-            release.isoformat(),
-        )
-        if code in DIRECT_CODES and fresh(candidate, decision_at.date()):
-            key = (candidate.date, code)
-            if key not in dated or release > dated[key][0]:
-                dated[key] = (release, candidate)
-        current = selected.get(code)
-        score = (period, release)
-        if current is None or score > (date.fromisoformat(current[1].date), current[0]):
-            selected[code] = (release, candidate)
+def published_snapshots(rows: list[dict], decisions, registry=None):
+    """One chronological release stream for replay, benchmarks and coverage."""
+    releases = iter(sorted(rows, key=lambda row: utc(row["first_available_at_utc"])))
+    pending = next(releases, None)
+    selected = {}
     history = {}
-    for (day, code), (_, ob) in sorted(dated.items()):
-        history.setdefault(day, {})[code] = ob
-    return {key: value[1] for key, value in selected.items()}, history
+    direct_codes = DIRECT_CODES | {code for code, (family, _) in (registry or {}).items()
+                                  if family in DIRECT_CONFIRMATION_FAMILIES}
+    for point in decisions:
+        while pending is not None and utc(pending["first_available_at_utc"]) <= point:
+            row, pending = pending, next(releases, None)
+            release = utc(row["first_available_at_utc"])
+            observed = date.fromisoformat(row["observation_date"])
+            if observed > release.date():
+                continue  # an observed economic period cannot precede its own date
+            code = row["series"]
+            ob = Observation(code, observed.isoformat(), float(row["value"]),
+                             row["source_url"], point.isoformat(), release.isoformat())
+            rank = (ob.date, release)
+            if code not in selected or rank > selected[code][0]:
+                selected[code] = (rank, ob)
+            if code in direct_codes and fresh(ob, point.date()):
+                daily = history.setdefault(ob.date, {})
+                prior = daily.get(code)
+                if prior is None or release > utc(prior.available_at_utc):
+                    daily[code] = ob
+        history = {day: {code: ob for code, ob in group.items() if fresh(ob, point.date())}
+                   for day, group in history.items()}
+        history = {day: group for day, group in history.items() if group}
+        yield point, {code: pair[1] for code, pair in selected.items()}, history
+
+
+def published_snapshot(rows: list[dict], decision_at: datetime):
+    point, selected, history = next(published_snapshots(rows, [decision_at]))
+    return selected, history
 
 
 def as_published(rows: list[dict], decision_at: datetime) -> dict[str, Observation]:
@@ -70,8 +77,7 @@ def replay(features: list[dict], decisions: list[dict], events: list[dict],
     state: dict = {}
     alerts = []
     false_alerts = []
-    for point in decision_list:
-        observed, history = published_snapshot(features, point)
+    for point, observed, history in published_snapshots(features, decision_list):
         outcome = decide(observed, state, weekly, [], point.date(), history=history)
         # Replay models as-published availability, not actual historical network outages.
         state = advance_state(state, outcome, len(outcome["present_families"]) >= 3)

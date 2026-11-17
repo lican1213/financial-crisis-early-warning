@@ -9,8 +9,16 @@ from __future__ import annotations
 
 from datetime import timedelta
 
-from .backtest import as_published, utc
-from .core import indicators
+from .backtest import published_snapshots, utc
+from .core import DIRECT_CONFIRMATION_FAMILIES, indicators
+
+
+def observable_direct_families(history, today, registry=None):
+    # The gate needs two non-overlapping direct families on the same date.
+    groups = [(day, sorted({v['family'] for v in indicators(rows, today, registry=registry).values()
+                            if v['family'] in DIRECT_CONFIRMATION_FAMILIES}))
+              for day, rows in history.items()]
+    return max(groups, key=lambda x: (len(x[1]), x[0]), default=('', []))[1]
 
 
 def audit_event_coverage(features: list[dict], checkpoints: list[dict],
@@ -24,10 +32,8 @@ def audit_event_coverage(features: list[dict], checkpoints: list[dict],
         right = crisis_start + timedelta(days=2)
         local = [p for p in points if left <= p <= right]
         coverage = []
-        for instant in local:
-            available = as_published(features, instant)
-            measures = indicators(available, instant.date())
-            fam = sorted({metric["family"] for metric in measures.values()})
+        for instant, _, history in published_snapshots(features, local):
+            fam = observable_direct_families(history, instant.date())
             coverage.append({
                 "decision_at_utc": instant.isoformat(),
                 "independent_families": fam,
@@ -43,6 +49,7 @@ def audit_event_coverage(features: list[dict], checkpoints: list[dict],
             status = "unassessable_no_two_family_checkpoint"
         result[event_id] = {
             "status": status,
+            "coverage_basis": "non-overlapping direct families on a common observation date",
             "pre_event_window_days": pre_event_days,
             "checkpoints_in_window": len(local),
             "checkpoints_with_two_families": partial,

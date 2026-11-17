@@ -15,6 +15,7 @@ import csv
 import hashlib
 import io
 import json
+from math import isfinite
 import os
 import time
 from collections import defaultdict
@@ -28,6 +29,7 @@ from .benchmarks import evaluate
 from .expost import EVENTS
 from .cli import ROOT, write_if_changed
 from .coverage import audit_event_coverage, classify_misses
+from .core import DIRECT_CODES, MAX_AGE_DAYS
 
 ALFRED_GRAPH = "https://alfred.stlouisfed.org/graph/alfredgraph.csv"
 SERIES = ("VIXCLS", "BAMLH0A0HYM2", "NFCI", "STLFSI4")
@@ -71,6 +73,7 @@ def parse_asof_batch(raw: str, code: str, days: list[str], url: str) -> tuple[li
     if len(header) != len(expected) or header[0] not in ("DATE", "observation_date") or header[1:] != expected[1:]:
         raise ValueError(f"ALFRED vintage mismatch: expected {expected}, got {header}")
     table = {day: None for day in days}
+    recent = {day: {} for day in days}
     for row in reader:
         if len(row) != len(expected):
             raise ValueError("ALFRED CSV row width mismatch")
@@ -83,6 +86,10 @@ def parse_asof_batch(raw: str, code: str, days: list[str], url: str) -> tuple[li
             if not value or value in (".", "NaN", "#NA"):
                 continue
             candidate = (observed.isoformat(), float(value))
+            if not isfinite(candidate[1]):
+                continue
+            if code in DIRECT_CODES and (date.fromisoformat(asof) - observed).days <= MAX_AGE_DAYS[code]:
+                recent[asof][candidate[0]] = candidate[1]
             current = table[asof]
             if current is None or candidate[0] >= current[0]:
                 table[asof] = candidate
@@ -92,16 +99,17 @@ def parse_asof_batch(raw: str, code: str, days: list[str], url: str) -> tuple[li
         hit = table[asof]
         if hit is None:
             continue
-        observed, value = hit
-        # State what can be guaranteed, not an invented exact publication time.
+        # Keep the latest observation plus the actual bounded same-day join window.
+        recent[asof][hit[0]] = hit[1]
         conservative = date.fromisoformat(asof)+timedelta(days=1)
-        items.append({
-            "series": code, "observation_date": observed,
-            "first_available_at_utc": conservative.isoformat()+"T00:00:00Z",
-            "value": str(value), "source_url": ALFRED_EXPLANATION,
-            "availability_basis": BASIS, "requested_asof_date": asof,
-            "source_sha256": checksum,
-        })
+        for observed, value in sorted(recent[asof].items()):
+            items.append({
+                "series": code, "observation_date": observed,
+                "first_available_at_utc": conservative.isoformat()+"T00:00:00Z",
+                "value": str(value), "source_url": url,
+                "availability_basis": BASIS, "requested_asof_date": asof,
+                "source_sha256": checksum,
+            })
     return items, checksum
 
 
@@ -148,10 +156,9 @@ def collect(days: list[str], codes=SERIES, fetch=fetch_batch,
                     items, checksum = fetch(code, chunk)
                     result["csv_batch_hashes"].append(checksum)
                     records.extend(items)
-                    result["snapshots_accepted"] += len(items)
-                    if len(items) != len(chunk):
-                        present = {r["requested_asof_date"] for r in items}
-                        result["missing_vintages"].extend(d for d in chunk if d not in present)
+                    present = {r["requested_asof_date"] for r in items}
+                    result["snapshots_accepted"] += len(present)
+                    result["missing_vintages"].extend(d for d in chunk if d not in present)
                     last_error = None
                     break
                 except HTTPError as err:
