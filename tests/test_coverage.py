@@ -30,12 +30,12 @@ class HistoricalCoverageTests(unittest.TestCase):
     def test_two_family_only_is_not_fully_covered(self):
         features = [feature("NFCI", 1), feature("VIXCLS", 40)]
         a = audit_event_coverage(features, CHECK, EVENT)
-        self.assertEqual(a["2020-crisis"]["status"], "partial_two_family_only")
-        self.assertEqual(classify_misses(["2020-crisis"], a)["missed_with_partial_two_family_coverage"],
+        self.assertEqual(a["2020-crisis"]["status"], "unassessable_no_two_family_checkpoint")
+        self.assertEqual(classify_misses(["2020-crisis"], a)["unassessable_missing_independent_sources"],
                          ["2020-crisis"])
 
     def test_three_independent_families_can_be_evaluated(self):
-        features = [feature("NFCI", 1), feature("VIXCLS", 40), feature("BAMLH0A0HYM2", 7)]
+        features = [feature("SOFR", 4.1), feature("TGCR", 3.9), feature("VIXCLS", 40), feature("BAMLH0A0HYM2", 7)]
         a = audit_event_coverage(features, CHECK, EVENT)
         self.assertEqual(a["2020-crisis"]["status"], "at_least_one_three_family_checkpoint")
         self.assertEqual(classify_misses(["2020-crisis"], a)["missed_with_three_family_coverage"],
@@ -45,7 +45,13 @@ class HistoricalCoverageTests(unittest.TestCase):
         features = [feature("NFCI", 1), feature("VIXCLS", 40),
                     feature("BAMLH0A0HYM2", 7, available="2020-03-17T00:00:00Z")]
         a = audit_event_coverage(features, CHECK, EVENT)
+        self.assertEqual(a["2020-crisis"]["status"], "unassessable_no_two_family_checkpoint")
+
+    def test_composite_is_not_third_direct_family(self):
+        features = [feature("NFCI", 1), feature("VIXCLS", 40), feature("BAMLH0A0HYM2", 7)]
+        a = audit_event_coverage(features, CHECK, EVENT)
         self.assertEqual(a["2020-crisis"]["status"], "partial_two_family_only")
+        self.assertEqual(a["2020-crisis"]["checkpoints_with_three_families"], 0)
 
     def test_missing_event_checkpoint_is_not_a_miss(self):
         a = audit_event_coverage([feature("VIXCLS", 50)], [], EVENT)
