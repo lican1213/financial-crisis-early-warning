@@ -6,12 +6,12 @@ from __future__ import annotations
 
 import argparse
 import json
-from collections import defaultdict
 from datetime import timedelta, datetime
 from pathlib import Path
 
-from .backtest import load_csv, utc
-from .core import Observation, decide
+from .backtest import load_csv, published_snapshots, utc
+from .core import advance_state, decide
+from .coverage import observable_direct_families
 
 PIT_CLASSES = {"publisher_timestamp_verified", "ALFRED_vintage_date_plus_one_UTC_day", "ALFRED_public_asof_plus_one_UTC_day"}
 
@@ -28,36 +28,22 @@ def evaluate(features: list[dict], checkpoints: list[dict], events: list[dict],
     if not points:
         raise ValueError("empty backtest period")
     # Ex-post mode labels all reported results as revised-history diagnostics.
-    features_by_release = sorted(features, key=lambda r: utc(r["first_available_at_utc"]))
     event_ranges = []
     for event in events:
         origin = utc(event["crisis_start_utc"])
-        event_ranges.append((event["event_id"], origin - timedelta(days=window_days),
-                             origin + timedelta(days=2), origin))
-    current: dict[str, tuple[tuple, Observation]] = {}
+        left, right = origin - timedelta(days=window_days), origin + timedelta(days=2)
+        if left <= points[-1] and right >= points[0]:
+            event_ranges.append((event["event_id"], left, right, origin))
     state = {}
-    cursor = 0
     alerted = {"fcews": [], "vix_only": [], "never_alert": []}
     prev_vix_trigger = False
     coverage = []
-    for instant in points:
-        while cursor < len(features_by_release):
-            row = features_by_release[cursor]
-            release = utc(row["first_available_at_utc"])
-            if release > instant:
-                break
-            cursor += 1
-            code = row["series"]
-            observation_date = row["observation_date"]
-            candidate = Observation(code, observation_date, float(row["value"]),
-                                    row["source_url"], instant.isoformat(), release.isoformat())
-            rank = (observation_date, release.isoformat())
-            if rank > current.get(code, (("", ""), None))[0]:
-                current[code] = (rank, candidate)
-        rows = {code: item[1] for code, item in current.items()}
-        model = decide(rows, state, {}, [], instant.date(), registry=registry)
-        state = model["next_state"]
+    direct_coverage = []
+    for instant, rows, history in published_snapshots(features, points, registry=registry):
+        model = decide(rows, state, {}, [], instant.date(), registry=registry, history=history)
+        state = advance_state(state, model, len(model["present_families"]) >= 3)
         coverage.append(len(model["present_families"]))
+        direct_coverage.append(len(observable_direct_families(history, instant.date(), registry)))
         if model["alert"]:
             alerted["fcews"].append(instant)
         vix = model["indicators"].get("VIXCLS")
@@ -92,6 +78,10 @@ def evaluate(features: list[dict], checkpoints: list[dict], events: list[dict],
         "last_decision_utc": points[-1].isoformat(),
         "crisis_event_count": len(event_ranges),
         "covered_by_three_families_share": round(sum(n >= 3 for n in coverage) / len(coverage), 5),
+        "coverage_basis": "legacy diagnostic groups and separately exact-date direct channels",
+        "covered_by_two_direct_same_date_share": round(sum(n >= 2 for n in direct_coverage) / len(points), 5),
+        "covered_by_three_direct_same_date_share": round(sum(n >= 3 for n in direct_coverage) / len(points), 5),
+        "unmatched_alerts_are_not_validated_false_positives": True,
         "strategies": {name: score(timestamps) for name, timestamps in alerted.items()},
     }
     return output
