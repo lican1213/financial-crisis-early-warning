@@ -5,6 +5,7 @@ from pathlib import Path
 
 from fcews.pit_export import export_one
 from fcews.benchmarks import evaluate
+from fcews.backtest import replay
 
 URL="https://fred.stlouisfed.org/series/"
 def entry(code,value,observed="2026-10-25",public="2026-10-26T00:00:00Z",basis="publisher_timestamp_verified"):
@@ -47,6 +48,30 @@ class HistoricalAdversarialTests(unittest.TestCase):
         self.assertEqual(result["strategies"]["never_alert"]["alerts"],0)
         self.assertEqual(result["strategies"]["never_alert"]["missed_events"],["hypothetical"])
         self.assertEqual(result["strategies"]["fcews"]["lead_days_by_event"]["hypothetical"],2)
+
+    def test_benchmark_matches_replay_with_late_older_date_and_future_revision(self):
+        features = [
+            entry("VIXCLS", 40, "2026-10-25"),
+            entry("VIXCLS", 45, "2026-10-26", "2026-10-27T00:00:00Z"),
+            entry("BAMLH0A0HYM2", 7, "2026-10-25", "2026-10-27T00:00:00Z"),
+            entry("VIXCLS", 20, "2026-10-25", "2026-10-29T00:00:00Z"),
+        ]
+        pts = [time("2026-10-26"), time("2026-10-27"), time("2026-10-28")]
+        result = evaluate(features, pts, [], mode="pit")
+        self.assertEqual(result["strategies"]["fcews"]["alerts"], 1)
+        self.assertEqual(result["strategies"]["fcews"]["alerts"], replay(features, pts, [])["alerts"])
+        self.assertAlmostEqual(result["covered_by_two_direct_same_date_share"], 2/3, places=4)
+
+    def test_two_direct_families_on_different_dates_are_not_coverage(self):
+        data = [entry("VIXCLS", 40), entry("BAMLH0A0HYM2", 7, "2026-10-24")]
+        result = evaluate(data, [time("2026-10-26")], [], mode="pit")
+        self.assertEqual(result["covered_by_two_direct_same_date_share"], 0)
+        self.assertEqual(result["strategies"]["fcews"]["alerts"], 0)
+
+    def test_outside_period_crisis_not_classified_as_missed(self):
+        events = [{"event_id":"outside","crisis_start_utc":"2008-09-15T12:00:00Z"}]
+        result = evaluate([], [time("2026-10-26")], events, mode="pit")
+        self.assertEqual(result["strategies"]["fcews"]["missed_events"], [])
 
     def test_unreleased_credit_does_not_fake_dual_family(self):
         data=[entry("VIXCLS",40),
