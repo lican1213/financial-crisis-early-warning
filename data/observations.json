@@ -9,11 +9,11 @@
   },
   "BAMLH0A0HYM2": {
     "available_at_utc": null,
-    "date": "2026-11-13",
-    "retrieved_utc": "2026-11-16T22:03:56.173454+00:00",
+    "date": "2026-11-16",
+    "retrieved_utc": "2026-11-17T22:52:55.290889+00:00",
     "series": "BAMLH0A0HYM2",
     "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
-    "value": 3.23
+    "value": 3.34
   },
   "BGCR": {
     "available_at_utc": null,
@@ -25,19 +25,19 @@
   },
   "DGS10": {
     "available_at_utc": null,
-    "date": "2026-11-13",
-    "retrieved_utc": "2026-11-16T22:03:56.441104+00:00",
+    "date": "2026-11-16",
+    "retrieved_utc": "2026-11-17T22:52:55.592979+00:00",
     "series": "DGS10",
     "source": "https://fred.stlouisfed.org/series/DGS10",
-    "value": 5.15
+    "value": 5.12
   },
   "DGS30": {
     "available_at_utc": null,
-    "date": "2026-11-13",
-    "retrieved_utc": "2026-11-16T22:03:56.463728+00:00",
+    "date": "2026-11-16",
+    "retrieved_utc": "2026-11-17T22:52:55.622211+00:00",
     "series": "DGS30",
     "source": "https://fred.stlouisfed.org/series/DGS30",
-    "value": 5.47
+    "value": 5.46
   },
   "NFCI": {
     "available_at_utc": null,
@@ -49,11 +49,11 @@
   },
   "OFR_FSI": {
     "available_at_utc": null,
-    "date": "2026-11-12",
-    "retrieved_utc": "2026-11-16T22:03:56.648483+00:00",
+    "date": "2026-11-13",
+    "retrieved_utc": "2026-11-17T22:52:55.934879+00:00",
     "series": "OFR_FSI",
     "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv",
-    "value": -1.88
+    "value": -1.874
   },
   "SOFR": {
     "available_at_utc": null,
