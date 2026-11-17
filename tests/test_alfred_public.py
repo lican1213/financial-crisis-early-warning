@@ -98,7 +98,7 @@ class AlfredPublicTests(unittest.TestCase):
 
     def test_multiple_rows_in_one_vintage_count_once(self):
         def fake(code, days):
-            return parse_asof_batch("DATE,VIXCLS_20261023\\n2026-10-22,39\\n2026-10-23,42\\n",
+            return parse_asof_batch("DATE,VIXCLS_20261023\n2026-10-22,39\n2026-10-23,42\n",
                                     code, days, "url")
         rows, stats = collect(["2026-10-23"], codes=("VIXCLS",), fetch=fake, sleep_seconds=0)
         self.assertEqual(len(rows), 2)
