@@ -1,5 +1,5 @@
 {
-  "as_of_date_utc": "2026-11-16",
+  "as_of_date_utc": "2026-11-17",
   "model_comparability": "not_calibrated",
   "notification_authorized": false,
   "official_release_research": {
@@ -35,10 +35,10 @@
     "observations": {
       "BAMLC0A0CM": {
         "frequency": "daily",
-        "observation_date": "2026-11-12",
+        "observation_date": "2026-11-13",
         "producer": "ICE_BofA",
         "publication_date": null,
-        "retrieved_utc": "2026-11-16T08:33:17.745201+00:00",
+        "retrieved_utc": "2026-11-17T09:43:26.470400+00:00",
         "source_url": "https://fred.stlouisfed.org/series/BAMLC0A0CM",
         "unit": "percent",
         "value": 0.89,
@@ -49,7 +49,7 @@
         "observation_date": "2026-11-07",
         "producer": "US_DOL",
         "publication_date": null,
-        "retrieved_utc": "2026-11-16T08:33:17.738962+00:00",
+        "retrieved_utc": "2026-11-17T09:43:26.464870+00:00",
         "source_url": "https://fred.stlouisfed.org/series/ICSA",
         "unit": "persons",
         "value": 200000.0,
@@ -57,24 +57,24 @@
       },
       "T10Y2Y": {
         "frequency": "daily",
-        "observation_date": "2026-11-13",
+        "observation_date": "2026-11-16",
         "producer": "FED",
         "publication_date": null,
-        "retrieved_utc": "2026-11-16T08:33:17.740287+00:00",
+        "retrieved_utc": "2026-11-17T09:43:26.469402+00:00",
         "source_url": "https://fred.stlouisfed.org/series/T10Y2Y",
         "unit": "percentage_points",
-        "value": 0.27,
+        "value": 0.29,
         "vintage_status": "latest_not_original_release"
       },
       "T10Y3M": {
         "frequency": "daily",
-        "observation_date": "2026-11-13",
+        "observation_date": "2026-11-16",
         "producer": "FED",
         "publication_date": null,
-        "retrieved_utc": "2026-11-16T08:33:17.739239+00:00",
+        "retrieved_utc": "2026-11-17T09:43:26.466102+00:00",
         "source_url": "https://fred.stlouisfed.org/series/T10Y3M",
         "unit": "percentage_points",
-        "value": 0.83,
+        "value": 0.78,
         "vintage_status": "latest_not_original_release"
       },
       "TEMPHELPS": {
@@ -82,7 +82,7 @@
         "observation_date": "2026-10-01",
         "producer": "BLS",
         "publication_date": null,
-        "retrieved_utc": "2026-11-16T08:33:17.738171+00:00",
+        "retrieved_utc": "2026-11-17T09:43:26.463862+00:00",
         "source_url": "https://fred.stlouisfed.org/series/TEMPHELPS",
         "unit": "thousand_persons",
         "value": 2526.0,
