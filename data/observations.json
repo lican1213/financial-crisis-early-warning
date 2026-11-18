@@ -1,11 +1,11 @@
 {
   "ANFCI": {
     "available_at_utc": null,
-    "date": "2026-11-06",
-    "retrieved_utc": "2026-11-12T20:49:51.812990+00:00",
+    "date": "2026-11-13",
+    "retrieved_utc": "2026-11-18T13:59:44.934897+00:00",
     "series": "ANFCI",
     "source": "https://fred.stlouisfed.org/series/ANFCI",
-    "value": -0.477
+    "value": -0.502
   },
   "BAMLH0A0HYM2": {
     "available_at_utc": null,
@@ -41,11 +41,11 @@
   },
   "NFCI": {
     "available_at_utc": null,
-    "date": "2026-11-06",
-    "retrieved_utc": "2026-11-12T20:49:51.812582+00:00",
+    "date": "2026-11-13",
+    "retrieved_utc": "2026-11-18T13:59:44.934025+00:00",
     "series": "NFCI",
     "source": "https://fred.stlouisfed.org/series/NFCI",
-    "value": -0.462
+    "value": -0.478
   },
   "OFR_FSI": {
     "available_at_utc": null,
