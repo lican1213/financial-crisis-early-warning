@@ -28,6 +28,11 @@ US_SERIES = {
     "BAMLC0A0CM": ("credit_context", "percent", "daily", "ICE_BofA"),
 }
 MAX_AGE = {"daily": 8, "weekly": 20, "monthly": 75}
+# BLS JOLTS publication lag is longer than the default monthly series:
+# September 2026 month-start observation was released November 3.
+# A bounded per-series exception avoids silently relaxing TEMPHELPS.
+# https://www.bls.gov/schedule/news_release/jolts.htm
+SERIES_MAX_AGE = {"JTSJOL": 95}
 
 # Official release-based indicators not reliably obtainable from machine-readable
 # endpoints are ingested as individually checked records, not inferred from news.
@@ -233,7 +238,7 @@ def collect_us(fetcher=fetch_fred, today: date | None = None) -> dict:
                 freq = US_SERIES[code][2]
                 if freq == "monthly" and observed.day != 1:
                     raise ValueError("monthly series must use first day of observation month")
-                if not 0 <= (today-observed).days <= MAX_AGE[freq]:
+                if not 0 <= (today-observed).days <= SERIES_MAX_AGE.get(code, MAX_AGE[freq]):
                     raise ValueError("future or stale observation")
                 rows[code] = {
                     "value": obs.value, "observation_date": obs.date,

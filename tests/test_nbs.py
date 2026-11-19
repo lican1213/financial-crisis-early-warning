@@ -2,7 +2,7 @@
 import unittest
 from datetime import date, datetime, timezone
 
-from fcews.nbs import collect, discover_pmi, parse_pmi, valid_article
+from fcews.nbs import INDEX as NBS_INDEX, collect, discover_pmi, parse_pmi, valid_article
 
 URL="https://www.stats.gov.cn/sj/zxfbhjd/202610/t20261031_1965718.html"
 INDEX="""<html><a href="./202609/t20260930_1965555.html">2026年9月中国采购经理指数运行情况</a>
@@ -71,10 +71,28 @@ class NBSPMIPrimaryGates(unittest.TestCase):
         seen=[]
         def fake(url,timeout):
             seen.append(url)
-            return INDEX if url.endswith("/sj/zxfbhjd/") else ARTICLE
+            return INDEX if url in (NBS_INDEX, NBS_INDEX+"index_1.html") else ARTICLE
         x=collect(datetime(2026,11,9,tzinfo=timezone.utc),fake)
-        self.assertEqual(seen,["https://www.stats.gov.cn/sj/zxfbhjd/",URL])
+        self.assertEqual(seen,[NBS_INDEX,NBS_INDEX+"index_1.html",URL])
         self.assertEqual(x["status"],"complete")
+
+    def test_index_rotation_selects_newest_release(self):
+        older = '<a href="./202609/t20260930_1965555.html">2026年9月中国采购经理指数运行情况</a>'
+        def fake(url, timeout):
+            return older if url == NBS_INDEX else INDEX if url.endswith("index_1.html") else ARTICLE
+        result = collect(datetime(2026,11,9,tzinfo=timezone.utc), fake)
+        self.assertEqual(result["source_url"], URL)
+
+    def test_first_index_outage_uses_second_official_index(self):
+        def fake(url, timeout):
+            if url == NBS_INDEX: raise TimeoutError("official index unavailable")
+            return INDEX if url.endswith("index_1.html") else ARTICLE
+        self.assertEqual(collect(datetime(2026,11,9,tzinfo=timezone.utc), fake)["status"],"complete")
+
+    def test_all_indexes_missing_fail_closed(self):
+        with self.assertRaisesRegex(ValueError, "both official NBS PMI indexes unavailable"):
+            collect(datetime(2026,11,9,tzinfo=timezone.utc),
+                    lambda url, timeout: (_ for _ in ()).throw(TimeoutError("unavailable")))
 
 
 if __name__=="__main__":

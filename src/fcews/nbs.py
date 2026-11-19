@@ -20,6 +20,8 @@ from .cli import ROOT, write_if_changed
 from .collect import read_url
 
 INDEX = "https://www.stats.gov.cn/sj/zxfbhjd/"
+# The verified October release moved onto the second official aggregation page.
+INDEX_PAGES = (INDEX, urljoin(INDEX, "index_1.html"))
 TITLE = re.compile(r"(20\d{2})年(\d{1,2})月(?:份)?中国采购经理指数运行情况")
 PUBLISHED = re.compile(r"(20\d{2})[/-](\d{1,2})[/-](\d{1,2})\s+\d{1,2}:\d{2}")
 SCHEMA = "fcews.nbs_official_pmi.v1"
@@ -161,8 +163,17 @@ def collect(now: datetime | None = None, fetcher=read_url) -> dict:
     if now.tzinfo is None:
         raise ValueError("now requires timezone")
     today = now.astimezone(timezone.utc).date()
-    index = fetcher(INDEX, 12)
-    url, year, month = discover_pmi(index, today)
+    # Read the bounded official index pages before choosing the newest release.
+    # A single unavailable page must not erase a valid original article.
+    indexes, errors = [], []
+    for page in INDEX_PAGES:
+        try:
+            indexes.append(fetcher(page, 12))
+        except (OSError, UnicodeError, ValueError) as exc:
+            errors.append(page + ": " + type(exc).__name__)
+    if not indexes:
+        raise ValueError("both official NBS PMI indexes unavailable: " + ", ".join(errors))
+    url, year, month = discover_pmi("\n".join(indexes), today)
     article = fetcher(url, 12)
     return parse_pmi(article, url, year, month, today)
 
