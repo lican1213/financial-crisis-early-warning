@@ -14,6 +14,9 @@ from urllib.request import Request, urlopen
 
 WINDOW_HOURS = 24
 MAX_GAP_MINUTES = 90  # hourly period plus a 30-minute grace period
+PAGE_SIZE = 20  # GitHub includes large nested repository objects in each run.
+MAX_PAGES = 8
+MAX_RESPONSE_BYTES = 1_000_000
 
 
 def utc_timestamp(value: str) -> datetime:
@@ -51,27 +54,44 @@ def evaluate(runs: list[dict], now: datetime, window_hours: int = WINDOW_HOURS,
     }
 
 
-def fetch_runs(repo: str, token: str) -> list[dict]:
+def fetch_runs(repo: str, token: str, now: datetime | None = None) -> list[dict]:
+    """Page the UTC 24-hour window; never silently truncate GitHub's JSON."""
     if len(repo.split("/")) != 2 or not all(repo.split("/")):
         raise ValueError("invalid repository name")
-    url = ("https://api.github.com/repos/" + quote(repo, safe="/")
-           + "/actions/workflows/check.yml/runs?event=schedule&per_page=100")
-    request = Request(url, headers={
-        "Accept": "application/vnd.github+json", "User-Agent": "FCEWS schedule audit",
-        "X-GitHub-Api-Version": "2022-11-28",
-        **({"Authorization": "Bearer " + token} if token else {}),
-    })
-    with urlopen(request, timeout=12) as response:
-        data = json.loads(response.read(1_000_001))
-    if not isinstance(data.get("workflow_runs"), list):
-        raise ValueError("invalid GitHub workflow run response")
-    return data["workflow_runs"]
+    now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        raise ValueError("audit timestamp must be timezone-aware")
+    now = now.astimezone(timezone.utc)
+    start = now - timedelta(hours=WINDOW_HOURS)
+    date_range = start.date().isoformat() + ".." + now.date().isoformat()
+    prefix = ("https://api.github.com/repos/" + quote(repo, safe="/")
+              + "/actions/workflows/check.yml/runs?event=schedule"
+              + "&created=" + date_range + "&per_page=" + str(PAGE_SIZE))
+    runs: list[dict] = []
+    for page in range(1, MAX_PAGES + 1):
+        request = Request(prefix + "&page=" + str(page), headers={
+            "Accept": "application/vnd.github+json", "User-Agent": "FCEWS schedule audit",
+            "X-GitHub-Api-Version": "2022-11-28",
+            **({"Authorization": "Bearer " + token} if token else {}),
+        })
+        with urlopen(request, timeout=12) as response:
+            payload = response.read(MAX_RESPONSE_BYTES + 1)
+        if len(payload) > MAX_RESPONSE_BYTES:
+            raise ValueError("GitHub schedule page exceeded bounded response size")
+        data = json.loads(payload)
+        page_runs = data.get("workflow_runs") if isinstance(data, dict) else None
+        if not isinstance(page_runs, list) or len(page_runs) > PAGE_SIZE:
+            raise ValueError("invalid GitHub workflow run response")
+        runs.extend(page_runs)
+        if len(page_runs) < PAGE_SIZE:
+            return runs
+    raise ValueError("GitHub schedule pagination exceeded audit page limit; cadence unverified")
 
 
 def main() -> None:
     now = datetime.now(timezone.utc)
     result = evaluate(fetch_runs(os.environ["GITHUB_REPOSITORY"],
-                                 os.getenv("GITHUB_TOKEN", "")), now)
+                                 os.getenv("GITHUB_TOKEN", ""), now), now)
     print(json.dumps(result, sort_keys=True))
     summary = os.getenv("GITHUB_STEP_SUMMARY")
     if summary:

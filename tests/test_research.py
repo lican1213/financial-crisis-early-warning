@@ -191,6 +191,29 @@ class USContextGates(unittest.TestCase):
             self.assertIsNone(out["official_release_research"]["staffing_global_score"])
             self.assertEqual(out["model_comparability"], "not_calibrated")
 
+    def test_september_jolts_remains_usable_after_november_release(self):
+        def dated(code):
+            freq = US_SERIES[code][2]
+            period = ("2026-09-01" if code == "JTSJOL" else
+                      "2026-10-01" if freq == "monthly" else
+                      "2026-11-13" if freq == "weekly" else "2026-11-17")
+            return Observation(code, period, 7523 if code == "JTSJOL" else 1,
+                               "https://fred.stlouisfed.org/series/" + code,
+                               "2026-11-19T01:00:00Z")
+        result = collect_us(dated, date(2026,11,19))
+        self.assertEqual(result["status"], "complete")
+        self.assertIsNone(result["observations"]["JTSJOL"]["publication_date"])
+
+    def test_overdue_jolts_and_temphelps_still_rejected(self):
+        def dated(code):
+            freq = US_SERIES[code][2]
+            period = ("2026-08-01" if freq == "monthly" else
+                      "2026-11-13" if freq == "weekly" else "2026-11-17")
+            return Observation(code, period, 1, "https://fred.stlouisfed.org/series/" + code,
+                               "2026-11-19T01:00:00Z")
+        result = collect_us(dated, date(2026,11,19))
+        self.assertEqual(set(result["missing"]), {"JTSJOL","TEMPHELPS"})
+
 
 if __name__ == "__main__":
     unittest.main()
