@@ -3,15 +3,15 @@
   "evidence_sha256": "9e0700213b32ab089e9116c0eb08a9e5b217d8fb78c886fde7b78a4226ff13e9",
   "evidence_stages_completed": true,
   "full_poll_completed": true,
-  "last_successful_poll_utc": "2026-11-19T02:35:13.227629+00:00",
-  "last_successful_scheduled_poll_utc": "2026-11-18T21:57:51.044202+00:00",
+  "last_successful_poll_utc": "2026-11-19T02:49:07.409702+00:00",
+  "last_successful_scheduled_poll_utc": "2026-11-19T02:49:07.409702+00:00",
   "monitor_health": "healthy",
-  "natural_schedule_attempt": false,
+  "natural_schedule_attempt": true,
   "natural_schedule_only": true,
   "operational_only": true,
-  "recorded_at_utc": "2026-11-19T02:35:13.227629+00:00",
+  "recorded_at_utc": "2026-11-19T02:49:07.409702+00:00",
   "run_attempt": "1",
-  "run_id": "44445362682",
+  "run_id": "44447032095",
   "schema": "fcews.poll_heartbeat.v1",
   "stage_outcomes": {
     "bridge": "success",
@@ -19,5 +19,5 @@
     "delivery": "success",
     "persist": "success"
   },
-  "trigger": "push"
+  "trigger": "schedule"
 }
