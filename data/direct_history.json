@@ -1,22 +1,4 @@
 {
-  "2026-11-11": {
-    "BAMLH0A0HYM2": {
-      "available_at_utc": null,
-      "date": "2026-11-11",
-      "retrieved_utc": "2026-11-16T11:54:54.073485+00:00",
-      "series": "BAMLH0A0HYM2",
-      "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
-      "value": 3.3
-    },
-    "VIXCLS": {
-      "available_at_utc": null,
-      "date": "2026-11-11",
-      "retrieved_utc": "2026-11-16T11:54:54.074463+00:00",
-      "series": "VIXCLS",
-      "source": "https://fred.stlouisfed.org/series/VIXCLS",
-      "value": 17.49
-    }
-  },
   "2026-11-12": {
     "BAMLH0A0HYM2": {
       "available_at_utc": null,
