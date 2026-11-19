@@ -14,7 +14,7 @@
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "aab89d697ec59f50c4d60b087634ea2a16f662373776ab5d40e1452d4ec8ef36",
+  "fingerprint_sha256": "8b1ee066908ebc96d5730f3d29dda9c0f1e44bff6cc708e2705c81ebd7be4d14",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-11-13",
@@ -34,18 +34,19 @@
     "authorizes_notification": false,
     "china_recovery_breadth_score": null,
     "china_source_status": "independent_original_document_verification_required",
-    "source_snapshot_date": "2026-11-18",
+    "source_snapshot_date": "2026-11-19",
     "staffing_firm_source_status": "independent_original_document_verification_required",
     "staffing_global_score": null,
     "status": "fresh",
     "us_observation_dates": {
-      "BAMLC0A0CM": "2026-11-16",
+      "BAMLC0A0CM": "2026-11-17",
       "ICSA": "2026-11-07",
-      "T10Y2Y": "2026-11-17",
-      "T10Y3M": "2026-11-17",
+      "JTSJOL": "2026-09-01",
+      "T10Y2Y": "2026-11-18",
+      "T10Y3M": "2026-11-18",
       "TEMPHELPS": "2026-10-01"
     },
-    "us_source_status": "partial"
+    "us_source_status": "complete"
   },
   "monitor_health": "healthy",
   "nbs_pmi_research": {
