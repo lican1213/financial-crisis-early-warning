@@ -4,6 +4,7 @@ on:
   pull_request:
 permissions:
   contents: read
+  actions: read
 jobs:
   unittest:
     runs-on: ubuntu-latest
@@ -18,3 +19,9 @@ jobs:
         run: PYTHONPATH=src python -m unittest discover -s tests -v
       - name: Check wiki source, backlinks and MOC coverage
         run: python scripts/wiki_lint.py
+
+      - name: One-time live GitHub schedule API audit (read-only, verification branch only)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: PYTHONPATH=src python -m fcews.schedule_health
