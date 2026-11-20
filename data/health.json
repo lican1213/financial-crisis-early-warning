@@ -4,16 +4,16 @@
   "lagging_live_observations_business_days": {},
   "last_observation_dates": {
     "ANFCI": "2026-11-13",
-    "BAMLH0A0HYM2": "2026-11-18",
-    "BGCR": "2026-11-18",
+    "BAMLH0A0HYM2": "2026-11-19",
+    "BGCR": "2026-11-19",
     "DGS10": "2026-11-18",
     "DGS30": "2026-11-18",
     "NFCI": "2026-11-13",
-    "OFR_FSI": "2026-11-17",
-    "SOFR": "2026-11-18",
+    "OFR_FSI": "2026-11-18",
+    "SOFR": "2026-11-19",
     "STLFSI4": "2026-11-13",
-    "TGCR": "2026-11-18",
-    "VIXCLS": "2026-11-18"
+    "TGCR": "2026-11-19",
+    "VIXCLS": "2026-11-19"
   },
   "last_successful_data": true,
   "live_families": [
