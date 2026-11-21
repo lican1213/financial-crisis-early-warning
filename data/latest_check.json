@@ -5,8 +5,8 @@
   "confirmation_matches": {},
   "confirming_families": [],
   "critical_families": [],
-  "evidence_sha256": "f4f834318abd53f039144bc1f28419536b9120360bd090fe671eb03524ab43a4",
-  "first_recorded_utc": "2026-11-20T18:50:28.249078+00:00",
+  "evidence_sha256": "116ab089ef3023122eb06da3a3bcd49d9e6cd4745e79eaf3f2021a2e688b7cc0",
+  "first_recorded_utc": "2026-11-21T00:57:07.415756+00:00",
   "observations": {
     "ANFCI": {
       "date": "2026-11-13",
@@ -24,14 +24,14 @@
       "value": 3.88
     },
     "DGS10": {
-      "date": "2026-11-18",
+      "date": "2026-11-19",
       "source": "https://fred.stlouisfed.org/series/DGS10",
-      "value": 5.07
+      "value": 5.04
     },
     "DGS30": {
-      "date": "2026-11-18",
+      "date": "2026-11-19",
       "source": "https://fred.stlouisfed.org/series/DGS30",
-      "value": 5.41
+      "value": 5.4
     },
     "NFCI": {
       "date": "2026-11-13",
