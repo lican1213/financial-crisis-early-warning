@@ -10,6 +10,7 @@ summary: Architecture decisions with explicit tradeoffs and supersession history
 
 - [ADR-0001: unique authoritative stores](ADR-0001.md)
 - [ADR-0002: quiet notification gate](ADR-0002.md)
-- [ADR-0003: continuous research instead of weekly push](ADR-0003.md)
+- [ADR-0003: continuous research instead of weekly push (historical 2026-11-09)](ADR-0003.md)
+- [ADR-0004: restore Sunday research within the existing hourly task](ADR-0004.md)
 
 Add a new ADR for material reversals rather than rewriting an adopted decision. Back to [master index](../_index.md).
