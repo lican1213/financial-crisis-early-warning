@@ -46,7 +46,17 @@ class WorkflowSafetyTests(unittest.TestCase):
         self.assertIn("cron: '43 * * * *'", content)
         self.assertIn("git pull --rebase origin main", content)
 
-    def test_paused_sunday_report_absent_from_active_cadence(self):
+    def test_standalone_sunday_task_stays_paused_but_hourly_task_has_research_branch(self):
         content = (ROOT / "docs/operations/CADENCE.md").read_text(encoding="utf-8")
         self.assertIn("Paused ChatGPT", content)
+        self.assertIn("Sunday **10:00 Beijing time**", content)
         self.assertNotIn("| Sunday | **10:00** | Existing ChatGPT", content)
+
+    def test_cboe_context_covers_friday_us_close_without_feature_branch_writes(self):
+        content = (ROOT / ".github/workflows/volatility.yml").read_text(encoding="utf-8")
+        # The existing 08:45 Beijing cadence runs five times weekly, after each US session.
+        self.assertIn("cron: '45 0 * * 2-6'", content)
+        self.assertNotIn("cron: '45 0 * * 1-5'", content)
+        self.assertIn("  push:\n    branches: [main]\n", content)
+        self.assertIn("  volatility:\n    if: github.ref == 'refs/heads/main'", content)
+        self.assertNotIn("fcews.delivery", content)

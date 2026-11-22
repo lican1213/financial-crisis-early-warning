@@ -39,7 +39,8 @@ summary: Entry point for the financial crisis early-warning knowledge base and o
 ## Operational memory and decisions
 - [Decision ADR-0001: GitHub/wiki truth boundaries](decisions/ADR-0001.md)
 - [Decision ADR-0002: Alert gate and incident discipline](decisions/ADR-0002.md)
-- [Decision ADR-0003: Retire weekly pushes; integrate source-gated research](decisions/ADR-0003.md)
+- [Decision ADR-0003: Retire weekly pushes; integrate source-gated research (historical)](decisions/ADR-0003.md)
+- [Decision ADR-0004: Sunday research inside existing hourly condition-watch](decisions/ADR-0004.md)
 - [Maintenance routine](operations/MAINTENANCE.md)
 - [Event and failure register](operations/INCIDENTS.md)
 - [Current handoff](operations/HANDOFF.md)

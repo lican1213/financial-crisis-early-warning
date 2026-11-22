@@ -1,12 +1,15 @@
 name: Daily official volatility term structure (Cboe) and Treasury yield vol
 on:
   push:
+    branches: [main]
     paths:
       - 'src/fcews/volatility.py'
       - 'tests/test_volatility.py'
       - '.github/workflows/volatility.yml'
   schedule:
-    - cron: '45 0 * * 1-5'
+    # 00:45 UTC Tue-Sat is after each Mon-Fri US market close.
+    # Keep five weekly collections; include Friday close before Sunday research.
+    - cron: '45 0 * * 2-6'
   workflow_dispatch:
 permissions:
   contents: write
@@ -15,6 +18,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   volatility:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
