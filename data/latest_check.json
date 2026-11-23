@@ -4,9 +4,11 @@
   "confirmation_evidence": {},
   "confirmation_matches": {},
   "confirming_families": [],
-  "critical_families": [],
-  "evidence_sha256": "116ab089ef3023122eb06da3a3bcd49d9e6cd4745e79eaf3f2021a2e688b7cc0",
-  "first_recorded_utc": "2026-11-21T00:57:07.415756+00:00",
+  "critical_families": [
+    "volatility"
+  ],
+  "evidence_sha256": "d55ab42a9e0e6ed3e64e5cb4ff14d65c9e4158a1ed032cee6e00f2679fe2890d",
+  "first_recorded_utc": "2026-11-23T20:33:21.659617+00:00",
   "observations": {
     "ANFCI": {
       "date": "2026-11-13",
@@ -14,14 +16,14 @@
       "value": -0.502
     },
     "BAMLH0A0HYM2": {
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
-      "value": 3.52
+      "value": 3.76
     },
     "BGCR": {
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "source": "https://www.newyorkfed.org/markets/reference-rates/bgcr",
-      "value": 3.88
+      "value": 3.89
     },
     "DGS10": {
       "date": "2026-11-19",
@@ -39,14 +41,14 @@
       "value": -0.478
     },
     "OFR_FSI": {
-      "date": "2026-11-18",
+      "date": "2026-11-19",
       "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv",
-      "value": -1.387
+      "value": -1.259
     },
     "SOFR": {
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "source": "https://www.newyorkfed.org/markets/reference-rates/sofr",
-      "value": 3.91
+      "value": 3.92
     },
     "STLFSI4": {
       "date": "2026-11-13",
@@ -54,14 +56,14 @@
       "value": -0.8655
     },
     "TGCR": {
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr",
-      "value": 3.88
+      "value": 3.89
     },
     "VIXCLS": {
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "source": "https://fred.stlouisfed.org/series/VIXCLS",
-      "value": 28.44
+      "value": 35.89
     }
   },
   "present_families": [
@@ -70,7 +72,7 @@
     "system",
     "volatility"
   ],
-  "severity": "green",
+  "severity": "yellow",
   "source_errors": {
     "FRED:TGCR": "HTTPError"
   },

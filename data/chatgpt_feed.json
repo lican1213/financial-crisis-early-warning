@@ -13,23 +13,23 @@
     "research_context_cannot_authorize_crisis_notification": true,
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
-  "current_technical_severity": "green",
-  "fingerprint_sha256": "ae846c978fed6672ac6c902fcbbb3e203052d417a3260bec2cbee7f459c5e3e8",
+  "current_technical_severity": "yellow",
+  "fingerprint_sha256": "a3b3f7a9f50b2eddd694823fc18c8866dab4e3f918423143bd33359f681982e2",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-11-13",
-    "BAMLH0A0HYM2": "2026-11-19",
-    "BGCR": "2026-11-19",
+    "BAMLH0A0HYM2": "2026-11-20",
+    "BGCR": "2026-11-20",
     "DGS10": "2026-11-19",
     "DGS30": "2026-11-19",
     "NFCI": "2026-11-13",
-    "OFR_FSI": "2026-11-18",
-    "SOFR": "2026-11-19",
+    "OFR_FSI": "2026-11-19",
+    "SOFR": "2026-11-20",
     "STLFSI4": "2026-11-13",
-    "TGCR": "2026-11-19",
-    "VIXCLS": "2026-11-19"
+    "TGCR": "2026-11-20",
+    "VIXCLS": "2026-11-20"
   },
-  "latest_evidence_sha256": "116ab089ef3023122eb06da3a3bcd49d9e6cd4745e79eaf3f2021a2e688b7cc0",
+  "latest_evidence_sha256": "d55ab42a9e0e6ed3e64e5cb4ff14d65c9e4158a1ed032cee6e00f2679fe2890d",
   "leading_research": {
     "authorizes_notification": false,
     "china_recovery_breadth_score": null,
@@ -97,7 +97,7 @@
     },
     "status": "official_government_republication_not_original_vintage"
   },
-  "persisted_regime_severity": "green",
+  "persisted_regime_severity": "yellow",
   "schema": "fcews.chatgpt.readonly.v1",
   "should_send_user_notification": false,
   "source_url": "https://github.com/lican1213/financial-crisis-early-warning",
