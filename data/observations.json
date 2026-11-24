@@ -9,11 +9,11 @@
   },
   "BAMLH0A0HYM2": {
     "available_at_utc": null,
-    "date": "2026-11-20",
-    "retrieved_utc": "2026-11-23T20:33:21.662125+00:00",
+    "date": "2026-11-23",
+    "retrieved_utc": "2026-11-24T21:12:35.305042+00:00",
     "series": "BAMLH0A0HYM2",
     "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
-    "value": 3.76
+    "value": 3.63
   },
   "BGCR": {
     "available_at_utc": null,

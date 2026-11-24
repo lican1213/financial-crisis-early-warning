@@ -136,6 +136,14 @@
     }
   },
   "2026-11-23": {
+    "BAMLH0A0HYM2": {
+      "available_at_utc": null,
+      "date": "2026-11-23",
+      "retrieved_utc": "2026-11-24T21:12:35.305042+00:00",
+      "series": "BAMLH0A0HYM2",
+      "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
+      "value": 3.63
+    },
     "SOFR": {
       "available_at_utc": null,
       "date": "2026-11-23",

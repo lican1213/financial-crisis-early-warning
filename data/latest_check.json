@@ -5,8 +5,8 @@
   "confirmation_matches": {},
   "confirming_families": [],
   "critical_families": [],
-  "evidence_sha256": "ef4bb18c0b70b5327c79c7b9a384e0b70037177caad43159a17c207936b9ddd5",
-  "first_recorded_utc": "2026-11-24T16:25:31.380767+00:00",
+  "evidence_sha256": "e775f508038f077fa5f63b610497c3edfbc8471997ab35001714372894eaf5d6",
+  "first_recorded_utc": "2026-11-24T21:12:35.302650+00:00",
   "observations": {
     "ANFCI": {
       "date": "2026-11-13",
@@ -14,9 +14,9 @@
       "value": -0.502
     },
     "BAMLH0A0HYM2": {
-      "date": "2026-11-20",
+      "date": "2026-11-23",
       "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
-      "value": 3.76
+      "value": 3.63
     },
     "BGCR": {
       "date": "2026-11-23",
