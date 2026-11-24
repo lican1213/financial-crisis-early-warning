@@ -7,8 +7,8 @@
   "critical_families": [
     "volatility"
   ],
-  "evidence_sha256": "d55ab42a9e0e6ed3e64e5cb4ff14d65c9e4158a1ed032cee6e00f2679fe2890d",
-  "first_recorded_utc": "2026-11-23T20:33:21.659617+00:00",
+  "evidence_sha256": "358d845b6c74f725d713bb72ac27deb593b20086caea43b72489d253e8cb655d",
+  "first_recorded_utc": "2026-11-24T00:52:33.614166+00:00",
   "observations": {
     "ANFCI": {
       "date": "2026-11-13",
@@ -26,14 +26,14 @@
       "value": 3.89
     },
     "DGS10": {
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "source": "https://fred.stlouisfed.org/series/DGS10",
-      "value": 5.04
+      "value": 4.92
     },
     "DGS30": {
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "source": "https://fred.stlouisfed.org/series/DGS30",
-      "value": 5.4
+      "value": 5.31
     },
     "NFCI": {
       "date": "2026-11-13",
