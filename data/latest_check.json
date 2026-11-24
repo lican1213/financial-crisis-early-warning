@@ -4,11 +4,9 @@
   "confirmation_evidence": {},
   "confirmation_matches": {},
   "confirming_families": [],
-  "critical_families": [
-    "volatility"
-  ],
-  "evidence_sha256": "358d845b6c74f725d713bb72ac27deb593b20086caea43b72489d253e8cb655d",
-  "first_recorded_utc": "2026-11-24T00:52:33.614166+00:00",
+  "critical_families": [],
+  "evidence_sha256": "ef4bb18c0b70b5327c79c7b9a384e0b70037177caad43159a17c207936b9ddd5",
+  "first_recorded_utc": "2026-11-24T16:25:31.380767+00:00",
   "observations": {
     "ANFCI": {
       "date": "2026-11-13",
@@ -21,9 +19,9 @@
       "value": 3.76
     },
     "BGCR": {
-      "date": "2026-11-20",
+      "date": "2026-11-23",
       "source": "https://www.newyorkfed.org/markets/reference-rates/bgcr",
-      "value": 3.89
+      "value": 3.9
     },
     "DGS10": {
       "date": "2026-11-20",
@@ -41,12 +39,12 @@
       "value": -0.478
     },
     "OFR_FSI": {
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv",
-      "value": -1.259
+      "value": -0.449
     },
     "SOFR": {
-      "date": "2026-11-20",
+      "date": "2026-11-23",
       "source": "https://www.newyorkfed.org/markets/reference-rates/sofr",
       "value": 3.92
     },
@@ -56,14 +54,14 @@
       "value": -0.8655
     },
     "TGCR": {
-      "date": "2026-11-20",
+      "date": "2026-11-23",
       "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr",
-      "value": 3.89
+      "value": 3.9
     },
     "VIXCLS": {
-      "date": "2026-11-20",
+      "date": "2026-11-23",
       "source": "https://fred.stlouisfed.org/series/VIXCLS",
-      "value": 35.89
+      "value": 26.62
     }
   },
   "present_families": [
@@ -72,7 +70,7 @@
     "system",
     "volatility"
   ],
-  "severity": "yellow",
+  "severity": "green",
   "source_errors": {
     "FRED:TGCR": "HTTPError"
   },

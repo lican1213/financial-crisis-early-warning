@@ -13,23 +13,23 @@
     "research_context_cannot_authorize_crisis_notification": true,
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
-  "current_technical_severity": "yellow",
-  "fingerprint_sha256": "06f7102076fee7bd5c275d17996dfedd4149b84fe232eb8adcaaf0bb09c1e0b2",
+  "current_technical_severity": "green",
+  "fingerprint_sha256": "3345641e265aed1c322d3cd75cf99c77538907c143d2a8e28ce33a2019f9208a",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-11-13",
     "BAMLH0A0HYM2": "2026-11-20",
-    "BGCR": "2026-11-20",
+    "BGCR": "2026-11-23",
     "DGS10": "2026-11-20",
     "DGS30": "2026-11-20",
     "NFCI": "2026-11-13",
-    "OFR_FSI": "2026-11-19",
-    "SOFR": "2026-11-20",
+    "OFR_FSI": "2026-11-20",
+    "SOFR": "2026-11-23",
     "STLFSI4": "2026-11-13",
-    "TGCR": "2026-11-20",
-    "VIXCLS": "2026-11-20"
+    "TGCR": "2026-11-23",
+    "VIXCLS": "2026-11-23"
   },
-  "latest_evidence_sha256": "358d845b6c74f725d713bb72ac27deb593b20086caea43b72489d253e8cb655d",
+  "latest_evidence_sha256": "ef4bb18c0b70b5327c79c7b9a384e0b70037177caad43159a17c207936b9ddd5",
   "leading_research": {
     "authorizes_notification": false,
     "china_recovery_breadth_score": null,
@@ -97,7 +97,7 @@
     },
     "status": "official_government_republication_not_original_vintage"
   },
-  "persisted_regime_severity": "yellow",
+  "persisted_regime_severity": "green",
   "schema": "fcews.chatgpt.readonly.v1",
   "should_send_user_notification": false,
   "source_url": "https://github.com/lican1213/financial-crisis-early-warning",

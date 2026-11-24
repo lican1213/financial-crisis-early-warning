@@ -3,14 +3,12 @@
   "active_confirmation_dates": {},
   "active_confirmation_families": [],
   "confirming_families": [],
-  "critical_families": [
-    "volatility"
-  ],
+  "critical_families": [],
   "last_alert_severity": null,
   "last_recovery_date": "",
   "recovery_alerted": false,
   "recovery_count": 0,
   "recovery_family_dates": {},
   "seen_events": [],
-  "severity": "yellow"
+  "severity": "green"
 }
