@@ -1,38 +1,4 @@
 {
-  "2026-11-17": {
-    "BAMLH0A0HYM2": {
-      "available_at_utc": null,
-      "date": "2026-11-17",
-      "retrieved_utc": "2026-11-18T21:36:15.049657+00:00",
-      "series": "BAMLH0A0HYM2",
-      "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
-      "value": 3.43
-    },
-    "SOFR": {
-      "available_at_utc": null,
-      "date": "2026-11-17",
-      "retrieved_utc": "2026-11-18T13:29:03.604489+00:00",
-      "series": "SOFR",
-      "source": "https://www.newyorkfed.org/markets/reference-rates/sofr",
-      "value": 3.92
-    },
-    "TGCR": {
-      "available_at_utc": null,
-      "date": "2026-11-17",
-      "retrieved_utc": "2026-11-18T13:29:03.648037+00:00",
-      "series": "TGCR",
-      "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr",
-      "value": 3.9
-    },
-    "VIXCLS": {
-      "available_at_utc": null,
-      "date": "2026-11-17",
-      "retrieved_utc": "2026-11-18T21:36:15.051891+00:00",
-      "series": "VIXCLS",
-      "source": "https://fred.stlouisfed.org/series/VIXCLS",
-      "value": 25.46
-    }
-  },
   "2026-11-18": {
     "BAMLH0A0HYM2": {
       "available_at_utc": null,
