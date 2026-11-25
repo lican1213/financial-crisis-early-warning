@@ -1,14 +1,14 @@
 {
-  "last_checked_utc_date": "2026-11-24",
+  "last_checked_utc_date": "2026-11-25",
   "observation": {
     "code": "OFR_REPO_DVP_G30",
-    "date": "2026-11-20",
+    "date": "2026-11-23",
     "mnemonic": "REPO-DVP_AR_G30-P",
     "purpose": "context_only",
-    "retrieved_at_utc": "2026-11-24T10:17:41.372051+00:00",
+    "retrieved_at_utc": "2026-11-25T08:59:27.533849+00:00",
     "source_url": "https://www.financialresearch.gov/short-term-funding-monitor/api-specs/api-data-single/",
     "unit": "percent",
-    "value": 4.21
+    "value": 4.17
   },
   "status": "ok"
 }
