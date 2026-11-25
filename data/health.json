@@ -3,17 +3,17 @@
   "freshness_basis": "business-day grace heuristic; no holiday or publisher release-time attestation",
   "lagging_live_observations_business_days": {},
   "last_observation_dates": {
-    "ANFCI": "2026-11-13",
-    "BAMLH0A0HYM2": "2026-11-23",
-    "BGCR": "2026-11-23",
+    "ANFCI": "2026-11-20",
+    "BAMLH0A0HYM2": "2026-11-24",
+    "BGCR": "2026-11-24",
     "DGS10": "2026-11-23",
     "DGS30": "2026-11-23",
-    "NFCI": "2026-11-13",
-    "OFR_FSI": "2026-11-20",
-    "SOFR": "2026-11-23",
+    "NFCI": "2026-11-20",
+    "OFR_FSI": "2026-11-23",
+    "SOFR": "2026-11-24",
     "STLFSI4": "2026-11-13",
-    "TGCR": "2026-11-23",
-    "VIXCLS": "2026-11-23"
+    "TGCR": "2026-11-24",
+    "VIXCLS": "2026-11-24"
   },
   "last_successful_data": true,
   "live_families": [
