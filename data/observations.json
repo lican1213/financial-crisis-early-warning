@@ -65,11 +65,11 @@
   },
   "STLFSI4": {
     "available_at_utc": null,
-    "date": "2026-11-13",
-    "retrieved_utc": "2026-11-18T21:36:15.047082+00:00",
+    "date": "2026-11-20",
+    "retrieved_utc": "2026-11-25T20:10:47.596538+00:00",
     "series": "STLFSI4",
     "source": "https://fred.stlouisfed.org/series/STLFSI4",
-    "value": -0.8655
+    "value": -0.0697
   },
   "TGCR": {
     "available_at_utc": null,
