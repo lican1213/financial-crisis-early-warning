@@ -1,5 +1,5 @@
 {
-  "as_of_date_utc": "2026-11-25",
+  "as_of_date_utc": "2026-11-26",
   "model_comparability": "not_calibrated",
   "notification_authorized": false,
   "official_release_research": {
@@ -31,24 +31,24 @@
     "observations": {
       "BAMLC0A0CM": {
         "frequency": "daily",
-        "observation_date": "2026-11-23",
+        "observation_date": "2026-11-24",
         "producer": "ICE_BofA",
         "publication_date": null,
-        "retrieved_utc": "2026-11-25T10:23:52.484957+00:00",
+        "retrieved_utc": "2026-11-26T10:00:29.630111+00:00",
         "source_url": "https://fred.stlouisfed.org/series/BAMLC0A0CM",
         "unit": "percent",
-        "value": 0.97,
+        "value": 0.98,
         "vintage_status": "latest_not_original_release"
       },
       "ICSA": {
         "frequency": "weekly",
-        "observation_date": "2026-11-14",
+        "observation_date": "2026-11-21",
         "producer": "US_DOL",
         "publication_date": null,
-        "retrieved_utc": "2026-11-25T10:23:52.477150+00:00",
+        "retrieved_utc": "2026-11-26T10:00:29.624290+00:00",
         "source_url": "https://fred.stlouisfed.org/series/ICSA",
         "unit": "persons",
-        "value": 203000.0,
+        "value": 189000.0,
         "vintage_status": "latest_not_original_release"
       },
       "JTSJOL": {
@@ -56,7 +56,7 @@
         "observation_date": "2026-09-01",
         "producer": "BLS",
         "publication_date": null,
-        "retrieved_utc": "2026-11-25T10:23:52.476753+00:00",
+        "retrieved_utc": "2026-11-26T10:00:29.623924+00:00",
         "source_url": "https://fred.stlouisfed.org/series/JTSJOL",
         "unit": "thousand_vacancies",
         "value": 7523.0,
@@ -64,24 +64,24 @@
       },
       "T10Y2Y": {
         "frequency": "daily",
-        "observation_date": "2026-11-24",
+        "observation_date": "2026-11-25",
         "producer": "FED",
         "publication_date": null,
-        "retrieved_utc": "2026-11-25T10:23:52.484537+00:00",
+        "retrieved_utc": "2026-11-26T10:00:29.629106+00:00",
         "source_url": "https://fred.stlouisfed.org/series/T10Y2Y",
         "unit": "percentage_points",
-        "value": 0.28,
+        "value": 0.24,
         "vintage_status": "latest_not_original_release"
       },
       "T10Y3M": {
         "frequency": "daily",
-        "observation_date": "2026-11-24",
+        "observation_date": "2026-11-25",
         "producer": "FED",
         "publication_date": null,
-        "retrieved_utc": "2026-11-25T10:23:52.478637+00:00",
+        "retrieved_utc": "2026-11-26T10:00:29.625373+00:00",
         "source_url": "https://fred.stlouisfed.org/series/T10Y3M",
         "unit": "percentage_points",
-        "value": 0.55,
+        "value": 0.51,
         "vintage_status": "latest_not_original_release"
       },
       "TEMPHELPS": {
@@ -89,7 +89,7 @@
         "observation_date": "2026-10-01",
         "producer": "BLS",
         "publication_date": null,
-        "retrieved_utc": "2026-11-25T10:23:52.476196+00:00",
+        "retrieved_utc": "2026-11-26T10:00:29.623421+00:00",
         "source_url": "https://fred.stlouisfed.org/series/TEMPHELPS",
         "unit": "thousand_persons",
         "value": 2526.0,
