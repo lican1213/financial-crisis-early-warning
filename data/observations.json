@@ -49,11 +49,11 @@
   },
   "OFR_FSI": {
     "available_at_utc": null,
-    "date": "2026-11-23",
-    "retrieved_utc": "2026-11-25T15:37:14.101045+00:00",
+    "date": "2026-11-24",
+    "retrieved_utc": "2026-11-26T19:38:06.933875+00:00",
     "series": "OFR_FSI",
     "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv",
-    "value": -1.082
+    "value": -1.141
   },
   "SOFR": {
     "available_at_utc": null,

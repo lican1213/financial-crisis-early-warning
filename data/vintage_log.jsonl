@@ -164,3 +164,4 @@
 {"first_seen_utc": "2026-11-25T20:10:47.596151+00:00", "observation_date": "2026-11-20", "previous_value": null, "series": "STLFSI4", "source": "https://fred.stlouisfed.org/series/STLFSI4", "value": -0.0697}
 {"first_seen_utc": "2026-11-26T00:22:13.660888+00:00", "observation_date": "2026-11-24", "previous_value": null, "series": "DGS10", "source": "https://fred.stlouisfed.org/series/DGS10", "value": 4.91}
 {"first_seen_utc": "2026-11-26T00:22:13.660888+00:00", "observation_date": "2026-11-24", "previous_value": null, "series": "DGS30", "source": "https://fred.stlouisfed.org/series/DGS30", "value": 5.3}
+{"first_seen_utc": "2026-11-26T19:38:06.000403+00:00", "observation_date": "2026-11-24", "previous_value": null, "series": "OFR_FSI", "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv", "value": -1.141}
