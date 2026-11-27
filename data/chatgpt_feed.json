@@ -14,7 +14,7 @@
     "verified_candidate_issue_is_not_sufficient_evidence": true
   },
   "current_technical_severity": "green",
-  "fingerprint_sha256": "568f2d065bbfd0fda4d34aadd0d30cedf5463122e415a5d8ec1c161ef5522827",
+  "fingerprint_sha256": "b751f075341f24c4eecc1a398d9001c90cf470886f3825a9c791e42e7b86aeca",
   "health_not_financial_crisis": true,
   "last_evidence_observation_dates": {
     "ANFCI": "2026-11-20",
@@ -34,7 +34,7 @@
     "authorizes_notification": false,
     "china_recovery_breadth_score": null,
     "china_source_status": "independent_original_document_verification_required",
-    "source_snapshot_date": "2026-11-26",
+    "source_snapshot_date": "2026-11-27",
     "staffing_firm_source_status": "independent_original_document_verification_required",
     "staffing_global_score": null,
     "status": "fresh",
