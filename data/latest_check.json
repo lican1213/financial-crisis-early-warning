@@ -5,8 +5,8 @@
   "confirmation_matches": {},
   "confirming_families": [],
   "critical_families": [],
-  "evidence_sha256": "bd53e1124f4a41eb9ee0660fc006f81647f5aace72eef092dda7927e8111e30e",
-  "first_recorded_utc": "2026-11-27T14:20:57.475208+00:00",
+  "evidence_sha256": "6bb5adabba58a817e98eb8fdd5b45dddb079e1d5bdd11da4761fe44255b9e4cf",
+  "first_recorded_utc": "2026-11-27T21:58:24.213808+00:00",
   "observations": {
     "ANFCI": {
       "date": "2026-11-20",
@@ -14,9 +14,9 @@
       "value": -0.443
     },
     "BAMLH0A0HYM2": {
-      "date": "2026-11-24",
+      "date": "2026-11-26",
       "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
-      "value": 3.72
+      "value": 3.77
     },
     "BGCR": {
       "date": "2026-11-25",
@@ -24,14 +24,14 @@
       "value": 3.93
     },
     "DGS10": {
-      "date": "2026-11-24",
+      "date": "2026-11-25",
       "source": "https://fred.stlouisfed.org/series/DGS10",
-      "value": 4.91
+      "value": 4.85
     },
     "DGS30": {
-      "date": "2026-11-24",
+      "date": "2026-11-25",
       "source": "https://fred.stlouisfed.org/series/DGS30",
-      "value": 5.3
+      "value": 5.24
     },
     "NFCI": {
       "date": "2026-11-20",
@@ -39,9 +39,9 @@
       "value": -0.444
     },
     "OFR_FSI": {
-      "date": "2026-11-24",
+      "date": "2026-11-25",
       "source": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv",
-      "value": -1.141
+      "value": -0.796
     },
     "SOFR": {
       "date": "2026-11-25",
@@ -59,9 +59,9 @@
       "value": 3.93
     },
     "VIXCLS": {
-      "date": "2026-11-24",
+      "date": "2026-11-26",
       "source": "https://fred.stlouisfed.org/series/VIXCLS",
-      "value": 26.36
+      "value": 26.8
     }
   },
   "present_families": [
