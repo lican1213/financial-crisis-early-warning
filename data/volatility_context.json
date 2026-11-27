@@ -1,6 +1,6 @@
 {
   "alert_role": "context_only_no_independent_family_or_notification_gate",
-  "as_of_date_utc": "2026-11-26",
+  "as_of_date_utc": "2026-11-27",
   "context": {
     "equity_vol_index_term_structure": {
       "equity_index_spread_vix9d_minus_vix3m": 3.32,
@@ -63,26 +63,11 @@
         "std_daily_yield_change_bp_20d": 7.18093,
         "window": 20
       }
-    },
-    "vx_futures": {
-      "backwardation": true,
-      "contract_basis": "STANDARD_MONTHLY_VX_FUTURES",
-      "f2_minus_f1": -0.7337,
-      "front": {
-        "expiration_date": "2026-12-16",
-        "settlement": 25.0258,
-        "symbol": "VX/Z6"
-      },
-      "second": {
-        "expiration_date": "2027-01-20",
-        "settlement": 24.2921,
-        "symbol": "VX/F7"
-      },
-      "settlement_date": "2026-11-25",
-      "source_url": "https://www.cboe.com/markets/us/futures/market-statistics/settlement/futures/daily"
     }
   },
-  "errors": {},
+  "errors": {
+    "CFE:VX": "ValueError: fewer than two standard monthly VX futures"
+  },
   "source_status": {
     "cboe_index_count": 4,
     "yield_maturities": [
