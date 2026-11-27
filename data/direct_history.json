@@ -100,5 +100,23 @@
       "source": "https://fred.stlouisfed.org/series/VIXCLS",
       "value": 26.36
     }
+  },
+  "2026-11-25": {
+    "SOFR": {
+      "available_at_utc": null,
+      "date": "2026-11-25",
+      "retrieved_utc": "2026-11-27T14:20:57.826157+00:00",
+      "series": "SOFR",
+      "source": "https://www.newyorkfed.org/markets/reference-rates/sofr",
+      "value": 3.95
+    },
+    "TGCR": {
+      "available_at_utc": null,
+      "date": "2026-11-25",
+      "retrieved_utc": "2026-11-27T14:20:57.833663+00:00",
+      "series": "TGCR",
+      "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr",
+      "value": 3.93
+    }
   }
 }

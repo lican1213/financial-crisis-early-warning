@@ -17,11 +17,11 @@
   },
   "BGCR": {
     "available_at_utc": null,
-    "date": "2026-11-24",
-    "retrieved_utc": "2026-11-25T15:37:14.010188+00:00",
+    "date": "2026-11-25",
+    "retrieved_utc": "2026-11-27T14:20:57.834615+00:00",
     "series": "BGCR",
     "source": "https://www.newyorkfed.org/markets/reference-rates/bgcr",
-    "value": 3.92
+    "value": 3.93
   },
   "DGS10": {
     "available_at_utc": null,
@@ -57,11 +57,11 @@
   },
   "SOFR": {
     "available_at_utc": null,
-    "date": "2026-11-24",
-    "retrieved_utc": "2026-11-25T15:37:13.990406+00:00",
+    "date": "2026-11-25",
+    "retrieved_utc": "2026-11-27T14:20:57.826157+00:00",
     "series": "SOFR",
     "source": "https://www.newyorkfed.org/markets/reference-rates/sofr",
-    "value": 3.94
+    "value": 3.95
   },
   "STLFSI4": {
     "available_at_utc": null,
@@ -73,11 +73,11 @@
   },
   "TGCR": {
     "available_at_utc": null,
-    "date": "2026-11-24",
-    "retrieved_utc": "2026-11-25T15:37:13.990970+00:00",
+    "date": "2026-11-25",
+    "retrieved_utc": "2026-11-27T14:20:57.833663+00:00",
     "series": "TGCR",
     "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr",
-    "value": 3.92
+    "value": 3.93
   },
   "VIXCLS": {
     "available_at_utc": null,

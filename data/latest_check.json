@@ -5,8 +5,8 @@
   "confirmation_matches": {},
   "confirming_families": [],
   "critical_families": [],
-  "evidence_sha256": "cf3c29409e75f6df47d392b1558673cc89a217fed4e17050ecdd64bf7ff047d6",
-  "first_recorded_utc": "2026-11-26T19:38:06.000403+00:00",
+  "evidence_sha256": "bd53e1124f4a41eb9ee0660fc006f81647f5aace72eef092dda7927e8111e30e",
+  "first_recorded_utc": "2026-11-27T14:20:57.475208+00:00",
   "observations": {
     "ANFCI": {
       "date": "2026-11-20",
@@ -19,9 +19,9 @@
       "value": 3.72
     },
     "BGCR": {
-      "date": "2026-11-24",
+      "date": "2026-11-25",
       "source": "https://www.newyorkfed.org/markets/reference-rates/bgcr",
-      "value": 3.92
+      "value": 3.93
     },
     "DGS10": {
       "date": "2026-11-24",
@@ -44,9 +44,9 @@
       "value": -1.141
     },
     "SOFR": {
-      "date": "2026-11-24",
+      "date": "2026-11-25",
       "source": "https://www.newyorkfed.org/markets/reference-rates/sofr",
-      "value": 3.94
+      "value": 3.95
     },
     "STLFSI4": {
       "date": "2026-11-20",
@@ -54,9 +54,9 @@
       "value": -0.0697
     },
     "TGCR": {
-      "date": "2026-11-24",
+      "date": "2026-11-25",
       "source": "https://www.newyorkfed.org/markets/reference-rates/tgcr",
-      "value": 3.92
+      "value": 3.93
     },
     "VIXCLS": {
       "date": "2026-11-24",
